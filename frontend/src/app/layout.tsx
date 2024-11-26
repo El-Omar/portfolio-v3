@@ -1,7 +1,6 @@
 import React from "react";
 import type { Metadata } from "next";
 import "./globals.css";
-import SideFrames from "@/components/ui/SideFrames";
 import {
   fontKhula,
   fontLibre_BaskervilleItalic,
