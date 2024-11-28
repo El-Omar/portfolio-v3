@@ -2,6 +2,7 @@ import { ReactElement } from "react";
 
 import Paragraph from "../ui/Paragraph";
 import LightbulbImage from "@/components/assets/lightbulb-space.svg";
+import Title from "../ui/Title";
 
 const Design = (): ReactElement => {
   return (
@@ -23,16 +24,14 @@ const Design = (): ReactElement => {
         </defs>
       </svg>
       <div className="content z-10 pb-6 md:pb-20 pl-0 md:pl-5 md:mb-0 order-1 md:-order-1">
-        <h1 className="lg:text-6xl text-4xl leading-snug font-khula">
-          Design with intent
-        </h1>
+        <Title>Design with intent</Title>
         <Paragraph className="rounded-md lg:mt-4">
           I design with <strong>purpose</strong> - solving problems and
           simplifying experiences. By focusing on core user needs, I craft
           solutions that are clear, effective, and leave a lasting impact.
-          <strong className="text-6xl md:text-8xl font-khula absolute -top-4 -left-4 text-cool">
-            I
-          </strong>
+          {/* <strong className="text-6xl md:text-8xl font-baskerville absolute -top-4 -left-4 text-cool">
+            "
+          </strong> */}
         </Paragraph>
       </div>
       <LightbulbImage className="relative z-10 max-w-full w-96 md:w-auto md:max-w-[700px]" />

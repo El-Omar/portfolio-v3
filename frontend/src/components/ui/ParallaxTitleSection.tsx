@@ -58,7 +58,7 @@ const ParallaxTitleSection = ({
   }, [titleHeight]);
 
   return (
-    <div
+    <section
       ref={containerRef}
       className={twMerge(`relative min-h-screen w-full ${className}`)}
     >
@@ -82,7 +82,7 @@ const ParallaxTitleSection = ({
 
       {/* Content area */}
       <div className={`relative mt-8 ${contentClassName}`}>{children}</div>
-    </div>
+    </section>
   );
 };
 
