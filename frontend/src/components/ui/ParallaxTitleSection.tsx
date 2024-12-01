@@ -64,7 +64,7 @@ const ParallaxTitleSection = ({
     >
       <div
         ref={titleRef}
-        className={`text-4xl md:text-6xl h-[120px] font-khula transition-all duration-75 ${
+        className={`text-4xl md:text-6xl h-[120px] font-dm-sans transition-all duration-75 ${
           isSticky
             ? "fixed top-36 left-0 right-0 z-10 px-4 py-6 backdrop-blur-sm"
             : "relative"

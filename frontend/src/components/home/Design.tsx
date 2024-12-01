@@ -6,8 +6,7 @@ import Title from "../ui/Title";
 
 const Design = (): ReactElement => {
   return (
-    <article className="flex bg-white flex-col justify-center gap-2 relative md:flex-row items-center md:gap-4 shadow- rounded-3xl p-4 md:p-8">
-      {/* <div className="absolute bottom-0 w-screen h-1/3 bg-gradient-to-t from-neutral-800 rounded-3xl overflow-hidden"></div> */}
+    <article className="flex bg-white dark:bg-neutral-700 flex-col justify-center gap-2 relative md:flex-row items-center md:gap-4 shadow- rounded-3xl p-4 md:p-8">
       <div
         className="absolute bottom-0 w-full h-2/6 bg-gradient-to-tr from-cool-red rounded-3xl"
         style={{ clipPath: "url('#wave')" }}
@@ -29,9 +28,9 @@ const Design = (): ReactElement => {
           I design with <strong>purpose</strong> - solving problems and
           simplifying experiences. By focusing on core user needs, I craft
           solutions that are clear, effective, and leave a lasting impact.
-          {/* <strong className="text-6xl md:text-8xl font-baskerville absolute -top-4 -left-4 text-cool">
-            "
-          </strong> */}
+          <strong className="text-6xl md:text-8xl font-baskerville absolute -top-4 -left-4 text-cool">
+            &#8220;
+          </strong>
         </Paragraph>
       </div>
       <LightbulbImage className="relative z-10 max-w-full w-96 md:w-auto md:max-w-[700px]" />

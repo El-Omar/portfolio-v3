@@ -1,15 +1,15 @@
 import {
-  Khula,
+  DM_Sans,
+  Inter,
   Libre_Baskerville,
-  Noto_Sans_Display,
   Pacifico,
   Rakkas,
 } from "next/font/google";
 
-export const fontKhula = Khula({
+export const fontDM_Sans = DM_Sans({
   subsets: ["latin"],
-  variable: "--font-khula",
-  weight: "800",
+  variable: "--font-dm-sans",
+  weight: "1000",
 });
 
 export const fontLibre_BaskervilleItalic = Libre_Baskerville({
@@ -19,10 +19,10 @@ export const fontLibre_BaskervilleItalic = Libre_Baskerville({
   variable: "--font-baskerville",
 });
 
-export const fontNoto_Sans_Display = Noto_Sans_Display({
+export const fontInter = Inter({
   subsets: ["latin"],
-  weight: ["400", "600"],
-  variable: "--font-noto-display",
+  weight: ["300", "700"],
+  variable: "--font-inter",
 });
 
 export const fontRakkas = Rakkas({

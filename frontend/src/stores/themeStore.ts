@@ -21,6 +21,6 @@ export const useThemeStore = create<ThemeState>()(
       name: "theme-store",
       storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({ isDarkMode: state.isDarkMode }),
-    }
-  )
+    },
+  ),
 );

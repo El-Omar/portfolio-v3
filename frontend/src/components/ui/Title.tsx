@@ -11,7 +11,7 @@ const Title = ({
   className: _className = "",
 }: Props): ReactElement => {
   const className = twMerge(
-    "text-4xl md:text-6xl font-khula tracking-tight",
+    "text-4xl md:text-5xl font-dm-sans tracking-tight",
     _className,
   );
 
