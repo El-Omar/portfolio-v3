@@ -43,7 +43,7 @@ const Home = () => {
           <header>
             <Title className="text-center">Blog articles</Title>
           </header>
-          <section className="flex justify-between gap-8">
+          <section className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-4 lg:gap-8">
             <BlogCard />
             <BlogCard />
             <BlogCard />

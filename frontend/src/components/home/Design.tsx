@@ -24,11 +24,11 @@ const Design = (): ReactElement => {
       </svg>
       <div className="content z-10 pb-6 md:pb-20 pl-0 md:pl-5 md:mb-0 order-1 md:-order-1">
         <Title>Design with intent</Title>
-        <Paragraph className="rounded-md lg:mt-4">
+        <Paragraph className="rounded-md lg:mt-4 mt-2">
           I design with <strong>purpose</strong> - solving problems and
           simplifying experiences. By focusing on core user needs, I craft
           solutions that are clear, effective, and leave a lasting impact.
-          <strong className="text-6xl md:text-8xl font-baskerville absolute -top-4 -left-4 text-cool">
+          <strong className="text-6xl md:text-8xl font-baskerville absolute -top-1 md:-top-4 -left-4 text-cool">
             &#8220;
           </strong>
         </Paragraph>

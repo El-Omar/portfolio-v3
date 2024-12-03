@@ -25,13 +25,13 @@ const Develop = (): ReactElement => {
       <DevelopImage className="relative z-10 max-w-full w-96 md:w-auto md:max-w-[700px]" />
       <div className="content z-10 pb-2 lg:pb-16">
         <Title>Develop with precision</Title>
-        <Paragraph className="lg:mt-4">
+        <Paragraph className="lg:mt-4 mt-2">
           Balancing <strong>quality</strong> and{" "}
           <strong>time efficiency</strong> isn&apos;t easy, but finding the
           optimal solution is where I excel. I bring a methodical approach to
           every project, ensuring both excellence and timely delivery. (And no,
           my workspace doesn&apos;t actually look like this)
-          <strong className="text-6xl md:text-8xl absolute font-baskerville -bottom-20 -right-2 text-cool">
+          <strong className="text-6xl md:text-8xl absolute font-baskerville -bottom-10 md:-bottom-20 -right-1 text-cool">
             &#8221;
           </strong>
         </Paragraph>

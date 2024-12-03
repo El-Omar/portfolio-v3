@@ -54,7 +54,7 @@ const Sidebar = ({ toggleSidebar }: Props): ReactElement => {
         transition={{ ease: "circInOut", duration: 0.38 }}
         initial={{ x: -300 }}
       >
-        <ul className="w-80 h-[calc(100vh_-_5rem)] pt-20 px-4 bg-white dark:bg-neutral-700 fixed left-0 top-0">
+        <ul className="w-80 h-[calc(100vh_-_5rem)] pt-28 px-4 bg-white dark:bg-neutral-700 fixed left-0 top-0">
           {navItems.map(({ path, label, icon }) => (
             <li key={path}>
               <Link

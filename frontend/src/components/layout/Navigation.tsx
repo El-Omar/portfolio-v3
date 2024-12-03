@@ -23,13 +23,16 @@ const Navigation = (): ReactElement => {
   return (
     <>
       {isOpen && <Sidebar toggleSidebar={toggleSidebar} />}
-      <nav className="z-50 border-22 sticky top-0 p-4 px-2 md:px-7 flex justify-between items-center">
+      <nav className="z-50 border-22 sticky top-0 py-4 flex justify-between items-center">
         <Button
           variant="link"
           className="group hover:no-underline p-0"
           onClick={toggleSidebar}
         >
-          <figure className="flex items-center">
+          <motion.figure
+            className="flex items-center"
+            animate={{ x: isOpen ? 20 : 0 }}
+          >
             <Animation>
               <motion.strong
                 className="text-2xl font-rakkas mt-6 -mr-0.5"
@@ -53,11 +56,11 @@ const Navigation = (): ReactElement => {
                 omar
               </motion.span>
             </Animation>
-          </figure>
+          </motion.figure>
           <Animation>
             <motion.div
               className="flex flex-col gap-1 items-start"
-              animate={{ x: isOpen ? 136 : -50 }}
+              animate={{ x: isOpen ? 160 : -50 }}
             >
               <div
                 className={`${!isOpen ? "w-[21px] group-hover:w-[24px]" : "group-hover:w-[21px] w-[24px]"} h-[3px] ${navToggleClassName}`}
