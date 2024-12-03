@@ -2,6 +2,7 @@ import BlogCard from "@/components/blog/BlogCard";
 import Design from "@/components/home/Design";
 import Develop from "@/components/home/Develop";
 import Intro from "@/components/home/Intro";
+import Projects from "@/components/home/Projects";
 import SpaceInvaders from "@/components/home/SpaceInvaders";
 import { Button } from "@/components/ui/Button";
 import Paragraph from "@/components/ui/Paragraph";
@@ -32,11 +33,7 @@ const Home = () => {
             </Title>
           </header>
           <section className="flex justify-between gap-8 mt-8 flex-wrap">
-            <figure className="rounded-lg w-60 h-60 bg-neutral-200 text-primary"></figure>
-            <figure className="rounded-lg w-60 h-60 bg-neutral-200"></figure>
-            <figure className="rounded-lg w-60 h-60 bg-neutral-200"></figure>
-            <figure className="rounded-lg w-60 h-60 bg-neutral-200"></figure>
-            <figure className="rounded-lg w-60 h-60 bg-neutral-200"></figure>
+            <Projects />
           </section>
         </article>
         <article className="flex flex-col gap-12 mt-20 w-full md:px-12 md:py-20 xl:p-20 px-4 py-10 bg-neutral-100 dark:bg-neutral-800">
