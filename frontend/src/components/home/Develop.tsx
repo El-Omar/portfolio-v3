@@ -1,14 +1,14 @@
 import { ReactElement } from "react";
 
 import Paragraph from "../ui/Paragraph";
-import DevelopImage from "@/components/assets/control-panel-bro.svg";
 import Title from "../ui/Title";
+import DevelopImage from "@/components/assets/control-panel-bro.svg";
 
 const Develop = (): ReactElement => {
   return (
-    <article className="flex bg-white dark:bg-neutral-700 flex-col justify-center gap-2 relative md:flex-row items-center md:gap-4 shadow- rounded-3xl p-4 md:p-8">
+    <article className="flex bg-white dark:bg-neutral-700 flex-col justify-center gap-2 relative lg:flex-row items-center md:gap-4 shadow- rounded-3xl p-4 md:p-8">
       <div
-        className="rounded-3xl absolute bottom-0 w-full h-1/3 bg-gradient-to-r from-amber-50 to-amber-600"
+        className="rounded-3xl absolute bottom-0 w-full h-1/3 bg-gradient-to-r from-neutral-400 to-amber-600"
         style={{ clipPath: "url('#wave2')" }}
       ></div>
       <svg viewBox="0 0 1440 328" width="0" className="">

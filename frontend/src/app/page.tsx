@@ -1,11 +1,11 @@
-import Intro from "@/components/home/Intro";
+import BlogCard from "@/components/blog/BlogCard";
 import Design from "@/components/home/Design";
 import Develop from "@/components/home/Develop";
-import Title from "@/components/ui/Title";
-import BlogCard from "@/components/blog/BlogCard";
+import Intro from "@/components/home/Intro";
+import SpaceInvaders from "@/components/home/SpaceInvaders";
 import { Button } from "@/components/ui/Button";
 import Paragraph from "@/components/ui/Paragraph";
-import SpaceInvaders from "@/components/home/SpaceInvaders";
+import Title from "@/components/ui/Title";
 
 const Home = () => {
   return (

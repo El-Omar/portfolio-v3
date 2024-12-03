@@ -1,12 +1,12 @@
 import { ReactElement } from "react";
 
 import Paragraph from "../ui/Paragraph";
-import LightbulbImage from "@/components/assets/lightbulb-space.svg";
 import Title from "../ui/Title";
+import LightbulbImage from "@/components/assets/lightbulb-space.svg";
 
 const Design = (): ReactElement => {
   return (
-    <article className="flex bg-white dark:bg-neutral-700 flex-col justify-center gap-2 relative md:flex-row items-center md:gap-4 shadow- rounded-3xl p-4 md:p-8">
+    <article className="flex bg-white dark:bg-neutral-700 flex-col justify-center gap-2 relative lg:flex-row items-center md:gap-4 shadow- rounded-3xl p-4 md:p-8">
       <div
         className="absolute bottom-0 w-full h-2/6 bg-gradient-to-tr from-cool-red rounded-3xl"
         style={{ clipPath: "url('#wave')" }}

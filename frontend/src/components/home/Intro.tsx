@@ -1,8 +1,8 @@
 import { ReactElement } from "react";
-import BilingualLogo from "../ui/BilingualLogo";
 
 import IconPen from "@/components/assets/pen.svg";
 import IntroImage from "./IntroImage";
+import BilingualLogo from "../ui/BilingualLogo";
 import Paragraph from "../ui/Paragraph";
 
 const Intro = (): ReactElement => {

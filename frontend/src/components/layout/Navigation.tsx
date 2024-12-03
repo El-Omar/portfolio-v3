@@ -1,42 +1,78 @@
 "use client";
 
-import { ReactElement } from "react";
+import { motion, MotionConfig } from "framer-motion";
+import Image from "next/image";
+import { ReactElement, ReactNode, useState } from "react";
+
+import Sidebar from "./Sidebar";
 import { Button } from "../ui/Button";
 
-import IconDark from "@/components/assets/dark.svg";
-import { useThemeStore } from "@/stores/themeStore";
-import Image from "next/image";
+const Animation = ({ children }: { children: ReactNode }) => (
+  <MotionConfig transition={{ ease: "circInOut", duration: 0.38 }}>
+    {children}
+  </MotionConfig>
+);
 
 const Navigation = (): ReactElement => {
-  const { toggleTheme } = useThemeStore();
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  const navToggleClassName =
-    "bg-primary group-hover:w-[23px] transition-all duration-150 ease-in-out";
+  const toggleSidebar = () => setIsOpen((toggle) => !toggle);
+
+  const navToggleClassName = `bg-primary transition-all duration-150 ease-in-out`;
 
   return (
-    <nav className="z-10 border-22 sticky top-0 p-4 flex justify-between items-center">
-      <Button variant="link" className="group">
-        <Image
-          src="/img/logo@2x.png"
-          alt="Logo"
-          width={24.75}
-          height={24.245}
-          className="dark:invert"
-        />
-        <div className="flex flex-col gap-1 items-start">
-          <div className={`w-[21px] h-[3px] ${navToggleClassName}`}></div>
-          <div className={`w-[18px] h-[3px] ${navToggleClassName}`}></div>
-          <div className={`w-[19px] h-[3px] ${navToggleClassName}`}></div>
-        </div>
-      </Button>
-      <Button
-        className="w-6 h-6 p-4 rounded-full border-none group bg-neutral-200 dark:bg-neutral-900 hover:bg-neutral-200 dark:hover:bg-neutral-600"
-        variant="outline"
-        onClick={toggleTheme}
-      >
-        <IconDark className="fill-primary scale-75" />
-      </Button>
-    </nav>
+    <>
+      {isOpen && <Sidebar toggleSidebar={toggleSidebar} />}
+      <nav className="z-50 border-22 sticky top-0 p-4 px-2 md:px-7 flex justify-between items-center">
+        <Button
+          variant="link"
+          className="group hover:no-underline p-0"
+          onClick={toggleSidebar}
+        >
+          <figure className="flex items-center">
+            <Animation>
+              <motion.strong
+                className="text-2xl font-rakkas mt-6 -mr-0.5"
+                animate={{ x: isOpen ? 0 : 10, opacity: isOpen ? 1 : 0 }}
+              >
+                ـمر
+              </motion.strong>
+            </Animation>
+            <Image
+              src="/img/logo@2x.png"
+              alt="Logo"
+              width={24.75}
+              height={24.245}
+              className="dark:invert"
+            />
+            <Animation>
+              <motion.span
+                className="text-2xl font-pacifico mt-0 -ml-0.5"
+                animate={{ x: isOpen ? 0 : -10, opacity: isOpen ? 1 : 0 }}
+              >
+                omar
+              </motion.span>
+            </Animation>
+          </figure>
+          <Animation>
+            <motion.div
+              className="flex flex-col gap-1 items-start"
+              animate={{ x: isOpen ? 136 : -50 }}
+            >
+              <div
+                className={`${!isOpen ? "w-[21px] group-hover:w-[24px]" : "group-hover:w-[21px] w-[24px]"} h-[3px] ${navToggleClassName}`}
+              ></div>
+              <div
+                className={`${!isOpen ? "w-[18px] group-hover:w-[24px]" : "group-hover:w-[18px] w-[24px]"} h-[3px] ${navToggleClassName}`}
+              ></div>
+              <div
+                className={`${!isOpen ? "w-[19px] group-hover:w-[24px]" : "group-hover:w-[19px] w-[24px]"} h-[3px] ${navToggleClassName}`}
+              ></div>
+            </motion.div>
+          </Animation>
+        </Button>
+      </nav>
+    </>
   );
 };
 

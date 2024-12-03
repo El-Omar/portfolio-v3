@@ -1,7 +1,7 @@
 "use client";
 
-import { useThemeStore } from "@/stores/themeStore";
 import { ReactElement, ReactNode, useEffect } from "react";
+import { useThemeStore } from "@/stores/themeStore";
 
 type Props = {
   children: ReactNode;

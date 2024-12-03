@@ -1,10 +1,10 @@
 "use client";
 
 import { ReactElement, useEffect, useRef } from "react";
-import SpaceInvadersStyles from "./SpaceInvadersStyles";
 import { Button } from "@/components/ui/Button";
 
 import InitGame from "./spaceInvaders";
+import SpaceInvadersStyles from "./SpaceInvadersStyles";
 
 const SpaceInvaders = (): ReactElement => {
   const spaceInvadersDivs = Array(225).fill("block");

@@ -1,16 +1,16 @@
-import React from "react";
 import type { Metadata } from "next";
+import React from "react";
 import "./globals.css";
-import {
-  fontDM_Sans,
-  fontLibre_BaskervilleItalic,
-  fontInter,
-  fontRakkas,
-  fontPacifico,
-} from "@/lib/utils/fonts";
+import Footer from "@/components/layout/Footer";
 import Navigation from "@/components/layout/Navigation";
 import ThemeProvider from "@/components/providers/ThemeProvider";
-import Footer from "@/components/layout/Footer";
+import {
+  fontDM_Sans,
+  fontInter,
+  fontLibre_BaskervilleItalic,
+  fontPacifico,
+  fontRakkas,
+} from "@/lib/utils/fonts";
 
 export const metadata: Metadata = {
   title: "Home - Elomar",
