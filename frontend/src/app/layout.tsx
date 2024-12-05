@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import React from "react";
 import "./globals.css";
-import Footer from "@/components/layout/Footer";
-import Navigation from "@/components/layout/Navigation";
 import ThemeProvider from "@/components/providers/ThemeProvider";
+import BlobShape from "@/components/ui/BlobShape";
 import {
   fontDM_Sans,
   fontInter,
@@ -26,14 +25,13 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={`${fontDM_Sans.variable} ${fontLibre_BaskervilleItalic.variable}
-        ${fontInter.variable} ${fontRakkas.variable} ${fontPacifico.variable}
+        ${fontInter.variable} ${fontRakkas.variable} ${fontPacifico.variable} overflow-x-hidden
         dark:bg-neutral-700 text-gray-900 dark:text-gray-100 font-inter`}
         suppressHydrationWarning
       >
         <ThemeProvider>
-          <Navigation />
+          <BlobShape />
           {children}
-          <Footer />
         </ThemeProvider>
       </body>
     </html>

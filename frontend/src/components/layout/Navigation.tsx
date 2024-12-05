@@ -6,6 +6,7 @@ import { ReactElement, ReactNode, useState } from "react";
 
 import Sidebar from "./Sidebar";
 import { Button } from "../ui/Button";
+import { Link } from "@/i18n/routing";
 
 const Animation = ({ children }: { children: ReactNode }) => (
   <MotionConfig transition={{ ease: "circInOut", duration: 0.38 }}>
@@ -24,14 +25,10 @@ const Navigation = (): ReactElement => {
     <>
       {isOpen && <Sidebar toggleSidebar={toggleSidebar} />}
       <nav className="z-50 border-22 sticky top-0 py-4 flex justify-between items-center">
-        <Button
-          variant="link"
-          className="group hover:no-underline p-0"
-          onClick={toggleSidebar}
-        >
+        <Link href="/">
           <motion.figure
             className="flex items-center"
-            animate={{ x: isOpen ? 20 : 0 }}
+            animate={{ x: isOpen ? 25 : 0 }}
           >
             <Animation>
               <motion.strong
@@ -57,22 +54,21 @@ const Navigation = (): ReactElement => {
               </motion.span>
             </Animation>
           </motion.figure>
-          <Animation>
-            <motion.div
-              className="flex flex-col gap-1 items-start"
-              animate={{ x: isOpen ? 160 : -50 }}
-            >
-              <div
-                className={`${!isOpen ? "w-[21px] group-hover:w-[24px]" : "group-hover:w-[21px] w-[24px]"} h-[3px] ${navToggleClassName}`}
-              ></div>
-              <div
-                className={`${!isOpen ? "w-[18px] group-hover:w-[24px]" : "group-hover:w-[18px] w-[24px]"} h-[3px] ${navToggleClassName}`}
-              ></div>
-              <div
-                className={`${!isOpen ? "w-[19px] group-hover:w-[24px]" : "group-hover:w-[19px] w-[24px]"} h-[3px] ${navToggleClassName}`}
-              ></div>
-            </motion.div>
-          </Animation>
+        </Link>
+        <Button
+          variant="link"
+          className="group hover:no-underline flex flex-col gap-1 items-end px-6"
+          onClick={toggleSidebar}
+        >
+          <div
+            className={`${!isOpen ? "w-[21px] group-hover:w-[24px]" : "group-hover:w-[21px] w-[24px]"} h-[3px] ${navToggleClassName}`}
+          />
+          <div
+            className={`${!isOpen ? "w-[18px] group-hover:w-[24px]" : "group-hover:w-[18px] w-[24px]"} h-[3px] ${navToggleClassName}`}
+          />
+          <div
+            className={`${!isOpen ? "w-[19px] group-hover:w-[24px]" : "group-hover:w-[19px] w-[24px]"} h-[3px] ${navToggleClassName}`}
+          />
         </Button>
       </nav>
     </>

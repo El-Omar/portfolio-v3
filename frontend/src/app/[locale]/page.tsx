@@ -1,3 +1,4 @@
+import { ArrowRight } from "lucide-react";
 import BlogCard from "@/components/blog/BlogCard";
 import Design from "@/components/home/Design";
 import Develop from "@/components/home/Develop";
@@ -7,6 +8,7 @@ import SpaceInvaders from "@/components/home/SpaceInvaders";
 import { Button } from "@/components/ui/Button";
 import Paragraph from "@/components/ui/Paragraph";
 import Title from "@/components/ui/Title";
+import { Link } from "@/i18n/routing";
 
 const Home = () => {
   return (
@@ -23,6 +25,11 @@ const Home = () => {
           <section className="flex flex-col gap-12 mt-6">
             <Design />
             <Develop />
+            <Button className="self-center" variant="default" asChild>
+              <Link href="/about">
+                Check out my resume <ArrowRight />
+              </Link>
+            </Button>
           </section>
         </section>
         <article className="w-full md:px-12 md:py-20 xl:p-20 xl:py-28 px-4 py-10">

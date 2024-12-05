@@ -1,6 +1,8 @@
 import { notFound } from "next/navigation";
 import { NextIntlClientProvider } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
+import Footer from "@/components/layout/Footer";
+import Navigation from "@/components/layout/Navigation";
 import { Locale, routing } from "@/i18n/routing";
 
 // Generate static params for all supported locales
@@ -29,24 +31,15 @@ export default async function LocaleLayout({
     notFound();
   }
 
-  console.log("layout;");
-
   // Determine text direction based on locale
   const isRTL = locale === "ar";
 
   return (
-    <NextIntlClientProvider
-      locale={locale}
-      messages={messages}
-      // Optionally, you can add timeZone and now props if needed
-      // timeZone="UTC"
-      // now={new Date()}
-    >
-      <div
-        dir={isRTL ? "rtl" : "ltr"}
-        className={`${isRTL ? "font-arabic" : "font-inter"} min-h-screen`}
-      >
+    <NextIntlClientProvider locale={locale} messages={messages}>
+      <div dir={isRTL ? "rtl" : "ltr"}>
+        <Navigation />
         {children}
+        <Footer />
       </div>
     </NextIntlClientProvider>
   );

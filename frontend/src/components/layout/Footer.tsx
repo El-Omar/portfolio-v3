@@ -1,48 +1,38 @@
-import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { ReactElement } from "react";
+import Acknowledgments from "./Acknowledgments";
 import BilingualLogo from "../ui/BilingualLogo";
+import { Link } from "@/i18n/routing";
+import { PAGES, usePages } from "@/lib/hooks/usePages";
 
 const Footer = (): ReactElement => {
+  const pages = usePages();
+  const t = useTranslations("footer");
+
   return (
     <footer className="bg-neutral-100 shadow dark:bg-neutral-900">
-      <div className="w-full max-w-screen-xl mx-auto p-4 md:py-8">
+      <div className="w-full max-w-screen-xl mx-auto p-4">
         <div className="sm:flex sm:items-center sm:justify-between">
           <Link
-            href="https://elomar.be/"
+            href={PAGES.HOME}
             className="flex items-center mb-4 sm:mb-0 space-x-3 rtl:space-x-reverse"
           >
             <BilingualLogo />
           </Link>
-          <ul className="flex flex-wrap items-center mb-6 text-sm font-medium text-gray-500 sm:mb-0 dark:text-gray-400">
-            <li>
-              <a href="#" className="hover:underline me-4 md:me-6">
-                About
-              </a>
-            </li>
-            <li>
-              <a href="#" className="hover:underline me-4 md:me-6">
-                Blog
-              </a>
-            </li>
-            <li>
-              <a href="#" className="hover:underline me-4 md:me-6">
-                Resume
-              </a>
-            </li>
-            <li>
-              <a href="#" className="hover:underline">
-                Contact
-              </a>
-            </li>
+          <ul className="flex gap-6 items-center text-sm text-neutral-600 sm:mb-0 dark:text-neutral-400">
+            {pages.map(({ path, label }) => (
+              <li key={path}>
+                <Link href={path} className="">
+                  <p className="">{label}</p>
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
-        <hr className="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
+        <hr className="mb-6 border-gray-200 sm:mx-auto dark:border-gray-700" />
         <span className="block text-sm text-gray-500 sm:text-center dark:text-gray-400">
-          © {new Date().getFullYear()}{" "}
-          <a href="https://elomar.be/" className="hover:underline">
-            Elomar
-          </a>
-          . All Rights Reserved.
+          {t("copyright", { year: new Date().getFullYear() })}{" "}
+          <Acknowledgments />
         </span>
       </div>
     </footer>

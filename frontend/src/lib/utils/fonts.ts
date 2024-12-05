@@ -26,7 +26,7 @@ export const fontInter = Inter({
 });
 
 export const fontRakkas = Rakkas({
-  subsets: ["arabic"],
+  subsets: ["arabic", "latin"],
   variable: "--font-rakkas",
   weight: "400",
 });

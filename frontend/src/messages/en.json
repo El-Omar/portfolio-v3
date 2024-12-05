@@ -1,10 +1,13 @@
 {
   "navigation": {
     "home": "Home",
-    "about": "About",
+    "blog": "Blog",
+    "about": "About me",
     "contact": "Contact"
   },
   "footer": {
-    "copyright": "© {{ year }} Elomar. All rights reserved."
+    "copyright": "© { year } Elomar. All rights reserved.",
+    "acknowledgments": "Attributions",
+    "credits": "Icons by <lucideLink>Lucide</lucideLink> and illustrations by <illustrationLink>Storyset</illustrationLink>."
   }
 }
