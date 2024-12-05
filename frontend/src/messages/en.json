@@ -1,0 +1,10 @@
+{
+  "navigation": {
+    "home": "Home",
+    "about": "About",
+    "contact": "Contact"
+  },
+  "footer": {
+    "copyright": "© {{ year }} Elomar. All rights reserved."
+  }
+}

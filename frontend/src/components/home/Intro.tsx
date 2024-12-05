@@ -14,7 +14,7 @@ const Intro = (): ReactElement => {
         <IntroImage />
       </figure>
       <header className="flex flex-col gap-3">
-        <h1 className="md:text-4xl text-2xl md:leading-loose font-dm-sans">
+        <h1 className="md:text-4xl text-2xl leading-snug font-dm-sans">
           Sup! I&apos;m Elomar, and I love <br className=" md:block" />
           designing{" "}
           <span className="font-baskerville text-cool-red leading-3">

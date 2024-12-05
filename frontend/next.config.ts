@@ -1,5 +1,11 @@
 import type { NextConfig } from "next";
+import createNextIntlPlugin from "next-intl/plugin";
 import withSvgr from "next-svgr";
+
+const withNextIntl = createNextIntlPlugin(
+  // Point to the request.ts file instead of i18n.ts
+  "./src/i18n/request.ts",
+);
 
 const nextConfig: NextConfig = {
   images: {
@@ -12,4 +18,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default withSvgr(nextConfig);
+export default withSvgr(withNextIntl(nextConfig));
