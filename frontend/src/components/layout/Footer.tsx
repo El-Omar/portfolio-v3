@@ -15,11 +15,11 @@ const Footer = (): ReactElement => {
         <div className="sm:flex sm:items-center sm:justify-between">
           <Link
             href={PAGES.HOME}
-            className="flex items-center mb-4 sm:mb-0 space-x-3 rtl:space-x-reverse"
+            className="flex items-center justify-center sm:justify-start mb-4 sm:mb-0 space-x-3 rtl:space-x-reverse"
           >
             <BilingualLogo />
           </Link>
-          <ul className="flex gap-6 items-center text-sm text-neutral-600 sm:mb-0 dark:text-neutral-400">
+          <ul className="flex gap-6 items-center justify-center sm:justify-start text-sm ttext-neutral-600 dark:ttext-neutral-400">
             {pages.map(({ path, label }) => (
               <li key={path}>
                 <Link href={path} className="">
@@ -29,8 +29,8 @@ const Footer = (): ReactElement => {
             ))}
           </ul>
         </div>
-        <hr className="mb-6 border-gray-200 sm:mx-auto dark:border-gray-700" />
-        <span className="block text-sm text-gray-500 sm:text-center dark:text-gray-400">
+        {/* <hr className="mb-6 border-gray-200 sm:mx-auto dark:border-gray-700" /> */}
+        <span className="block text-sm text-gray-500 text-center my-4 dark:text-gray-400">
           {t("copyright", { year: new Date().getFullYear() })}{" "}
           <Acknowledgments />
         </span>

@@ -7,7 +7,7 @@ type Props = ComponentProps<"p"> & {
 
 const Paragraph = ({ className, ...props }: Props): ReactElement => {
   const mergedClassName = twMerge(
-    "lg:w-[470px] md:w-96 md:max-w-full max-w-96 w-full ml-1 text-sm md:text-base leading-relaxed",
+    "lg:w-[470px] text-slate-600 dark:text-slate-300 md:w-96 md:max-w-full max-w-96 w-full ml-1 text-sm md:text-base leading-relaxed",
     className,
   );
 

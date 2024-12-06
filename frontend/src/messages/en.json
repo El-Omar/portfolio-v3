@@ -9,5 +9,12 @@
     "copyright": "© { year } Elomar. All rights reserved.",
     "acknowledgments": "Attributions",
     "credits": "Icons by <lucideLink>Lucide</lucideLink> and illustrations by <illustrationLink>Storyset</illustrationLink>."
+  },
+  "contact": {
+    "dropMessage": "Drop a <accent>message</accent>",
+    "desciption": "Click the button below to open your default email app (like magic!). I'll admit, I skipped making a custom form with just one useful field. Instead, you can send me your favorite dad joke, or just drop by to say hi!",
+    "sendEmail": "Send an email",
+    "helloThere": "Hello there",
+    "dadJoke": "Why don't skeletons fight each other? Because they don't have the guts!"
   }
 }

@@ -38,12 +38,12 @@ const Sidebar = ({
         transition={{ ease: "circInOut", duration: 0.38 }}
       />
       <motion.div
-        className="z-50 fixed w-80 h-screen bg-white rtl:left-0 right-0 top-0"
+        className="z-50 fixed w-80 h-screen bg-white/85 dark:bg-neutral-700/85 rtl:left-0 right-0 top-0"
         initial={{ x: locale === "ar" ? "-100%" : "100%" }}
         animate={{ x: 0 }}
         transition={{ ease: "circInOut", duration: 0.38 }}
       >
-        <ul className="w-80 h-[calc(100vh_-_6rem)] flex flex-col gap-2 pt-20 px-4 dark:bg-neutral-700 fixed right-0 rtl:left-0 top-0">
+        <ul className="w-80 h-[calc(100vh_-_6rem)] flex flex-col gap-2 pt-20 px-4 fixed right-0 rtl:left-0 top-0">
           {pages.map(({ path, label, icon }) => (
             <li key={path}>
               <Link
@@ -62,7 +62,7 @@ const Sidebar = ({
             </li>
           ))}
         </ul>
-        <div className="fixed flex flex-col justify-end bottom-0 h-24 w-80 p-4 bg-white dark:bg-neutral-700">
+        <div className="fixed flex flex-col justify-end bottom-0 h-24 w-80 p-4">
           <aside className="flex justify-between items-end border-t border-gray-300 dark:border-gray-500 pt-5">
             <Button onClick={toggleTheme} variant="secondary" size="icon">
               {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}

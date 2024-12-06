@@ -1,18 +1,24 @@
 "use client";
 
 import { ReactElement, useEffect, useRef } from "react";
-import { Button } from "@/components/ui/Button";
 
 import InitGame from "./spaceInvaders";
 import SpaceInvadersStyles from "./SpaceInvadersStyles";
+import { Button } from "@/components/ui/Button";
+import { useIsMobile } from "@/lib/hooks/useIsMobile";
 
-const SpaceInvaders = (): ReactElement => {
+const SpaceInvaders = (): ReactElement | null => {
   const spaceInvadersDivs = Array(225).fill("block");
   const spaceInvadersRef = useRef<HTMLDivElement>(null);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     InitGame(spaceInvadersRef);
   }, [spaceInvadersRef]);
+
+  if (isMobile) {
+    return null;
+  }
 
   return (
     <>

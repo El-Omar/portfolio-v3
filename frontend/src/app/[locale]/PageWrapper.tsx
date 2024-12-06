@@ -27,13 +27,15 @@ const PageWrapper = ({ children }: Props): ReactElement => {
   }, [isAnimating, locale]);
 
   return (
-    <>
-      {isAnimating && <LanguageAnimation />}
-      <BlobShape />
-      <Navigation isAnimating={isAnimating} setIsAnimating={setIsAnimating} />
-      {children}
+    <div className="flex flex-col justify-between min-h-screen">
+      <div className="relative w-full flex flex-col items-center">
+        {isAnimating && <LanguageAnimation />}
+        <BlobShape />
+        <Navigation isAnimating={isAnimating} setIsAnimating={setIsAnimating} />
+        <div className="z-10 relative pt-24">{children}</div>
+      </div>
       <Footer />
-    </>
+    </div>
   );
 };
 

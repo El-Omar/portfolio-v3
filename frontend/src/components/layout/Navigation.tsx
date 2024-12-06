@@ -43,7 +43,7 @@ const Navigation = ({
           setIsAnimating={setIsAnimating}
         />
       )}
-      <nav className="z-50 border-22 sticky top-0 py-4 flex justify-between items-center">
+      <nav className="w-full z-[100] border-22 fixed top-0 py-4 flex justify-between items-center">
         <Link href="/">
           <motion.figure
             className="flex items-center"
