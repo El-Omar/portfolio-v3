@@ -3,7 +3,7 @@ import { ReactElement } from "react";
 
 const BilingualLogo = (): ReactElement => {
   return (
-    <figure className="flex items-center">
+    <figure className="flex items-center rtl:flex-row-reverse rtl:justify-end">
       <strong className="text-2xl font-rakkas mt-6 -mr-0.5">ـمر</strong>
       <Image
         src="/img/logo@2x.png"

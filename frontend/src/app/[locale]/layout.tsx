@@ -1,8 +1,8 @@
 import { notFound } from "next/navigation";
 import { NextIntlClientProvider } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
-import Footer from "@/components/layout/Footer";
-import Navigation from "@/components/layout/Navigation";
+
+import PageWrapper from "./PageWrapper";
 import { Locale, routing } from "@/i18n/routing";
 
 // Generate static params for all supported locales
@@ -31,15 +31,12 @@ export default async function LocaleLayout({
     notFound();
   }
 
-  // Determine text direction based on locale
   const isRTL = locale === "ar";
 
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
       <div dir={isRTL ? "rtl" : "ltr"}>
-        <Navigation />
-        {children}
-        <Footer />
+        <PageWrapper>{children}</PageWrapper>
       </div>
     </NextIntlClientProvider>
   );

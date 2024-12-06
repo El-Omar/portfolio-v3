@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import React from "react";
 import "./globals.css";
 import ThemeProvider from "@/components/providers/ThemeProvider";
-import BlobShape from "@/components/ui/BlobShape";
+
 import {
   fontDM_Sans,
   fontInter,
@@ -29,10 +29,7 @@ export default function RootLayout({
         dark:bg-neutral-700 text-gray-900 dark:text-gray-100 font-inter`}
         suppressHydrationWarning
       >
-        <ThemeProvider>
-          <BlobShape />
-          {children}
-        </ThemeProvider>
+        <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
   );

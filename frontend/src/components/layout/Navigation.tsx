@@ -2,42 +2,61 @@
 
 import { motion, MotionConfig } from "framer-motion";
 import Image from "next/image";
-import { ReactElement, ReactNode, useState } from "react";
+import {
+  Dispatch,
+  ReactElement,
+  ReactNode,
+  SetStateAction,
+  useState,
+} from "react";
 
 import Sidebar from "./Sidebar";
 import { Button } from "../ui/Button";
 import { Link } from "@/i18n/routing";
 
-const Animation = ({ children }: { children: ReactNode }) => (
+const AnimationConfig = ({ children }: { children: ReactNode }) => (
   <MotionConfig transition={{ ease: "circInOut", duration: 0.38 }}>
     {children}
   </MotionConfig>
 );
 
-const Navigation = (): ReactElement => {
+type NavigationProps = {
+  isAnimating: boolean;
+  setIsAnimating: Dispatch<SetStateAction<boolean>>;
+};
+
+const Navigation = ({
+  isAnimating,
+  setIsAnimating,
+}: NavigationProps): ReactElement => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const toggleSidebar = () => setIsOpen((toggle) => !toggle);
-
   const navToggleClassName = `bg-primary transition-all duration-150 ease-in-out`;
 
   return (
     <>
-      {isOpen && <Sidebar toggleSidebar={toggleSidebar} />}
+      {isOpen && (
+        <Sidebar
+          toggleSidebar={toggleSidebar}
+          isAnimating={isAnimating}
+          setIsAnimating={setIsAnimating}
+        />
+      )}
       <nav className="z-50 border-22 sticky top-0 py-4 flex justify-between items-center">
         <Link href="/">
           <motion.figure
             className="flex items-center"
             animate={{ x: isOpen ? 25 : 0 }}
           >
-            <Animation>
+            <AnimationConfig>
               <motion.strong
                 className="text-2xl font-rakkas mt-6 -mr-0.5"
                 animate={{ x: isOpen ? 0 : 10, opacity: isOpen ? 1 : 0 }}
               >
                 ـمر
               </motion.strong>
-            </Animation>
+            </AnimationConfig>
             <Image
               src="/img/logo@2x.png"
               alt="Logo"
@@ -45,14 +64,14 @@ const Navigation = (): ReactElement => {
               height={24.245}
               className="dark:invert"
             />
-            <Animation>
+            <AnimationConfig>
               <motion.span
                 className="text-2xl font-pacifico mt-0 -ml-0.5"
                 animate={{ x: isOpen ? 0 : -10, opacity: isOpen ? 1 : 0 }}
               >
                 omar
               </motion.span>
-            </Animation>
+            </AnimationConfig>
           </motion.figure>
         </Link>
         <Button

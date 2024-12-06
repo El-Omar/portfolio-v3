@@ -3,8 +3,10 @@
 import { motion } from "framer-motion";
 import { Moon, Sun } from "lucide-react";
 import { usePathname } from "next/navigation";
-import { ReactElement } from "react";
+import { useLocale } from "next-intl";
+import { Dispatch, ReactElement, SetStateAction } from "react";
 import { twMerge } from "tailwind-merge";
+import LanguageSwitcher from "./LanguageSwitcher";
 import { Button } from "../ui/Button";
 import { Link } from "@/i18n/routing";
 import { usePages } from "@/lib/hooks/usePages";
@@ -12,12 +14,19 @@ import { useThemeStore } from "@/stores/themeStore";
 
 type Props = {
   toggleSidebar: () => void;
+  isAnimating: boolean;
+  setIsAnimating: Dispatch<SetStateAction<boolean>>;
 };
 
-const Sidebar = ({ toggleSidebar }: Props): ReactElement => {
+const Sidebar = ({
+  toggleSidebar,
+  isAnimating,
+  setIsAnimating,
+}: Props): ReactElement => {
   const { isDarkMode, toggleTheme } = useThemeStore();
   const pathname = usePathname();
   const pages = usePages();
+  const locale = useLocale();
 
   return (
     <>
@@ -29,15 +38,16 @@ const Sidebar = ({ toggleSidebar }: Props): ReactElement => {
         transition={{ ease: "circInOut", duration: 0.38 }}
       />
       <motion.div
-        className="z-50 fixed w-80 h-screen bg-white right-0 top-0"
-        initial={{ x: "100%" }}
+        className="z-50 fixed w-80 h-screen bg-white rtl:left-0 right-0 top-0"
+        initial={{ x: locale === "ar" ? "-100%" : "100%" }}
         animate={{ x: 0 }}
         transition={{ ease: "circInOut", duration: 0.38 }}
       >
-        <ul className="w-80 h-[calc(100vh_-_6rem)] flex flex-col gap-2 pt-20 px-4 dark:bg-neutral-700 fixed right-0 top-0">
+        <ul className="w-80 h-[calc(100vh_-_6rem)] flex flex-col gap-2 pt-20 px-4 dark:bg-neutral-700 fixed right-0 rtl:left-0 top-0">
           {pages.map(({ path, label, icon }) => (
             <li key={path}>
               <Link
+                onClick={toggleSidebar}
                 href={path}
                 className={twMerge(
                   "flex w-full items-center gap-3 py-3 pl-4 transition-colors",
@@ -57,6 +67,10 @@ const Sidebar = ({ toggleSidebar }: Props): ReactElement => {
             <Button onClick={toggleTheme} variant="secondary" size="icon">
               {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
             </Button>
+            <LanguageSwitcher
+              isAnimating={isAnimating}
+              setIsAnimating={setIsAnimating}
+            />
           </aside>
         </div>
       </motion.div>
