@@ -1,16 +1,22 @@
 import Image from "next/image";
 import { ReactElement } from "react";
 
-const BilingualLogo = (): ReactElement => {
+type Props = {
+  invert?: boolean;
+};
+
+const BilingualLogo = ({ invert }: Props): ReactElement => {
   return (
-    <figure className="flex items-center rtl:flex-row-reverse rtl:justify-end">
+    <figure
+      className={`flex items-center rtl:flex-row-reverse rtl:justify-end ${invert ? "text-neutral-200" : "text-neutral-900"}`}
+    >
       <strong className="text-2xl font-rakkas mt-6 -mr-0.5">ـمر</strong>
       <Image
         src="/img/logo@2x.png"
         alt="Logo"
         width={24.75}
         height={24.245}
-        className="dark:invert"
+        className={`${invert ? "invert" : ""}`}
       />
       <span className="text-2xl font-pacifico mt-0 -ml-0.5">omar</span>
     </figure>

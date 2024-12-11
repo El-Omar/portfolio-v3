@@ -16,5 +16,32 @@
     "sendEmail": "Send an email",
     "helloThere": "Hello there",
     "dadJoke": "Why don't skeletons fight each other? Because they don't have the guts!"
+  },
+  "about": {
+    "intro": {
+      "title": "Behind the work: <br></br> My <accent>creative path</accent>",
+      "description": "Where pixels meet purpose: Crafting digital solutions through design, code, and creative problem-solving, driven by a photographer's eye and a developer's mind."
+    },
+    "photography": {
+      "title": "Started with <br></br> <accent>photography</accent>",
+      "description": "Photography is in my DNA, although a bit rusty. With both parents being photographers, I grew up immersed in their creativity. I mastered Photoshop early on, turning ordinary photos into my playgrounds: I would place people among the clouds, or transform their outfits into some crazy costumes. These early adventures in digital art sparked my journey into design."
+    },
+    "design": {
+      "title": "Explored <accent>design</accent>",
+      "description": "Design wasn't a sudden revelation but an organic progression. The challenge of solving user problems through design thinking quickly became addictive—from mapping user journeys to crafting intuitive workflows. Every project felt like a puzzle, where aesthetics seamlessly met functionality."
+    },
+    "development": {
+      "title": "Landed on <accent>development</accent>",
+      "description": "Majoring in MCT - Devine transformed my relationship with code. What started as a part of my coursework quickly evolved into an obsession. Starting with simple HTML and CSS tweaks, I soon found myself building 2D games, interactive interfaces, and full-fledged applications. <br></br><br></br> Unlike design's iterative process, coding offered immediate validation—it either worked or it didn't. The joy of bringing designs to life through code, along with endless learning opportunities, keeps me hooked to this day."
+    },
+    "resume": {
+      "title": "Detailed <accent>resume</accent>",
+      "description": "Download my resume for a detailed overview of my experience, skills, and education.",
+      "lastUpdate": "Last updated: December 2024",
+      "download": "Download resume"
+    },
+    "testimonials": {
+      "title": "People I've <accent>worked with</accent>"
+    }
   }
 }
