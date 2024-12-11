@@ -1,11 +1,15 @@
+import { useTranslations } from "next-intl";
 import { ReactElement } from "react";
 
 import IntroImage from "./IntroImage";
 import BilingualLogo from "../ui/BilingualLogo";
 import Paragraph from "../ui/Paragraph";
+import Title from "../ui/Title";
 import IconPen from "@/components/assets/pen.svg";
 
 const Intro = (): ReactElement => {
+  const t = useTranslations("home.intro");
+
   return (
     <article className="w-full flex flex-col lg:flex-row justify-center items-center gap-12 p-4 pb-6 lg:p-0 bg-gradient-to-b lg:bg-gradient-to-r from-transparent to-neutral-200 dark:to-neutral-900 from-50% min-h-full">
       <figure className="relative flex bg-white dark:bg-neutral-700 opacity-90 justify-center items-end xl:w-[460px] xl:h-[460px] w-[300px] h-[300px]  rounded-full">
@@ -14,22 +18,22 @@ const Intro = (): ReactElement => {
         <IntroImage />
       </figure>
       <header className="flex flex-col gap-3">
-        <h1 className="md:text-4xl text-2xl leading-snug font-dm-sans">
-          Sup! I&apos;m Elomar, and I love <br className=" md:block" />
-          designing{" "}
-          <span className="font-baskerville text-cool-red leading-3">
-            cool experiences
-          </span>
-          .
-        </h1>
-        <Paragraph className="ml-1">
-          I&apos;m a web developer and UI/UX designer who keeps things simple. I
-          also{" "}
-          <a className="underline underline-offset-2" href="/blog">
-            write
-          </a>
-          , snap some cool shots with my phone, and stay active with sports.
-          Stick around and check out my work!
+        <Title className="md:text-4xl text-2xl md:leading-normal leading-snug">
+          {t.rich("title", {
+            br: () => <br className="md:block" />,
+            accent: (chunk) => (
+              <span className="font-baskerville text-cool-red">{chunk}</span>
+            ),
+          })}
+        </Title>
+        <Paragraph>
+          {t.rich("description", {
+            blog: (chunk) => (
+              <a className="underline underline-offset-2" href="/blog">
+                {chunk}
+              </a>
+            ),
+          })}
         </Paragraph>
         <div className="flex items-center">
           <BilingualLogo />

@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import { ReactElement } from "react";
 
 import Paragraph from "../ui/Paragraph";
@@ -5,6 +6,8 @@ import Title from "../ui/Title";
 import LightbulbImage from "@/components/assets/lightbulb-space.svg";
 
 const Design = (): ReactElement => {
+  const t = useTranslations("home.expertise");
+
   return (
     <article className="flex bg-white dark:bg-neutral-700 flex-col justify-center gap-2 relative lg:flex-row items-center md:gap-4 shadow- rounded-3xl p-4 md:p-8">
       <div
@@ -23,12 +26,12 @@ const Design = (): ReactElement => {
         </defs>
       </svg>
       <div className="content z-10 pb-6 md:pb-20 pl-0 md:pl-5 md:mb-0 order-1 md:-order-1">
-        <Title>Design with intent</Title>
+        <Title>{t("designTitle")}</Title>
         <Paragraph className="rounded-md lg:mt-4 mt-2">
-          I design with <strong>purpose</strong> - solving problems and
-          simplifying experiences. By focusing on core user needs, I craft
-          solutions that are clear, effective, and leave a lasting impact.
-          <strong className="text-6xl md:text-8xl font-baskerville absolute -top-1 md:-top-4 -left-4 text-cool">
+          {t.rich("designDescription", {
+            strong: (chunk) => <strong>{chunk}</strong>,
+          })}
+          <strong className="text-primary text-6xl md:text-8xl font-baskerville absolute -top-1 md:-top-4 -left-4">
             &#8220;
           </strong>
         </Paragraph>

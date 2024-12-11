@@ -10,6 +10,37 @@
     "acknowledgments": "Attributions",
     "credits": "Icons by <lucideLink>Lucide</lucideLink> and illustrations by <illustrationLink>Storyset</illustrationLink>."
   },
+  "home": {
+    "intro": {
+      "title": "Sup! I'm Elomar, and I love <br></br> designing <accent>cool experiences</accent>.",
+      "description": "I'm a web developer and UI/UX designer who keeps things simple. I also <blog>write</blog>, snap some cool shots with my phone, and stay active with sports. Stick around and check out my work!"
+    },
+    "expertise": {
+      "title": "Expertise <accent>& experience</accent>",
+      "designTitle": "Design with intent",
+      "designDescription": "I design with <strong>purpose</strong>—solving problems and simplifying experiences. By focusing on core user needs, I craft solutions that are clear, effective, and leave a lasting impact.",
+      "developTitle": "Develop with precision",
+      "developDescription": "Balancing <strong>quality</strong> and <strong>time efficiency</strong> isn't easy, but finding the optimal solution is where I excel. I bring a methodical approach to every project, ensuring both excellence and timely delivery. (And no, my workspace doesn't actually look like this)",
+      "readMore": "Read more about me"
+    },
+    "work": {
+      "title":"Here's some <accent>work</accent>"
+    },
+    "blog": {
+      "title": "Blog articles",
+      "readMore": "Read more, it's interesting"
+    },
+    "contact": {
+      "title": "That's all <space></space><accent>folks!</accent>",
+      "description": "You've reached the bottom, thank you for visiting! For any inquiries, feel free to click the button down below. Or you can play Space Invaders.",
+      "getInTouch": "Get in touch"
+    },
+    "spaceInvaders": {
+      "play": "Play",
+      "highScore": "High score",
+      "instructions": "[Space-bar] to shoot, [←] and [→] to move"
+    }
+  },
   "contact": {
     "dropMessage": "Drop a <accent>message</accent>",
     "desciption": "Click the button below to open your default email app (like magic!). I'll admit, I skipped making a custom form with just one useful field. Instead, you can send me your favorite dad joke, or just drop by to say hi!",
