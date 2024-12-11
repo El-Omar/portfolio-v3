@@ -3,6 +3,7 @@ import { useTranslations } from "next-intl";
 import { ReactElement } from "react";
 import Paragraph from "../ui/Paragraph";
 import Title from "../ui/Title";
+import TitleAccent from "../ui/TitleAccent";
 
 const Design = (): ReactElement => {
   const t = useTranslations("about.design");
@@ -16,9 +17,7 @@ const Design = (): ReactElement => {
         <div>
           <Title className="md:leading-tight">
             {t.rich("title", {
-              accent: (chunk) => (
-                <span className="font-baskerville text-cool-red">{chunk}</span>
-              ),
+              accent: (chunk) => <TitleAccent>{chunk}</TitleAccent>,
             })}
           </Title>
           <Paragraph className="md:text-lg mt-6 md:leading-relaxed">

@@ -2,6 +2,7 @@ import { useTranslations } from "next-intl";
 import { ReactElement } from "react";
 import Paragraph from "../ui/Paragraph";
 import Title from "../ui/Title";
+import TitleAccent from "../ui/TitleAccent";
 
 const Testimonials = (): ReactElement => {
   const t = useTranslations("about.testimonials");
@@ -10,9 +11,7 @@ const Testimonials = (): ReactElement => {
     <section className="w-full py-14 lg:py-20 relative">
       <Title className="md:leading-tight text-center mb-12">
         {t.rich("title", {
-          accent: (chunk) => (
-            <span className="font-baskerville text-cool-red">{chunk}</span>
-          ),
+          accent: (chunk) => <TitleAccent>{chunk}</TitleAccent>,
         })}
       </Title>
 

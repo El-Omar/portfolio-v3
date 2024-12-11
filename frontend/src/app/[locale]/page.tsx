@@ -1,15 +1,15 @@
-import { Image as ImageIcon } from "lucide-react";
+import { BookOpen } from "lucide-react";
 import { useTranslations } from "next-intl";
 import BlogCard from "@/components/blog/BlogCard";
 import Design from "@/components/home/Design";
 import Develop from "@/components/home/Develop";
 import Intro from "@/components/home/Intro";
 import Projects from "@/components/home/Projects";
-import SpaceInvaders from "@/components/home/SpaceInvaders";
 import { Button } from "@/components/ui/Button";
-import Paragraph from "@/components/ui/Paragraph";
 import Title from "@/components/ui/Title";
+import TitleAccent from "@/components/ui/TitleAccent";
 import { Link } from "@/i18n/routing";
+import ContactWithSpaceInvaders from "@/components/home/GetInTouch";
 
 const Home = () => {
   const t = useTranslations("home");
@@ -23,9 +23,7 @@ const Home = () => {
         <Title className="text-center">
           {t.rich("expertise.title", {
             br: () => <br className="md:block" />,
-            accent: (chunk) => (
-              <span className="font-baskerville text-cool-red">{chunk}</span>
-            ),
+            accent: (chunk) => <TitleAccent>{chunk}</TitleAccent>,
           })}
         </Title>
         <section className="flex flex-col gap-12 mt-6">
@@ -33,7 +31,7 @@ const Home = () => {
           <Develop />
           <Button className="self-center" variant="default" asChild>
             <Link href="/about">
-              {t("expertise.readMore")} <ImageIcon />
+              {t("expertise.readMore")} <BookOpen />
             </Link>
           </Button>
         </section>
@@ -42,9 +40,7 @@ const Home = () => {
         <header>
           <Title>
             {t.rich("work.title", {
-              accent: (chunk) => (
-                <span className="font-baskerville text-cool-red">{chunk}</span>
-              ),
+              accent: (chunk) => <TitleAccent>{chunk}</TitleAccent>,
             })}
           </Title>
         </header>
@@ -66,25 +62,7 @@ const Home = () => {
           {t("blog.readMore")}
         </Button>
       </article>
-      <article className="flex flex-col gap-4 items-center w-full md:px-12 md:py-20 xl:p-20 px-4 py-10">
-        <header>
-          <Title className="text-center">
-            {t.rich("contact.title", {
-              space: () => <>&nbsp;</>,
-              accent: (chunk) => (
-                <span className="font-baskerville text-cool-red">{chunk}</span>
-              ),
-            })}
-          </Title>
-        </header>
-        <Paragraph className="text-center">
-          {t("contact.description")}
-        </Paragraph>
-        <Button className="mt-4">{t("contact.getInTouch")}</Button>
-        <div className="mt-8">
-          <SpaceInvaders />
-        </div>
-      </article>
+      <ContactWithSpaceInvaders />
     </main>
   );
 };

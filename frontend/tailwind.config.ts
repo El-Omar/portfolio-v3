@@ -15,6 +15,7 @@ const config: Config = {
         inter: ["var(--font-inter)", "serif"],
         pacifico: ["var(--font-pacifico)", "serif"],
         rakkas: ["var(--font-rakkas)", "serif"],
+        amiri: ["var(--font-amiri)", "serif"],
       },
       colors: {
         ["cool-red"]: "#f0574a",

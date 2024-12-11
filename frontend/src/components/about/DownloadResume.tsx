@@ -1,8 +1,9 @@
 import { Download } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { ReactElement } from "react";
 import Paragraph from "../ui/Paragraph";
 import Title from "../ui/Title";
-import { useTranslations } from "next-intl";
+import TitleAccent from "../ui/TitleAccent";
 
 const DownloadResume = (): ReactElement => {
   const t = useTranslations("about.resume");
@@ -13,9 +14,7 @@ const DownloadResume = (): ReactElement => {
         <div className="text-center lg:text-left">
           <Title className="md:leading-tight">
             {t.rich("title", {
-              accent: (chunk) => (
-                <span className="font-baskerville text-cool-red">{chunk}</span>
-              ),
+              accent: (chunk) => <TitleAccent>{chunk}</TitleAccent>,
             })}
           </Title>
           <Paragraph className="ml-0 lg:ml-1 md:text-lg mt-4">

@@ -4,13 +4,13 @@ import { ReactElement } from "react";
 import { Button } from "@/components/ui/Button";
 import Paragraph from "@/components/ui/Paragraph";
 import Title from "@/components/ui/Title";
+import TitleAccent from "@/components/ui/TitleAccent";
 
 const Contact = (): ReactElement => {
   const t = useTranslations("contact");
   const email = "elomar.sami@gmail.com";
-  const subject = "Hello there";
-  const body =
-    "Why don't skeletons fight each other? Because they don't have the guts!";
+  const subject = t("helloThere");
+  const body = t("dadJoke");
 
   const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 
@@ -20,9 +20,7 @@ const Contact = (): ReactElement => {
         <header>
           <Title className="mb-4">
             {t.rich("dropMessage", {
-              accent: (chunk) => (
-                <span className="font-baskerville text-cool-red">{chunk}</span>
-              ),
+              accent: (chunk) => <TitleAccent>{chunk}</TitleAccent>,
             })}
           </Title>
         </header>

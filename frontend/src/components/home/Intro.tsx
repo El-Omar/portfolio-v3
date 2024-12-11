@@ -5,6 +5,7 @@ import IntroImage from "./IntroImage";
 import BilingualLogo from "../ui/BilingualLogo";
 import Paragraph from "../ui/Paragraph";
 import Title from "../ui/Title";
+import TitleAccent from "../ui/TitleAccent";
 import IconPen from "@/components/assets/pen.svg";
 
 const Intro = (): ReactElement => {
@@ -21,9 +22,7 @@ const Intro = (): ReactElement => {
         <Title className="md:text-4xl text-2xl md:leading-normal leading-snug">
           {t.rich("title", {
             br: () => <br className="md:block" />,
-            accent: (chunk) => (
-              <span className="font-baskerville text-cool-red">{chunk}</span>
-            ),
+            accent: (chunk) => <TitleAccent>{chunk}</TitleAccent>,
           })}
         </Title>
         <Paragraph>

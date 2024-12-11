@@ -1,4 +1,5 @@
 import {
+  Amiri,
   DM_Sans,
   Inter,
   Libre_Baskerville,
@@ -29,6 +30,12 @@ export const fontRakkas = Rakkas({
   subsets: ["arabic", "latin"],
   variable: "--font-rakkas",
   weight: "400",
+});
+
+export const fontAmiri = Amiri({
+  subsets: ["arabic", "latin"],
+  variable: "--font-amiri",
+  weight: "700",
 });
 
 export const fontPacifico = Pacifico({
