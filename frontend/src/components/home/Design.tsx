@@ -3,7 +3,7 @@ import { ReactElement } from "react";
 
 import Paragraph from "../ui/Paragraph";
 import Title from "../ui/Title";
-import LightbulbImage from "@/components/assets/lightbulb-space.svg";
+import DesignImage from "@/components/assets/design.svg";
 
 const Design = (): ReactElement => {
   const t = useTranslations("home.expertise");
@@ -11,7 +11,7 @@ const Design = (): ReactElement => {
   return (
     <article className="flex bg-white dark:bg-neutral-700 flex-col justify-center gap-2 relative lg:flex-row items-center md:gap-4 shadow- rounded-3xl p-4 md:p-8">
       <div
-        className="absolute bottom-0 w-full h-2/6 bg-gradient-to-tr from-cool-red rounded-3xl"
+        className="absolute bottom-0 w-full h-2/6 bg-gradient-to-r from-cool-red/80 to-white rounded-3xl"
         style={{ clipPath: "url('#wave')" }}
       ></div>
       <svg viewBox="0 0 1440 328" width="0" className="">
@@ -36,7 +36,7 @@ const Design = (): ReactElement => {
           </strong>
         </Paragraph>
       </div>
-      <LightbulbImage className="relative z-10 max-w-full w-96 md:w-auto md:max-w-[700px]" />
+      <DesignImage className="relative z-10 max-w-full w-96 md:w-auto md:max-w-[700px]" />
     </article>
   );
 };

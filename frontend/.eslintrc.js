@@ -11,7 +11,7 @@ module.exports = {
   ignorePatterns: ["node_modules", ".next", "dist"],
   plugins: ["@stylistic/js"],
   rules: {
-    "@stylistic/js/indent": ["error", 2],
+    // "@stylistic/js/indent": ["error", 2],
     "@typescript-eslint/consistent-type-definitions": ["error", "type"],
     "sort-imports": [
       "error",
