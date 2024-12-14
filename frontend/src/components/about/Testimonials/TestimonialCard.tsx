@@ -1,14 +1,9 @@
 import Image from "next/image";
 import { ReactElement } from "react";
 import Paragraph from "@/components/ui/Paragraph";
+import { TestimonialType } from "@/types/Testimonial";
 
-type Props = {
-  review: string;
-  author: string;
-  role: string;
-  image: string;
-  gradient?: "green" | "red";
-};
+type Props = TestimonialType;
 
 const TestimonialCard = ({
   review,

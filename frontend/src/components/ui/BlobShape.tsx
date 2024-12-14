@@ -22,7 +22,7 @@ const BlobShape = () => {
                 />
                 <stop
                   offset="100%"
-                  style={{ stopColor: "#6c92ff", stopOpacity: 0.7 }}
+                  style={{ stopColor: "#f3844d", stopOpacity: 0.7 }}
                 />
               </linearGradient>
             </defs>
