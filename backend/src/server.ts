@@ -1,8 +1,9 @@
 import express from "express";
-import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
 import projectRoutes from "./routes/project.routes";
+import { connectDatabase } from './config/database';
+import { env } from "./config/env";
 
 dotenv.config();
 
@@ -15,12 +16,9 @@ app.use(express.json());
 // Routes definitions
 app.use("/api/projects", projectRoutes);
 
-// DB connection
-mongoose.connect(process.env.MONGODB_URI!)
-  .then(() => console.log("Connected to MongoDB"))
-  .catch((err) => console.log("Failed to connect to MongoDB: ", err));
+// Connect to database
+connectDatabase();
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log("Server is running on PORT ", PORT);
+app.listen(env.PORT, () => {
+  console.log('Server is running on PORT ', env.PORT);
 });

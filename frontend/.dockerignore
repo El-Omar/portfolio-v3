@@ -1,9 +1,13 @@
 # Dependencies
 node_modules
 
-# Build outputs
-dist
+# Next.js
+.next
+out
+
+# Production
 build
+dist
 
 # Environment files
 .env*
@@ -19,6 +23,7 @@ yarn-error.log*
 
 # System Files
 .DS_Store
+*.pem
 
 # IDE/Editor
 .vscode
@@ -33,14 +38,6 @@ CHANGELOG.md
 docker-compose*.yml
 Dockerfile*
 
-# Logs
-logs
+# Misc
 *.log
-
-# Temporary files
-tmp
-temp
-.tmp
-
-# TypeScript cache
-*.tsbuildinfo
+.cache

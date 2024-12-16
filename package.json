@@ -1,0 +1,15 @@
+{
+  "name": "portfolio-v3",
+  "private": true,
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:El-Omar/portfolio-v3.git",
+  "author": "El-Omar <elomar.sami@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "docker:up": "cd infrastructure/docker && docker-compose up -d",
+    "docker:down": "cd infrastructure/docker && docker-compose down",
+    "docker:logs": "cd infrastructure/docker && docker-compose logs -f",
+    "docker:rebuild": "cd infrastructure/docker && docker-compose up -d --build"
+  }
+}
