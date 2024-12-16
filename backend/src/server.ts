@@ -14,7 +14,7 @@ app.use(cors());
 app.use(express.json());
 
 // Routes definitions
-app.use("/api/projects", projectRoutes);
+app.use(`${env.API_PREFIX}/projects`, projectRoutes);
 
 // Connect to database
 connectDatabase();

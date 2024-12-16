@@ -1,18 +1,7 @@
 import mongoose, { Schema, Document } from "mongoose";
+import { BaseProject } from "../types/project.types";
 
-export interface IProject extends Document {
-  slug: string;
-  title: string;
-  description: string;
-  technologies: string[];
-  featured: boolean;
-  startDate: Date;
-  imageUrl?: string;
-  githubUrl?: string;
-  liveUrl?: string;
-  endDate?: Date;
-  order?: number;
-}
+export interface IProject extends BaseProject, Document {}
 
 const ProjectSchema: Schema = new Schema(
   {
@@ -28,11 +17,11 @@ const ProjectSchema: Schema = new Schema(
     slug: { type: String, required: true, unique: true },
     order: { type: Number },
   },
-  { timestamps: true }
+  { timestamps: true, versionKey: false }
 );
 
 // For the slug thingy
-ProjectSchema.pre<IProject>("save", function(next) {
+ProjectSchema.pre<IProject>("save", function (next) {
   if (this.isModified("title")) {
     this.slug = this.title
       .toLowerCase()
