@@ -11,7 +11,6 @@ export const createProjectSchema = z.object({
   featured: z.boolean().default(false),
   startDate: z.string().datetime(),
   endDate: z.string().datetime().optional(),
-  // Slug optional -> being created in a pre fn
   slug: z.string().optional(),
   order: z.number().optional(),
 });

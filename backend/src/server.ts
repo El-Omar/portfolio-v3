@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import projectRoutes from "./routes/project.routes";
 import { connectDatabase } from './config/database';
 import { env } from "./config/env";
+import { errorHandler } from "./middleware/error.middleware";
 
 dotenv.config();
 
@@ -15,6 +16,9 @@ app.use(express.json());
 
 // Routes definitions
 app.use(`${env.API_PREFIX}/projects`, projectRoutes);
+
+// Error middleware
+app.use(errorHandler);
 
 // Connect to database
 connectDatabase();

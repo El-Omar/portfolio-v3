@@ -4,13 +4,13 @@ import {
   createPaginationResponse,
   getPaginationParams,
 } from "../util/pagination";
-import { mongodb_duplicateKeyError } from "../util/mongodbErrors";
 import {
   CreateProjectInput,
   ProjectDocument,
   UpdateProjectInput,
 } from "../schemas/project.schema";
 import { generateEtag, validateEtag } from "../util/etag";
+import { BadRequestError, NotFoundError } from "../util/errors";
 
 type GetProjectsQuery = {
   page?: number;
@@ -21,7 +21,8 @@ type GetProjectsQuery = {
 // GET PROJECTS /projects
 export const getProjects: RequestHandler<{}, {}, {}, GetProjectsQuery> = async (
   req,
-  res
+  res,
+  next
 ) => {
   try {
     const { featured } = req.query;
@@ -47,46 +48,39 @@ export const getProjects: RequestHandler<{}, {}, {}, GetProjectsQuery> = async (
 
     return;
   } catch (error) {
-    res.status(500).json({ message: "Error fetching projects", error });
+    next(error);
   }
 };
 
 // GET BY SLUG /projects/:slug
 export const getProjectBySlug: RequestHandler<{ slug: string }> = async (
   req,
-  res
+  res,
+  next
 ) => {
   try {
     const project = await Project.findOne({ slug: req.params.slug });
     if (!project) {
-      res.status(404).json({ message: "Project not found" });
-      return;
+      throw new NotFoundError("Project not found");
     }
     res.json(project);
   } catch (error) {
-    res.status(500).json({ message: "Error fetching project", error });
+    next(error);
   }
 };
 
 // POST /projects
 export const createProject: RequestHandler<{}, {}, CreateProjectInput> = async (
   req,
-  res
+  res,
+  next
 ) => {
   try {
     const newProject = new Project(req.body);
     await newProject.save();
-
     res.status(201).json(newProject);
   } catch (error) {
-    if (mongodb_duplicateKeyError(error)) {
-      res
-        .status(400)
-        .json({ message: "Project with this slug already exists" });
-      return;
-    }
-
-    res.status(500).json({ message: "Error creating project", error });
+    next(error);
   }
 };
 
@@ -95,12 +89,11 @@ export const updateProject: RequestHandler<
   { slug: string },
   ProjectDocument | Record<string, unknown> | null,
   UpdateProjectInput
-> = async (req, res) => {
+> = async (req, res, next) => {
   try {
     const currentProject = await Project.findOne({ slug: req.params.slug });
     if (!currentProject) {
-      res.status(404).json({ message: "Project not found" });
-      return;
+      throw new NotFoundError("Project not found");
     }
 
     const currentEtag = generateEtag(currentProject);
@@ -111,8 +104,7 @@ export const updateProject: RequestHandler<
     );
 
     if (!isValid) {
-      res.status(statusCode).json({ message });
-      return;
+      throw new BadRequestError(message, statusCode);
     }
 
     const updatedProject = await currentProject
@@ -124,27 +116,20 @@ export const updateProject: RequestHandler<
 
     res.json(updatedProject);
   } catch (error) {
-    if (mongodb_duplicateKeyError(error)) {
-      res
-        .status(400)
-        .json({ message: "Project with this slug already exists" });
-      return;
-    }
-
-    res.status(500).json({ message: "Error updating project", error });
+    next(error)
   }
 };
 
 // DELETE /projects/:slug
 export const deleteProject: RequestHandler<{ slug: string }> = async (
   req,
-  res
+  res,
+  next
 ) => {
   try {
     const currentProject = await Project.findOne({ slug: req.params.slug });
     if (!currentProject) {
-      res.status(404).json({ message: "Project not found" });
-      return;
+      throw new NotFoundError("Project not found");
     }
 
     const currentEtag = generateEtag(currentProject);
@@ -155,14 +140,12 @@ export const deleteProject: RequestHandler<{ slug: string }> = async (
     );
 
     if (!isValid) {
-      res.status(statusCode).json({ message });
-      return;
+      throw new BadRequestError(message, statusCode);
     }
 
     await Project.deleteOne({ slug: req.params.slug });
-
     res.status(204).send();
   } catch (error) {
-    res.status(500).json({ message: "Error deleting project", error });
+    next(error);
   }
 };
