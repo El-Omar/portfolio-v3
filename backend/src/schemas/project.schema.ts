@@ -1,7 +1,7 @@
 import { Document } from "mongoose";
 import { z } from "zod";
 
-export const createProjectSchema = z.object({
+export const projectSchema = z.object({
   title: z.string().min(1),
   description: z.string().min(1),
   technologies: z.array(z.string()).min(1),
@@ -15,8 +15,22 @@ export const createProjectSchema = z.object({
   order: z.number().optional(),
 });
 
-export const updateProjectSchema = createProjectSchema.partial();
+export const createProjectSchema = z.object({
+  body: projectSchema,
+  query: z.object({}).optional(),
+  params: z.object({}).optional(),
+});
 
-export type CreateProjectInput = z.infer<typeof createProjectSchema>;
-export type UpdateProjectInput = z.infer<typeof updateProjectSchema>;
+const projectPartialSchema = projectSchema.partial();
+
+export const updateProjectSchema = z.object({
+  body: projectPartialSchema,
+  query: z.object({}).optional(),
+  params: z.object({
+    slug: z.string(),
+  }),
+});
+
+export type CreateProjectInput = z.infer<typeof projectSchema>;
+export type UpdateProjectInput = z.infer<typeof projectPartialSchema>;
 export type ProjectDocument = CreateProjectInput & Document;
