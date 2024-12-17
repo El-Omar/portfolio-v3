@@ -1,5 +1,6 @@
 import mongoose, { Schema, Document } from "mongoose";
 import { ProjectDocument } from "../schemas/project.schema";
+import { slugify } from "../util/slug";
 
 const ProjectSchema: Schema = new Schema<ProjectDocument>(
   {
@@ -18,16 +19,38 @@ const ProjectSchema: Schema = new Schema<ProjectDocument>(
   { timestamps: true, versionKey: false }
 );
 
-// For the slug thingy
 ProjectSchema.pre<ProjectDocument>("save", function (next) {
-  console.log("Pre save fn, is title modified?", this.isModified("title"));
   if (this.isModified("title")) {
-    this.slug = this.title
-      .toLowerCase()
-      .replace(/[^\w\s-]/g, "")
-      .replace(/\s+/g, "-");
+    this.slug = slugify(this.title);
   }
   next();
 });
 
-export const Project = mongoose.model<ProjectDocument>("Project", ProjectSchema);
+type SlugTitle = {
+  title?: string;
+  slug?: string;
+};
+
+ProjectSchema.pre("findOneAndUpdate", function (next) {
+  const update = this.getUpdate() as SlugTitle & {
+    $set?: SlugTitle;
+  };
+
+  // Both direct updates and $set updates
+  const title = update.$set?.title || update.title;
+
+  if (title) {
+    if (update.$set) {
+      update.$set.slug = slugify(title);
+    } else {
+      update.slug = slugify(title);
+    }
+  }
+
+  next();
+});
+
+export const Project = mongoose.model<ProjectDocument>(
+  "Project",
+  ProjectSchema
+);
