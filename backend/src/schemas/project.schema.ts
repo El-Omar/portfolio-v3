@@ -1,3 +1,4 @@
+import { Document } from "mongoose";
 import { z } from "zod";
 
 export const createProjectSchema = z.object({
@@ -8,8 +9,8 @@ export const createProjectSchema = z.object({
   githubUrl: z.string().url().optional(),
   liveUrl: z.string().url().optional(),
   featured: z.boolean().default(false),
-  startDate: z.date(),
-  endDate: z.date().optional(),
+  startDate: z.string().datetime(),
+  endDate: z.string().datetime().optional(),
   // Slug optional -> being created in a pre fn
   slug: z.string().optional(),
   order: z.number().optional(),
@@ -19,3 +20,4 @@ export const updateProjectSchema = createProjectSchema.partial();
 
 export type CreateProjectInput = z.infer<typeof createProjectSchema>;
 export type UpdateProjectInput = z.infer<typeof updateProjectSchema>;
+export type ProjectDocument = CreateProjectInput & Document;

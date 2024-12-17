@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import crypto from 'crypto';
+import { generateEtag } from '../util/etag';
 
 export const etagMiddleware = (
   req: Request,
@@ -9,18 +9,16 @@ export const etagMiddleware = (
   const originalJson = res.json;
 
   res.json = function (body: any) {
-    const etag = crypto
-      .createHash('md5')
-      .update(JSON.stringify(body))
-      .digest('hex');
+    const etag = generateEtag(body);
+    res.setHeader('ETag', etag);
 
-    const stringifiedEtag = `"${etag}"`;
+    // For GET requests - caching
+    if (req.method === 'GET') {
+      const clientEtag = req.header('If-None-Match');
 
-    res.setHeader('ETag', stringifiedEtag);
-
-    const clientEtag = req.header('If-None-Match');
-    if (clientEtag === stringifiedEtag) {
-      return res.status(304).end();
+      if (clientEtag === etag) {
+        return res.status(304).end();
+      }
     }
 
     return originalJson.call(this, body);

@@ -1,22 +1,27 @@
-import { Request, Response } from 'express';
-import { Project } from '../models/project.model';
+import { RequestHandler } from "express";
+import { Project } from "../models/project.model";
 import {
   createPaginationResponse,
   getPaginationParams,
-} from '../util/pagination';
-import { mongodb_duplicateKeyError } from '../util/mongodbErrors';
-import { CreateProjectInput, UpdateProjectInput } from '../schemas/project.schema';
+} from "../util/pagination";
+import { mongodb_duplicateKeyError } from "../util/mongodbErrors";
+import {
+  CreateProjectInput,
+  ProjectDocument,
+  UpdateProjectInput,
+} from "../schemas/project.schema";
+import { generateEtag, validateEtag } from "../util/etag";
 
-interface GetProjectsQuery {
+type GetProjectsQuery = {
   page?: number;
   featured?: boolean;
   limit?: number;
-}
+};
 
 // GET PROJECTS /projects
-export const getProjects = async (
-  req: Request<{}, any, any, GetProjectsQuery>,
-  res: Response
+export const getProjects: RequestHandler<{}, {}, {}, GetProjectsQuery> = async (
+  req,
+  res
 ) => {
   try {
     const { featured } = req.query;
@@ -39,28 +44,34 @@ export const getProjects = async (
       data: projects,
       pagination: createPaginationResponse(total, pagination),
     });
+
+    return;
   } catch (error) {
-    res.status(500).json({ message: 'Error fetching projects' });
+    res.status(500).json({ message: "Error fetching projects", error });
   }
 };
 
 // GET BY SLUG /projects/:slug
-export const getProjectBySlug = async (req: Request, res: Response) => {
+export const getProjectBySlug: RequestHandler<{ slug: string }> = async (
+  req,
+  res
+) => {
   try {
     const project = await Project.findOne({ slug: req.params.slug });
     if (!project) {
-      res.status(404).json({ message: 'Project not found' });
+      res.status(404).json({ message: "Project not found" });
+      return;
     }
     res.json(project);
   } catch (error) {
-    res.status(500).json({ message: 'Error fetching project' });
+    res.status(500).json({ message: "Error fetching project", error });
   }
 };
 
 // POST /projects
-export const createProject = async (
-  req: Request<{}, any, CreateProjectInput>,
-  res: Response
+export const createProject: RequestHandler<{}, {}, CreateProjectInput> = async (
+  req,
+  res
 ) => {
   try {
     const newProject = new Project(req.body);
@@ -71,22 +82,37 @@ export const createProject = async (
     if (mongodb_duplicateKeyError(error)) {
       res
         .status(400)
-        .json({ message: 'Project with this slug already exists' });
+        .json({ message: "Project with this slug already exists" });
+      return;
     }
 
-    res.status(500).json({ message: 'Error creating project' });
+    res.status(500).json({ message: "Error creating project", error });
   }
 };
 
 // PATCH /projects/:slug
-export const updateProject = async (
-  req: Request<{ slug: string }, any, UpdateProjectInput>,
-  res: Response
-) => {
+export const updateProject: RequestHandler<
+  { slug: string },
+  ProjectDocument | Record<string, unknown> | null,
+  UpdateProjectInput
+> = async (req, res) => {
   try {
     const currentProject = await Project.findOne({ slug: req.params.slug });
     if (!currentProject) {
-      res.status(404).json({ message: 'Project not found' });
+      res.status(404).json({ message: "Project not found" });
+      return;
+    }
+
+    const currentEtag = generateEtag(currentProject);
+    const clientEtag = req.header("If-Match");
+    const { isValid, statusCode, message } = validateEtag(
+      currentEtag,
+      clientEtag
+    );
+
+    if (!isValid) {
+      res.status(statusCode).json({ message });
+      return;
     }
 
     // Only update fields that were sent
@@ -101,24 +127,29 @@ export const updateProject = async (
     if (mongodb_duplicateKeyError(error)) {
       res
         .status(400)
-        .json({ message: 'Project with this slug already exists' });
+        .json({ message: "Project with this slug already exists" });
+      return;
     }
 
-    res.status(500).json({ message: 'Error updating project' });
+    res.status(500).json({ message: "Error updating project", error });
   }
 };
 
 // DELETE /projects/:slug
-export const deleteProject = async (req: Request, res: Response) => {
+export const deleteProject: RequestHandler<{ slug: string }> = async (
+  req,
+  res
+) => {
   try {
     const project = await Project.findOneAndDelete({ slug: req.params.slug });
 
     if (!project) {
-      res.status(404).json({ message: 'Project not found' });
+      res.status(404).json({ message: "Project not found" });
+      return;
     }
 
-    res.json({ message: 'Project deleted successfully' });
+    res.json({ message: "Project deleted successfully" });
   } catch (error) {
-    res.status(500).json({ message: 'Error deleting project' });
+    res.status(500).json({ message: "Error deleting project", error });
   }
 };

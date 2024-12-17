@@ -1,10 +1,9 @@
 import mongoose, { Schema, Document } from "mongoose";
-import { BaseProject } from "../types/project.types";
+import { ProjectDocument } from "../schemas/project.schema";
 
-export interface IProject extends BaseProject, Document {}
-
-const ProjectSchema: Schema = new Schema(
+const ProjectSchema: Schema = new Schema<ProjectDocument>(
   {
+    slug: { type: String, unique: true },
     title: { type: String, required: true },
     description: { type: String, required: true },
     technologies: { type: [String], required: true },
@@ -12,16 +11,16 @@ const ProjectSchema: Schema = new Schema(
     githubUrl: { type: String },
     liveUrl: { type: String },
     featured: { type: Boolean, default: false },
-    startDate: { type: Date, required: true },
-    endDate: { type: Date },
-    slug: { type: String, required: true, unique: true },
+    startDate: { type: String, required: true },
+    endDate: { type: String },
     order: { type: Number },
   },
   { timestamps: true, versionKey: false }
 );
 
 // For the slug thingy
-ProjectSchema.pre<IProject>("save", function (next) {
+ProjectSchema.pre<ProjectDocument>("save", function (next) {
+  console.log("Pre save fn, is title modified?", this.isModified("title"));
   if (this.isModified("title")) {
     this.slug = this.title
       .toLowerCase()
@@ -31,4 +30,4 @@ ProjectSchema.pre<IProject>("save", function (next) {
   next();
 });
 
-export const Project = mongoose.model<IProject>("Project", ProjectSchema);
+export const Project = mongoose.model<ProjectDocument>("Project", ProjectSchema);
