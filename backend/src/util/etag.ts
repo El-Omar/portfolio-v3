@@ -20,7 +20,7 @@ export const validateEtag = (
   etag: string,
   clientEtag: string | undefined
 ): ValidateEtagResult => {
-  if (clientEtag && clientEtag !== etag) {
+  if (clientEtag !== etag) {
     return {
       isValid: false,
       statusCode: 412,

@@ -26,30 +26,6 @@ ProjectSchema.pre<ProjectDocument>("save", function (next) {
   next();
 });
 
-type SlugTitle = {
-  title?: string;
-  slug?: string;
-};
-
-ProjectSchema.pre("findOneAndUpdate", function (next) {
-  const update = this.getUpdate() as SlugTitle & {
-    $set?: SlugTitle;
-  };
-
-  // Both direct updates and $set updates
-  const title = update.$set?.title || update.title;
-
-  if (title) {
-    if (update.$set) {
-      update.$set.slug = slugify(title);
-    } else {
-      update.slug = slugify(title);
-    }
-  }
-
-  next();
-});
-
 export const Project = mongoose.model<ProjectDocument>(
   "Project",
   ProjectSchema

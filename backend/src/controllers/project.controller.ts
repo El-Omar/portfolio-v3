@@ -115,12 +115,12 @@ export const updateProject: RequestHandler<
       return;
     }
 
-    // Only update fields that were sent
-    const updatedProject = await Project.findOneAndUpdate(
-      { slug: req.params.slug },
-      { $set: req.body },
-      { new: true, runValidators: true }
-    );
+    const updatedProject = await currentProject
+      .set({
+        ...currentProject.toObject(),
+        ...req.body,
+      })
+      .save();
 
     res.json(updatedProject);
   } catch (error) {
@@ -141,14 +141,27 @@ export const deleteProject: RequestHandler<{ slug: string }> = async (
   res
 ) => {
   try {
-    const project = await Project.findOneAndDelete({ slug: req.params.slug });
-
-    if (!project) {
+    const currentProject = await Project.findOne({ slug: req.params.slug });
+    if (!currentProject) {
       res.status(404).json({ message: "Project not found" });
       return;
     }
 
-    res.json({ message: "Project deleted successfully" });
+    const currentEtag = generateEtag(currentProject);
+    const clientEtag = req.header("If-Match");
+    const { isValid, statusCode, message } = validateEtag(
+      currentEtag,
+      clientEtag
+    );
+
+    if (!isValid) {
+      res.status(statusCode).json({ message });
+      return;
+    }
+
+    await Project.deleteOne({ slug: req.params.slug });
+
+    res.status(204).send();
   } catch (error) {
     res.status(500).json({ message: "Error deleting project", error });
   }
