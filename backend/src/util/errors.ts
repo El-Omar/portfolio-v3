@@ -20,3 +20,21 @@ export class BadRequestError extends AppError {
     super(statusCode, message);
   }
 }
+
+export class AuthenticationError extends AppError {
+  constructor(message = "Authentication required, hacker!") {
+    super(401, message);
+  }
+}
+
+export class InvalidCredentialsError extends AuthenticationError {
+  constructor(message = "Invalid credentials, who are you?") {
+    super(message);
+  }
+}
+
+export class TokenExpiredError extends AuthenticationError {
+  constructor(message = "Token has expired, means you need to re-loggin") {
+    super(message);
+  }
+}

@@ -6,7 +6,7 @@ export const securityMiddleware = helmet();
 
 export const apiLimiter = rateLimit({
   windowMs: toMs({ minutes: 15 }),
-  limit: 10,
+  limit: 100,
   message: "Too many requests from this IP, or maybe a big fan? Come back in 15 minutes",
   standardHeaders: true,
   legacyHeaders: false,

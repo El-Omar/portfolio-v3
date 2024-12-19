@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import React from "react";
-import "./globals.css";
 import ThemeProvider from "@/components/providers/ThemeProvider";
+import "./globals.css";
 
 import {
   fontAmiri,

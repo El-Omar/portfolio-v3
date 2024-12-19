@@ -12,12 +12,17 @@ import {
   createProjectSchema,
   updateProjectSchema,
 } from '../schemas/project.schema';
+import { authMiddleware } from '../middleware/auth.middleware';
 
 const router = Router();
 router.use(etagMiddleware);
 
+// Public routes
 router.get('/', getProjects);
 router.get('/:slug', getProjectBySlug);
+
+// Private routes
+router.use(authMiddleware)
 router.post('/', validateRequest(createProjectSchema), createProject);
 router.patch('/:slug', validateRequest(updateProjectSchema), updateProject);
 router.delete('/:slug', deleteProject);

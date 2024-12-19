@@ -32,9 +32,8 @@ const envSchema = z.object({
   AWS_REGION: z.string(),
 
   // Content Management
-  CMS_ADMIN_EMAIL: z.string().email(),
-  CMS_ADMIN_PASSWORD: z.string().min(8),
-  CMS_API_KEY: z.string(),
+  CMS_ADMIN_USERNAME: z.string().email(),
+  CMS_ADMIN_PASSWORD: z.string().min(12),
 
   // JWT
   JWT_SECRET: z.string().min(32),
