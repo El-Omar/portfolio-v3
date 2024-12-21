@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import projectRoutes from "./routes/project.routes";
 import authRoutes from "./routes/auth.routes";
+import uploadRoutes from "./routes/upload.routes";
 import { connectDatabase } from "./config/database";
 import { env } from "./config/env";
 import { errorHandler } from "./middleware/error.middleware";
@@ -32,6 +33,7 @@ app.use(apiLimiter);
 // Routes definitions
 app.use(`${env.API_PREFIX}/auth`, authRoutes)
 app.use(`${env.API_PREFIX}/projects`, projectRoutes);
+app.use(`${env.API_PREFIX}/uploads`, uploadRoutes);
 
 // Error middleware
 app.use(errorHandler);

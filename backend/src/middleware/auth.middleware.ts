@@ -29,7 +29,6 @@ export const authMiddleware = async (
     if (!token) {
       throw new AuthenticationError("No token provided");
     }
-
     req.user = verifyToken(token);
     next();
   } catch (error) {

@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import { env } from "../config/env";
 import { InvalidCredentialsError } from "../util/errors";
 
@@ -29,6 +29,9 @@ export const login = async (
       }
     );
 
+    // To get the expiration
+    const decoded = jwt.decode(token) as JwtPayload;
+
     res.json({
       status: "success",
       data: {
@@ -36,6 +39,7 @@ export const login = async (
         user: {
           email: env.CMS_ADMIN_USERNAME,
         },
+        expiresAt: decoded.exp,
       },
     });
   } catch (error) {
