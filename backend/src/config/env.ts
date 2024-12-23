@@ -36,6 +36,7 @@ const envSchema = z.object({
   // Content Management
   CMS_ADMIN_USERNAME: z.string().email(),
   CMS_ADMIN_PASSWORD: z.string().min(12),
+  CMS_ADMIN_PATH: z.string(),
 
   // JWT
   JWT_SECRET: z.string().min(32),

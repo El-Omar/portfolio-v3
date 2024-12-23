@@ -31,7 +31,7 @@ app.use(requestLogger);
 app.use(apiLimiter);
 
 // Routes definitions
-app.use(`${env.API_PREFIX}/auth`, authRoutes)
+app.use(`${env.API_PREFIX}/${env.CMS_ADMIN_PATH}/auth`, authRoutes)
 app.use(`${env.API_PREFIX}/projects`, projectRoutes);
 app.use(`${env.API_PREFIX}/uploads`, uploadRoutes);
 
