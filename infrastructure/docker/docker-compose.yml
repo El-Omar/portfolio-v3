@@ -17,6 +17,8 @@ services:
       timeout: 10s
       retries: 5
       start_period: 40s
+    networks:
+      - app-network
 
   backend:
     container_name: portfolio-v3-backend
@@ -33,6 +35,8 @@ services:
     depends_on:
       mongodb:
         condition: service_healthy
+    networks:
+      - app-network
   
   frontend:
     container_name: portfolio-v3-frontend
@@ -49,6 +53,12 @@ services:
     depends_on:
       - backend
     command: yarn dev
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
 
 volumes:
   mongodb_data:

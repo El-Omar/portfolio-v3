@@ -25,10 +25,12 @@ export const authMiddleware = async (
   next: NextFunction
 ) => {
   try {
-    const token = req.headers.authorization?.split(" ")[1];
+    const token = req.cookies.auth_token;
+
     if (!token) {
       throw new AuthenticationError("No token provided");
     }
+
     req.user = verifyToken(token);
     next();
   } catch (error) {

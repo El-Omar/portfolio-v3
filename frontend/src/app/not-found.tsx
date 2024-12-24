@@ -5,8 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
-import Title from "@/components/ui/Title";
-import TitleAccent from "@/components/ui/TitleAccent";
 
 export default function NotFound() {
   const { back } = useRouter();
@@ -22,9 +20,9 @@ export default function NotFound() {
         />
       </figure>
       <div className="text-center max-w-xl space-y-3">
-        <Title>
-          Oh <TitleAccent>no!</TitleAccent>
-        </Title>
+        <h2 className="tracking-tight font-dm-sans md:text-5xl text-4xl">
+          Oh <span className="font-baskerville text-cool-red">no!</span>
+        </h2>
 
         {/* Error Message */}
         <div className="space-y-2">

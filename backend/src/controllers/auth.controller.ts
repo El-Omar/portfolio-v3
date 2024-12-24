@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import jwt, { JwtPayload } from "jsonwebtoken";
+import ms from "ms";
+import jwt from "jsonwebtoken";
 import { env } from "../config/env";
 import { InvalidCredentialsError } from "../util/errors";
 
@@ -18,6 +19,9 @@ export const login = async (
       throw new InvalidCredentialsError();
     }
 
+    const expiresIn = env.JWT_EXPIRES_IN;
+    const maxAge = ms(expiresIn);
+
     const token = jwt.sign(
       {
         id: "cms-admin",
@@ -25,12 +29,16 @@ export const login = async (
       },
       env.JWT_SECRET,
       {
-        expiresIn: env.JWT_EXPIRES_IN,
+        expiresIn,
       }
     );
 
-    // To get the expiration
-    const decoded = jwt.decode(token) as JwtPayload;
+    res.cookie("auth_token", token, {
+      httpOnly: true,
+      secure: env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge,
+    });
 
     res.json({
       status: "success",
@@ -39,10 +47,20 @@ export const login = async (
         user: {
           email: env.CMS_ADMIN_USERNAME,
         },
-        expiresAt: decoded.exp,
+        maxAge,
       },
     });
   } catch (error) {
     next(error);
   }
+};
+
+export const logout = (_: Request, res: Response) => {
+  res.clearCookie("auth_token", {
+    path: "/",
+    secure: process.env.NODE_ENV === "production",
+    httpOnly: true,
+  });
+
+  res.json({ status: "success" });
 };

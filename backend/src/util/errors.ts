@@ -28,7 +28,7 @@ export class AuthenticationError extends AppError {
 }
 
 export class InvalidCredentialsError extends AuthenticationError {
-  constructor(message = "Invalid credentials, who are you?") {
+  constructor(message = "Invalid credentials! Who are you?") {
     super(message);
   }
 }
