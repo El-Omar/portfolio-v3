@@ -4,8 +4,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { env } from "@/config/env";
-
-const AUTH_TOKEN_KEY = "auth_token";
+import { AUTH_TOKEN_KEY } from "@/constants/auth";
 
 const loginSchema = z.object({
   email: z.string().email(),

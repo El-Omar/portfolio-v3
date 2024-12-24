@@ -3,6 +3,7 @@ import ms from "ms";
 import jwt from "jsonwebtoken";
 import { env } from "../config/env";
 import { InvalidCredentialsError } from "../util/errors";
+import { AUTH_TOKEN_KEY } from "../constants/auth";
 
 export const login = async (
   req: Request,
@@ -33,7 +34,7 @@ export const login = async (
       }
     );
 
-    res.cookie("auth_token", token, {
+    res.cookie(AUTH_TOKEN_KEY, token, {
       httpOnly: true,
       secure: env.NODE_ENV === "production",
       sameSite: "strict",
@@ -56,7 +57,7 @@ export const login = async (
 };
 
 export const logout = (_: Request, res: Response) => {
-  res.clearCookie("auth_token", {
+  res.clearCookie(AUTH_TOKEN_KEY, {
     path: "/",
     secure: process.env.NODE_ENV === "production",
     httpOnly: true,

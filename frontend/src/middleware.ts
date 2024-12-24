@@ -6,8 +6,9 @@ const intlMiddleware = createMiddleware(routing);
 
 export default function middleware(request: NextRequest) {
   const response = intlMiddleware(request);
+  const path = request.nextUrl.pathname;
 
-  if (request.nextUrl.pathname.includes("/admin")) {
+  if (path.includes("/admin")) {
     response.headers.set("X-Frame-Options", "DENY");
     response.headers.set("X-Content-Type-Options", "nosniff");
     response.headers.set("Referrer-Policy", "no-referrer");
