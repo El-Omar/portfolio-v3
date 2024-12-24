@@ -1,16 +1,37 @@
-import { jwtVerify } from "jose";
+import { jwtVerify, JWTVerifyResult } from "jose";
+import { cookies } from "next/headers";
 import { env } from "@/config/env";
+import { AUTH_TOKEN_KEY } from "@/constants/auth";
 
-export const verifyAuth = async (token: string) => {
+type AuthResult =
+  | {
+      success: true;
+      payload: JWTVerifyResult["payload"];
+    }
+  | {
+      success: false;
+      error: unknown;
+    };
+
+export const verifyAuth = async (): Promise<AuthResult> => {
+  const cookie = await cookies();
+  const token = cookie.get(AUTH_TOKEN_KEY);
+
+  if (!token) {
+    return {
+      success: false,
+      error: new Error("No token found"),
+    };
+  }
+
   try {
     const verified = await jwtVerify(
-      token,
+      token.value,
       new TextEncoder().encode(env.JWT_SECRET),
     );
 
-    return verified.payload;
+    return { success: true, payload: verified.payload };
   } catch (error) {
-    console.log(error);
-    throw new Error("Invalid token");
+    return { success: false, error };
   }
 };
