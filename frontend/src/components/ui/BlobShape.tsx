@@ -18,11 +18,11 @@ const BlobShape = () => {
               >
                 <stop
                   offset="0%"
-                  style={{ stopColor: "#f0574a", stopOpacity: 0.6 }}
+                  style={{ stopColor: "#f0574a", stopOpacity: 0.8 }}
                 />
                 <stop
                   offset="100%"
-                  style={{ stopColor: "#f3844d", stopOpacity: 0.7 }}
+                  style={{ stopColor: "#f32510", stopOpacity: 0.8 }}
                 />
               </linearGradient>
             </defs>
