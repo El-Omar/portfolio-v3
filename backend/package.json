@@ -2,6 +2,7 @@
   "name": "backend",
   "version": "1.0.0",
   "main": "index.js",
+  "private": "true",
   "scripts": {
     "lint": "./node_modules/.bin/eslint \"src/**/*.ts\"",
     "lint:fix": "./node_modules/.bin/eslint \"src/**/*.ts\" --fix",
@@ -15,6 +16,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@portfolio-v3/shared": "*",
     "@aws-sdk/client-s3": "^3.717.0",
     "@aws-sdk/s3-request-presigner": "^3.717.0",
     "bcrypt": "^5.1.1",

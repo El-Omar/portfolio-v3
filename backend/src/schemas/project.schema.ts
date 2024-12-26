@@ -3,6 +3,7 @@ import { z } from "zod";
 
 export const projectSchema = z.object({
   title: z.string().min(1),
+  slug: z.string().optional(),
   description: z.string().min(1),
   technologies: z.array(z.string()).min(1),
   imageUrl: z.string().url().optional(),
@@ -11,7 +12,6 @@ export const projectSchema = z.object({
   featured: z.boolean().default(false),
   startDate: z.string().datetime(),
   endDate: z.string().datetime().optional(),
-  slug: z.string().optional(),
   order: z.number().optional(),
 });
 

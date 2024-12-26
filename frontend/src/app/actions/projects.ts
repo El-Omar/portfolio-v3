@@ -39,7 +39,7 @@ export async function getProjectBySlug(slug: string) {
   }
 }
 
-export async function createProject(data: ProjectCreate) {
+export async function createProject(prevState: unknown, data: ProjectCreate) {
   try {
     const res = await fetch(`${env.API_URL}/projects`, {
       method: "POST",

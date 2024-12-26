@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/Button";
 const ProjectsPage = async (): Promise<ReactElement> => {
   const projectsData = await getProjects();
   const projects = projectsData.data || [];
-  console.log(projects);
 
   return (
     <div className="space-y-6">

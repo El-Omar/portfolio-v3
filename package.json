@@ -10,6 +10,16 @@
     "docker:up": "cd infrastructure/docker && docker-compose up -d",
     "docker:down": "cd infrastructure/docker && docker-compose down",
     "docker:logs": "cd infrastructure/docker && docker-compose logs -f",
-    "docker:rebuild": "cd infrastructure/docker && docker-compose up -d --build"
-  }
+    "docker:rebuild": "cd infrastructure/docker && docker-compose up -d --build",
+
+    "build:shared": "yarn workspace @portfolio-v3/shared build",
+    "dev:shared": "yarn workspace @portfolio-v3/shared watch",
+    "dev:frontend": "yarn workspace frontend dev",
+    "dev:backend": "yarn workspace backend dev"
+  },
+  "workspaces": [
+    "frontend",
+    "backend",
+    "shared"
+  ]
 }
