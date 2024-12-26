@@ -1,10 +1,10 @@
 "use server";
 
+import { AUTH } from "@portfolio-v3/shared";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { env } from "@/config/env";
-import { AUTH_TOKEN_KEY } from "@/constants/auth";
 
 const loginSchema = z.object({
   email: z.string().email(),
@@ -70,10 +70,9 @@ export async function login(
 
     const cookie = await cookies();
 
-    cookie.set(AUTH_TOKEN_KEY, userData.token, {
-      httpOnly: true,
+    cookie.set(AUTH.KEY, userData.token, {
+      ...AUTH.OPTIONS,
       secure: env.NODE_ENV === "production",
-      sameSite: "strict",
       maxAge: userData.maxAge,
     });
 
@@ -86,10 +85,10 @@ export async function login(
 
 export async function logout() {
   const cookie = await cookies();
-  const token = cookie.get(AUTH_TOKEN_KEY);
+  const token = cookie.get(AUTH.KEY);
 
   if (token) {
-    cookie.delete(AUTH_TOKEN_KEY);
+    cookie.delete(AUTH.KEY);
   }
 
   redirect("/");

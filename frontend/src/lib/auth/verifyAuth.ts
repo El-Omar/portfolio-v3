@@ -1,7 +1,7 @@
+import { AUTH } from "@portfolio-v3/shared";
 import { jwtVerify, JWTVerifyResult } from "jose";
 import { cookies } from "next/headers";
 import { env } from "@/config/env";
-import { AUTH_TOKEN_KEY } from "@/constants/auth";
 
 type AuthResult =
   | {
@@ -15,7 +15,7 @@ type AuthResult =
 
 export const verifyAuth = async (): Promise<AuthResult> => {
   const cookie = await cookies();
-  const token = cookie.get(AUTH_TOKEN_KEY);
+  const token = cookie.get(AUTH.KEY);
 
   if (!token) {
     return {

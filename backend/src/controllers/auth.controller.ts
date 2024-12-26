@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from "express";
 import ms from "ms";
 import jwt from "jsonwebtoken";
+import { AUTH } from "@portfolio-v3/shared";
 import { env } from "../config/env";
 import { InvalidCredentialsError } from "../util/errors";
-import { AUTH_TOKEN_KEY, COOKIE_OPTIONS } from "../constants/auth";
 
 export const login = async (
   req: Request,
@@ -34,8 +34,9 @@ export const login = async (
       }
     );
 
-    res.cookie(AUTH_TOKEN_KEY, token, {
-      ...COOKIE_OPTIONS,
+    res.cookie(AUTH.KEY, token, {
+      ...AUTH.OPTIONS,
+      secure: env.NODE_ENV === "production",
       maxAge,
     });
 
@@ -55,7 +56,10 @@ export const login = async (
 };
 
 export const logout = (_: Request, res: Response) => {
-  res.clearCookie(AUTH_TOKEN_KEY, COOKIE_OPTIONS);
+  res.clearCookie(AUTH.KEY, {
+    ...AUTH.OPTIONS,
+    secure: env.NODE_ENV === "production",
+  });
 
   res.json({ status: "success" });
 };
