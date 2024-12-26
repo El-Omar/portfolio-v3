@@ -6,7 +6,6 @@ import {
 } from "../util/pagination";
 import {
   CreateProjectInput,
-  ProjectDocument,
   UpdateProjectInput,
 } from "../schemas/project.schema";
 import { generateEtag, validateEtag } from "../util/etag";
@@ -56,11 +55,10 @@ export const getProjects: RequestHandler<
 };
 
 // GET BY SLUG /projects/:slug
-export const getProjectBySlug: RequestHandler<{ slug: string }, ProjectType> = async (
-  req,
-  res,
-  next
-) => {
+export const getProjectBySlug: RequestHandler<
+  { slug: string },
+  ProjectType
+> = async (req, res, next) => {
   try {
     const project = await Project.findOne({ slug: req.params.slug });
     if (!project) {
@@ -73,11 +71,11 @@ export const getProjectBySlug: RequestHandler<{ slug: string }, ProjectType> = a
 };
 
 // POST /projects
-export const createProject: RequestHandler<{}, ProjectType, CreateProjectInput> = async (
-  req,
-  res,
-  next
-) => {
+export const createProject: RequestHandler<
+  {},
+  ProjectType,
+  CreateProjectInput
+> = async (req, res, next) => {
   try {
     const newProject = new Project(req.body);
     await newProject.save();
@@ -119,7 +117,7 @@ export const updateProject: RequestHandler<
 
     res.json(updatedProject);
   } catch (error) {
-    next(error)
+    next(error);
   }
 };
 
