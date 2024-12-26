@@ -11,6 +11,7 @@ import {
 } from "../schemas/project.schema";
 import { generateEtag, validateEtag } from "../util/etag";
 import { BadRequestError, NotFoundError } from "../util/errors";
+import { ApiResponse, Project as ProjectType } from "@portfolio-v3/shared";
 
 type GetProjectsQuery = {
   page?: number;
@@ -19,11 +20,12 @@ type GetProjectsQuery = {
 };
 
 // GET PROJECTS /projects
-export const getProjects: RequestHandler<{}, {}, {}, GetProjectsQuery> = async (
-  req,
-  res,
-  next
-) => {
+export const getProjects: RequestHandler<
+  {},
+  ApiResponse<ProjectType[]>,
+  {},
+  GetProjectsQuery
+> = async (req, res, next) => {
   try {
     const { featured } = req.query;
     const query = featured ? { featured: true } : {};
@@ -42,6 +44,7 @@ export const getProjects: RequestHandler<{}, {}, {}, GetProjectsQuery> = async (
     ]);
 
     res.json({
+      status: "success",
       data: projects,
       pagination: createPaginationResponse(total, pagination),
     });
@@ -53,7 +56,7 @@ export const getProjects: RequestHandler<{}, {}, {}, GetProjectsQuery> = async (
 };
 
 // GET BY SLUG /projects/:slug
-export const getProjectBySlug: RequestHandler<{ slug: string }> = async (
+export const getProjectBySlug: RequestHandler<{ slug: string }, ProjectType> = async (
   req,
   res,
   next
@@ -70,7 +73,7 @@ export const getProjectBySlug: RequestHandler<{ slug: string }> = async (
 };
 
 // POST /projects
-export const createProject: RequestHandler<{}, {}, CreateProjectInput> = async (
+export const createProject: RequestHandler<{}, ProjectType, CreateProjectInput> = async (
   req,
   res,
   next
@@ -87,7 +90,7 @@ export const createProject: RequestHandler<{}, {}, CreateProjectInput> = async (
 // PATCH /projects/:slug
 export const updateProject: RequestHandler<
   { slug: string },
-  ProjectDocument | Record<string, unknown> | null,
+  ProjectType,
   UpdateProjectInput
 > = async (req, res, next) => {
   try {

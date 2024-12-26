@@ -1,11 +1,12 @@
-import { Request, Response, NextFunction } from "express";
+import { RequestHandler } from "express";
 import { S3Service } from "../services/s3.service";
+import { ApiResponse } from "@portfolio-v3/shared";
+import { PresignedUrlDataResponse } from "../types/s3";
 
-export const getPresignedUrl = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const getPresignedUrl: RequestHandler<
+  {},
+  ApiResponse<PresignedUrlDataResponse>
+> = async (req, res, next) => {
   try {
     const { fileName, fileType, fileSize } = req.body;
     const s3Service = S3Service.getInstance();
@@ -29,10 +30,10 @@ export const getPresignedUrl = async (
   }
 };
 
-export const deleteFile = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
+export const deleteFile: RequestHandler<{ fileKey: string }, ApiResponse> = async (
+  req,
+  res,
+  next
 ) => {
   try {
     const { fileKey } = req.params;

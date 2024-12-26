@@ -1,14 +1,14 @@
-import { Request, Response, NextFunction } from "express";
+import { ApiResponse, AUTH, LoginDataResult } from "@portfolio-v3/shared";
+import { RequestHandler } from "express";
 import ms from "ms";
 import jwt from "jsonwebtoken";
-import { AUTH } from "@portfolio-v3/shared";
 import { env } from "../config/env";
 import { InvalidCredentialsError } from "../util/errors";
 
-export const login = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
+export const login: RequestHandler<{}, ApiResponse<LoginDataResult>> = async (
+  req,
+  res,
+  next
 ) => {
   try {
     const { email, password } = req.body;
@@ -55,7 +55,7 @@ export const login = async (
   }
 };
 
-export const logout = (_: Request, res: Response) => {
+export const logout: RequestHandler = (_, res) => {
   res.clearCookie(AUTH.KEY, {
     ...AUTH.OPTIONS,
     secure: env.NODE_ENV === "production",

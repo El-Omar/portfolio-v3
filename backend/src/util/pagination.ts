@@ -1,3 +1,9 @@
+import {
+  PaginationOptions,
+  PaginationResponse,
+  PaginationResult,
+} from "@portfolio-v3/shared";
+
 export const getPaginationParams = ({
   page = 1,
   limit = 10,
@@ -20,7 +26,7 @@ export const getPaginationParams = ({
 export const createPaginationResponse = (
   total: number,
   { page, limit }: PaginationResult
-) => ({
+): PaginationResponse => ({
   total,
   pages: Math.ceil(total / limit),
   currentPage: page,

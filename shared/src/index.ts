@@ -1,2 +1,3 @@
 export * from "./constants/auth";
-export * from "./models/project";
+export * from "./schemas/project";
+export * from "./types/api";
