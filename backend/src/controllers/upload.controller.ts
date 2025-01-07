@@ -1,11 +1,10 @@
 import { RequestHandler } from "express";
 import { S3Service } from "../services/s3.service";
-import { ApiResponse } from "@portfolio-v3/shared";
-import { PresignedUrlDataResponse } from "../types/s3";
+import { ApiResponse, FileUploadResponse } from "@portfolio-v3/shared";
 
 export const getPresignedUrl: RequestHandler<
   {},
-  ApiResponse<PresignedUrlDataResponse>
+  ApiResponse<FileUploadResponse>
 > = async (req, res, next) => {
   try {
     const { fileName, fileType, fileSize } = req.body;
