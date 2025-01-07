@@ -6,7 +6,37 @@ import { Button } from "@/components/ui/Button";
 
 const ProjectsPage = async (): Promise<ReactElement> => {
   const projectsData = await getProjects();
-  const projects = projectsData.data || [];
+  
+  if (projectsData.status === "error") {
+    return (
+      <div className="p-6 text-center">
+        <div className="text-red-600 mb-2">Failed to load projects</div>
+        <div className="text-gray-600">{projectsData.message}</div>
+      </div>
+    );
+  }
+
+  const projects = projectsData.data ?? [];
+
+  if (projects.length === 0) {
+    return (
+      <div className="space-y-6">
+        <div className="flex justify-between items-center">
+          <h1 className="text-3xl font-bold">Projects</h1>
+          <Link href="/dashboard/projects/new">
+            <Button>
+              <Plus className="mr-2 h-4 w-4" />
+              Add Project
+            </Button>
+          </Link>
+        </div>
+        
+        <div className="bg-white rounded-lg shadow p-6 text-center">
+          <p className="text-gray-600">No projects found</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">

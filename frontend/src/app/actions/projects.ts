@@ -1,11 +1,11 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { ApiResponse, Project } from "@portfolio-v3/shared";
+import { ApiResponse, ProjectResponse, Project } from "@portfolio-v3/shared";
 import { projectsClient } from "@/lib/api/projects-client";
 import { uploadClient } from "@/lib/api/upload-client";
 
-export async function getProjects(): Promise<ApiResponse<Project[]>> {
+export async function getProjects(): Promise<ApiResponse<ProjectResponse[]>> {
   try {
     return await projectsClient.getAll();
   } catch (error) {
@@ -14,7 +14,7 @@ export async function getProjects(): Promise<ApiResponse<Project[]>> {
   }
 }
 
-export async function getProjectBySlug(slug: string) {
+export async function getProjectBySlug(slug: string): Promise<ApiResponse<ProjectResponse>> {
   try {
     return await projectsClient.getBySlug(slug);
   } catch (error) {
