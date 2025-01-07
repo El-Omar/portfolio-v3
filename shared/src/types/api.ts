@@ -1,32 +1,22 @@
-export type ApiResponse<T = unknown> = {
-  status?: "success" | "error";
-  data?: T;
-  error?: string;
+export type ApiErrorResponse = {
+  status: "error";
+  message: string;
+  errors?: string[];
+};
+
+export type ApiSuccessResponse<T> = {
+  status: "success";
+  data: T;
   message?: string;
   pagination?: PaginationResponse;
 };
 
-export type LoginDataResult = {
-  token: string;
-  user: {
-    email: string;
-  };
-  /** Absolute number in millisecond for the token expiration */
-  maxAge: number;
-};
+export type ApiResponse<T = unknown> = ApiSuccessResponse<T> | ApiErrorResponse;
 
-// == PAGINATION ==
-export type PaginationOptions = {
-  page?: number | string;
-  limit?: number | string;
-  defaultLimit?: number;
-  maxLimit?: number;
-};
-
-export type PaginationResult = {
-  limit: number;
-  offset: number;
-  page: number;
+// Pagination types
+export type PaginationParams = {
+  page?: number;
+  limit?: number;
 };
 
 export type PaginationResponse = {
@@ -34,4 +24,20 @@ export type PaginationResponse = {
   pages: number;
   currentPage: number;
   perPage: number;
-}
+};
+
+// Common response types
+export type FileUploadResponse = {
+  fileKey: string;
+  uploadUrl: string;
+  publicUrl: string;
+};
+
+export type LoginResponse = {
+  token: string;
+  user: {
+    email: string;
+    id: string;
+  };
+  maxAge: number;
+};
