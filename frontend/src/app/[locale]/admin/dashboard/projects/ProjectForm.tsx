@@ -1,25 +1,34 @@
 "use client";
 
-import { AlertCircle, Upload } from "lucide-react";
+import { Upload } from "lucide-react";
 import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useActionState } from "react";
+import { useFormStatus } from "react-dom";
 import { toast } from "sonner";
 import { createProject } from "@/app/actions/projects";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
-import { Textarea } from "@/components/ui/textarea";
-import { ProjectFormData, projectSchema } from "@/schemas/project.schema";
+import { Button } from "@/components/ui/Button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
+import { Input } from "@/components/ui/Input";
+import { Label } from "@/components/ui/Label";
+import { Switch } from "@/components/ui/Switch";
+import { Textarea } from "@/components/ui/Textarea";
+import { Project } from "@portfolio-v3/shared";
 
-const initialState: ProjectFormData = {
-  title: "",
-  description: "",
-  technologies: [],
+// Submit Button with automatic pending state
+function SubmitButton() {
+  const { pending } = useFormStatus();
+  return (
+    <Button type="submit" disabled={pending}>
+      {pending ? "Creating..." : "Create Project"}
+    </Button>
+  );
+}
+
+const initialState: Project = {
+  title: "test",
+  description: "test",
+  technologies: ["test"],
   imageUrl: "",
   githubUrl: "",
   liveUrl: "",
@@ -31,27 +40,35 @@ const initialState: ProjectFormData = {
 
 export function ProjectForm() {
   const router = useRouter();
-  const [state, formAction, isPending] = useActionState(createProject, null);
-  const [formData, setFormData] = useState<ProjectFormData>(initialState);
-  const [errors, setErrors] = useState<
-    Partial<Record<keyof ProjectFormData, string>>
-  >({});
+  const [formData, setFormData] = useState<Project>(initialState);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    // Clear error when field is edited
-    if (errors[name as keyof ProjectFormData]) {
-      setErrors((prev) => ({ ...prev, [name]: undefined }));
-    }
   };
 
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+
+    // Validate file type
+    if (!file.type.startsWith("image/")) {
+      toast.error("Please upload an image file");
+      return;
+    }
+
+    // Validate file size (e.g., 5MB limit)
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("File size should be less than 5MB");
+      return;
+    }
+
+    setImageFile(file);
 
     // Preview image
     const reader = new FileReader();
@@ -59,61 +76,56 @@ export function ProjectForm() {
       setImagePreview(reader.result as string);
     };
     reader.readAsDataURL(file);
-
-    setFormData((prev) => ({ ...prev, imageUrl: file.name }));
   };
 
   const handleTechChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const techs = e.target.value
-      .split(",")
-      .map((t) => t.trim())
-      .filter(Boolean);
-    setFormData((prev) => ({ ...prev, technologies: techs }));
-  };
-
-  const handleSubmit = async (formData: FormData) => {
-    // Validate with Zod
-    const result = projectSchema.safeParse({
-      ...formData,
-      featured: formData.get("featured") === "true",
-      order: Number(formData.get("order")) || 0,
-      technologies:
-        formData
-          .get("technologies")
-          ?.toString()
+    const value = e.target.value;
+    // Only split into array when there are commas
+    const techs = value.includes(",")
+      ? value
           .split(",")
           .map((t) => t.trim())
-          .filter(Boolean) || [],
+          .filter(Boolean)
+      : [value.trim()].filter(Boolean);
+
+    setFormData((prev) => ({
+      ...prev,
+      technologies: techs,
+    }));
+  };
+
+  async function handleSubmit(formData: FormData) {
+    // Create FormData with all fields
+    Object.entries(formData).forEach(([key, value]) => {
+      if (key === "technologies") {
+        formData.set(key, JSON.stringify(value));
+      }
     });
 
-    if (!result.success) {
-      const zodErrors: Record<string, string> = {};
-      result.error.issues.forEach((issue) => {
-        if (issue.path[0]) {
-          zodErrors[issue.path[0].toString()] = issue.message;
-        }
-      });
-      setErrors(zodErrors);
-      return;
+    // Add image if exists
+    if (imageFile) {
+      formData.set("image", imageFile);
     }
 
     try {
-      const result = await formAction(formData);
-      if (result?.error) {
-        toast.error(
-          typeof result.error === "string"
-            ? result.error
-            : "Failed to create project",
-        );
+      const result = await createProject(null, formData);
+
+      if (result.status === "error") {
+        const error = result.message || "Failed to create project";
+        toast.error(error);
+        setError(error);
         return;
       }
+
       toast.success("Project created successfully");
-      router.push("/dashboard/projects");
+      router.push("/admin/dashboard/projects");
+      router.refresh();
     } catch (error) {
       console.error("Form submission error:", error);
       toast.error("Failed to create project");
+      setError("Failed to create project: " + JSON.stringify(error));
     }
-  };
+  }
 
   return (
     <Card>
@@ -121,6 +133,7 @@ export function ProjectForm() {
         <CardTitle>Create New Project</CardTitle>
       </CardHeader>
       <CardContent>
+        {error && <p className="text-red-500">{error}</p>}
         <form action={handleSubmit} className="space-y-6">
           {/* Image upload */}
           <div className="space-y-2">
@@ -137,66 +150,61 @@ export function ProjectForm() {
                 </div>
               )}
               <div className="flex-1">
-                <label className="cursor-pointer">
+                <Label htmlFor="image-upload" className="cursor-pointer block">
                   <div className="flex items-center gap-2 p-2 border-2 border-dashed rounded-lg hover:bg-gray-50">
                     <Upload className="w-4 h-4" />
                     <span>Upload image</span>
                   </div>
                   <input
+                    id="image-upload"
                     type="file"
-                    name="image"
                     accept="image/*"
                     onChange={handleFileChange}
                     className="hidden"
                   />
-                </label>
+                </Label>
               </div>
             </div>
           </div>
 
           {/* Title */}
           <div className="space-y-2">
-            <Label htmlFor="title">Title</Label>
+            <Label htmlFor="title">Title *</Label>
             <Input
               id="title"
               name="title"
               value={formData.title}
               onChange={handleChange}
-              className={errors.title ? "border-red-500" : ""}
+              required
             />
-            {errors.title && (
-              <p className="text-sm text-red-500">{errors.title}</p>
-            )}
           </div>
 
           {/* Description */}
           <div className="space-y-2">
-            <Label htmlFor="description">Description</Label>
+            <Label htmlFor="description">Description *</Label>
             <Textarea
               id="description"
               name="description"
               value={formData.description}
               onChange={handleChange}
-              className={errors.description ? "border-red-500" : ""}
+              required
+              rows={4}
             />
-            {errors.description && (
-              <p className="text-sm text-red-500">{errors.description}</p>
-            )}
           </div>
 
           {/* Technologies */}
           <div className="space-y-2">
-            <Label htmlFor="technologies">Technologies (comma-separated)</Label>
+            <Label htmlFor="technologies">
+              Technologies (comma-separated) *
+            </Label>
             <Input
               id="technologies"
               name="technologies"
               value={formData.technologies.join(", ")}
               onChange={handleTechChange}
-              className={errors.technologies ? "border-red-500" : ""}
+              required
+              placeholder="React, TypeScript, Node.js"
             />
-            {errors.technologies && (
-              <p className="text-sm text-red-500">{errors.technologies}</p>
-            )}
           </div>
 
           {/* URLs */}
@@ -206,44 +214,37 @@ export function ProjectForm() {
               <Input
                 id="githubUrl"
                 name="githubUrl"
+                type="url"
                 value={formData.githubUrl}
                 onChange={handleChange}
-                className={errors.githubUrl ? "border-red-500" : ""}
+                placeholder="https://github.com/..."
               />
-              {errors.githubUrl && (
-                <p className="text-sm text-red-500">{errors.githubUrl}</p>
-              )}
             </div>
             <div className="space-y-2">
               <Label htmlFor="liveUrl">Live URL</Label>
               <Input
                 id="liveUrl"
                 name="liveUrl"
+                type="url"
                 value={formData.liveUrl}
                 onChange={handleChange}
-                className={errors.liveUrl ? "border-red-500" : ""}
+                placeholder="https://..."
               />
-              {errors.liveUrl && (
-                <p className="text-sm text-red-500">{errors.liveUrl}</p>
-              )}
             </div>
           </div>
 
           {/* Dates */}
           <div className="grid gap-4 md:grid-cols-2">
             <div className="space-y-2">
-              <Label htmlFor="startDate">Start Date</Label>
+              <Label htmlFor="startDate">Start Date *</Label>
               <Input
                 id="startDate"
                 name="startDate"
                 type="date"
                 value={formData.startDate}
                 onChange={handleChange}
-                className={errors.startDate ? "border-red-500" : ""}
+                required
               />
-              {errors.startDate && (
-                <p className="text-sm text-red-500">{errors.startDate}</p>
-              )}
             </div>
             <div className="space-y-2">
               <Label htmlFor="endDate">End Date</Label>
@@ -255,6 +256,19 @@ export function ProjectForm() {
                 onChange={handleChange}
               />
             </div>
+          </div>
+
+          {/* Order */}
+          <div className="space-y-2">
+            <Label htmlFor="order">Display Order</Label>
+            <Input
+              id="order"
+              name="order"
+              type="number"
+              value={formData.order}
+              onChange={handleChange}
+              min={0}
+            />
           </div>
 
           {/* Featured Switch */}
@@ -270,13 +284,11 @@ export function ProjectForm() {
           </div>
 
           <div className="flex gap-4">
-            <Button type="submit" disabled={isPending}>
-              {isPending ? "Creating..." : "Create Project"}
-            </Button>
+            <SubmitButton />
             <Button
               type="button"
               variant="outline"
-              onClick={() => router.push("/dashboard/projects")}
+              onClick={() => router.push("/admin/dashboard/projects")}
             >
               Cancel
             </Button>

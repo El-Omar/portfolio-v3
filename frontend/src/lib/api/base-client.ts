@@ -1,6 +1,4 @@
 import { env } from "@/config/env";
-import { AUTH } from "@portfolio-v3/shared";
-import { cookies } from "next/headers";
 
 export type RequestOptions = {
   method: "GET" | "POST" | "PATCH" | "DELETE";
@@ -19,7 +17,13 @@ export class BaseApiClient {
 
   protected async fetch<T>(
     endpoint: string,
-    options: RequestOptions
+    options: {
+      method: string;
+      body?: unknown;
+      protected?: boolean;
+      headers?: Record<string, string>;
+      next?: NextFetchRequestConfig;
+    }
   ): Promise<T> {
     const url = `${this.baseUrl}${endpoint}`;
     const headers: Record<string, string> = {
@@ -27,29 +31,19 @@ export class BaseApiClient {
       ...options.headers,
     };
 
-    // Add auth token for protected routes
-    if (options.protected) {
-      const cookie = await cookies();
-      const token = cookie.get(AUTH.KEY);
-
-      if (!token) {
-        throw new Error("Authentication required");
-      }
-
-      headers["Authorization"] = `Bearer ${token.value}`;
-    }
-
     const fetchOptions: RequestInit = {
       method: options.method,
       headers,
-      ...(options.body && { body: JSON.stringify(options.body) }),
+      credentials: options.protected ? "include" : "same-origin",
+      body: options.body ? JSON.stringify(options.body) : undefined,
       ...(options.next && { next: options.next }),
     };
 
     const response = await fetch(url, fetchOptions);
 
     if (!response.ok) {
-      throw new Error(`API call failed: ${response.statusText}`);
+      const error = await response.json();
+      throw new Error(error.message || "API call failed");
     }
 
     return response.json();

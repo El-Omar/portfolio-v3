@@ -30,8 +30,13 @@ export async function createProject(prevState: unknown, formData: FormData) {
 
     // If image is provided, upload it first
     if (imageFile && imageFile.size > 0) {
-      const imageUrl = await uploadClient.uploadFile(imageFile);
-      projectData.imageUrl = imageUrl;
+      try {
+        const imageUrl = await uploadClient.uploadFile(imageFile);
+        projectData.imageUrl = imageUrl;
+      } catch (error) {
+        console.error("Upload error:", error);
+        throw new Error(`File upload failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      }
     }
 
     const response = await projectsClient.create(projectData);
@@ -40,7 +45,10 @@ export async function createProject(prevState: unknown, formData: FormData) {
     return response;
   } catch (error) {
     console.error("Error:", error);
-    throw new Error("Failed to create project");
+    return {
+      status: 'error',
+      message: error instanceof Error ? error.message : 'Failed to create project'
+    };
   }
 }
 

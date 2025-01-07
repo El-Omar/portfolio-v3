@@ -9,12 +9,14 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@portfolio-v3/shared": "*",
     "@headlessui/react": "^2.2.0",
     "@heroicons/react": "^2.1.5",
     "@hookform/resolvers": "^3.9.1",
+    "@portfolio-v3/shared": "*",
     "@radix-ui/react-dialog": "^1.1.2",
+    "@radix-ui/react-label": "^2.1.1",
     "@radix-ui/react-slot": "^1.1.0",
+    "@radix-ui/react-switch": "^1.1.2",
     "@tanstack/react-query": "^5.59.20",
     "axios": "^1.7.9",
     "class-variance-authority": "^0.7.0",
@@ -28,6 +30,7 @@
     "next-themes": "^0.4.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "sonner": "^1.7.1",
     "tailwind-merge": "^2.5.4",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.24.1",

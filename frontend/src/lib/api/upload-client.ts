@@ -32,16 +32,17 @@ export class UploadClient extends BaseApiClient {
             fileSize: file.size,
           },
         });
+
+        console.log(response);
         
         if (response.status !== 'success' || !response.data) {
-          throw new Error('Failed to get upload URL');
+          throw new Error(response.message || 'Failed to get upload URL');
         }
         
         presignedUrlResponse = response;
       } catch (error) {
-        throw new Error(
-          `Failed to get upload URL: ${error instanceof Error ? error.message : 'Unknown error'}`
-        );
+        console.error('Presigned URL error:', error);
+        throw error;
       }
 
       const { data } = presignedUrlResponse;

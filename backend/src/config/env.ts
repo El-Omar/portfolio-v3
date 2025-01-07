@@ -41,6 +41,9 @@ const envSchema = z.object({
   // JWT
   JWT_SECRET: z.string().min(32),
   JWT_EXPIRES_IN: z.string(),
+
+  // CORS
+  FRONTEND_URL: z.string().url(),
 });
 
 // Parse and validate environment variables

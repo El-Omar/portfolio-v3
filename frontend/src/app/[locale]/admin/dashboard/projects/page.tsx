@@ -23,7 +23,7 @@ const ProjectsPage = async (): Promise<ReactElement> => {
       <div className="space-y-6">
         <div className="flex justify-between items-center">
           <h1 className="text-3xl font-bold">Projects</h1>
-          <Link href="/dashboard/projects/new">
+          <Link href="/admin/dashboard/projects/new">
             <Button>
               <Plus className="mr-2 h-4 w-4" />
               Add Project
@@ -42,7 +42,7 @@ const ProjectsPage = async (): Promise<ReactElement> => {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold">Projects</h1>
-        <Link href="/dashboard/projects/new">
+        <Link href="/admin/dashboard/projects/new">
           <Button>
             <Plus className="mr-2 h-4 w-4" />
             Add Project

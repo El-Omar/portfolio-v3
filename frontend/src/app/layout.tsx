@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import React from "react";
 import ThemeProvider from "@/components/providers/ThemeProvider";
 import "./globals.css";
+import { Toaster } from "sonner";
 
 import {
   fontAmiri,
@@ -32,7 +33,10 @@ export default function RootLayout({
         dark:bg-neutral-700 text-gray-900 dark:text-gray-100 font-inter`}
         suppressHydrationWarning
       >
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          {children}
+          <Toaster />
+        </ThemeProvider>
       </body>
     </html>
   );
