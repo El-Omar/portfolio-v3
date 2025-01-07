@@ -81,4 +81,9 @@ export class S3Service {
   getPublicUrl(fileKey: string): string {
     return `https://${env.AWS_S3_BUCKET}.s3.${env.AWS_REGION}.amazonaws.com/${fileKey}`;
   }
+
+  getFileKey(url: string): string {
+    const bucketUrl = `https://${env.AWS_S3_BUCKET}.s3.${env.AWS_REGION}.amazonaws.com/`;
+    return url.replace(bucketUrl, "");
+  }
 }

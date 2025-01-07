@@ -11,6 +11,7 @@ import {
 import { generateEtag, validateEtag } from "../util/etag";
 import { BadRequestError, NotFoundError } from "../util/errors";
 import { ApiResponse, Project as ProjectType } from "@portfolio-v3/shared";
+import { S3Service } from "../services/s3.service";
 
 type GetProjectsQuery = {
   page?: number;
@@ -108,6 +109,22 @@ export const updateProject: RequestHandler<
       throw new BadRequestError(message, statusCode);
     }
 
+    // If updating image, delete old one
+    if (
+      req.body.imageUrl &&
+      currentProject.imageUrl &&
+      req.body.imageUrl !== currentProject.imageUrl
+    ) {
+      try {
+        const s3Service = S3Service.getInstance();
+        const oldFileKey = s3Service.getFileKey(currentProject.imageUrl);
+        await s3Service.deleteFile(oldFileKey);
+      } catch (error) {
+        console.error("Failed to delete old image:", error);
+        // Continue with update even if delete fails
+      }
+    }
+
     const updatedProject = await currentProject
       .set({
         ...currentProject.toObject(),
@@ -142,6 +159,18 @@ export const deleteProject: RequestHandler<{ slug: string }> = async (
 
     if (!isValid) {
       throw new BadRequestError(message, statusCode);
+    }
+
+    // Delete associated image if exists
+    if (currentProject.imageUrl) {
+      try {
+        const s3Service = S3Service.getInstance();
+        const fileKey = s3Service.getFileKey(currentProject.imageUrl);
+        await s3Service.deleteFile(fileKey);
+      } catch (error) {
+        console.error("Failed to delete project image:", error);
+        // Continue with project deletion even if image delete fails
+      }
     }
 
     await Project.deleteOne({ slug: req.params.slug });
