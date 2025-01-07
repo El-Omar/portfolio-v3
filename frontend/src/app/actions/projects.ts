@@ -2,9 +2,9 @@
 
 import { revalidatePath } from "next/cache";
 import { env } from "@/config/env";
-import { Project, ProjectCreate, ProjectsResponse } from "@/types/Project";
+import { ApiResponse, Project } from "@portfolio-v3/shared";
 
-export async function getProjects(): Promise<ProjectsResponse> {
+export async function getProjects(): Promise<ApiResponse<Project[]>> {
   try {
     const res = await fetch(`${env.API_URL}/projects`, {
       method: "GET",
@@ -39,7 +39,7 @@ export async function getProjectBySlug(slug: string) {
   }
 }
 
-export async function createProject(prevState: unknown, data: ProjectCreate) {
+export async function createProject(prevState: unknown, data: Project) {
   try {
     const res = await fetch(`${env.API_URL}/projects`, {
       method: "POST",
