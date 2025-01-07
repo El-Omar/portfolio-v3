@@ -1,11 +1,11 @@
-import { ApiResponse, AUTH, LoginDataResult } from "@portfolio-v3/shared";
+import { ApiResponse, AUTH, LoginResponse } from "@portfolio-v3/shared";
 import { RequestHandler } from "express";
 import ms from "ms";
 import jwt from "jsonwebtoken";
 import { env } from "../config/env";
 import { InvalidCredentialsError } from "../util/errors";
 
-export const login: RequestHandler<{}, ApiResponse<LoginDataResult>> = async (
+export const login: RequestHandler<{}, ApiResponse<LoginResponse>> = async (
   req,
   res,
   next

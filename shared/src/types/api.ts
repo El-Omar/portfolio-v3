@@ -37,7 +37,6 @@ export type LoginResponse = {
   token: string;
   user: {
     email: string;
-    id: string;
   };
   maxAge: number;
 };

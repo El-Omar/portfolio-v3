@@ -1,21 +1,12 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { env } from "@/config/env";
 import { ApiResponse, Project } from "@portfolio-v3/shared";
+import { projectsClient } from "@/lib/api/projects-client";
 
 export async function getProjects(): Promise<ApiResponse<Project[]>> {
   try {
-    const res = await fetch(`${env.API_URL}/projects`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      next: { tags: ["projects"] }, // For revalidation
-    });
-
-    if (!res.ok) throw new Error("Failed to fetch projects");
-    return res.json();
+    return await projectsClient.getAll();
   } catch (error) {
     console.error("Error:", error);
     throw new Error("Failed to load projects");
@@ -24,15 +15,7 @@ export async function getProjects(): Promise<ApiResponse<Project[]>> {
 
 export async function getProjectBySlug(slug: string) {
   try {
-    const res = await fetch(`${env.API_URL}/projects/${slug}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    if (!res.ok) throw new Error("Failed to fetch project");
-    return res.json();
+    return await projectsClient.getBySlug(slug);
   } catch (error) {
     console.error("Error:", error);
     throw new Error("Failed to load project");
@@ -41,19 +24,10 @@ export async function getProjectBySlug(slug: string) {
 
 export async function createProject(prevState: unknown, data: Project) {
   try {
-    const res = await fetch(`${env.API_URL}/projects`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
-
-    if (!res.ok) throw new Error("Failed to create project");
-
+    const response = await projectsClient.create(data);
     revalidatePath("/admin/dashboard/projects");
     revalidatePath("/");
-    return res.json();
+    return response;
   } catch (error) {
     console.error("Error:", error);
     throw new Error("Failed to create project");
@@ -62,19 +36,10 @@ export async function createProject(prevState: unknown, data: Project) {
 
 export async function updateProject(id: string, data: Partial<Project>) {
   try {
-    const res = await fetch(`${env.API_URL}/projects/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
-
-    if (!res.ok) throw new Error("Failed to update project");
-
+    const response = await projectsClient.update(id, data);
     revalidatePath("/admin/dashboard/projects");
     revalidatePath("/");
-    return res.json();
+    return response;
   } catch (error) {
     console.error("Error:", error);
     throw new Error("Failed to update project");
@@ -83,18 +48,10 @@ export async function updateProject(id: string, data: Partial<Project>) {
 
 export async function deleteProject(id: string) {
   try {
-    const res = await fetch(`${env.API_URL}/projects/${id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    if (!res.ok) throw new Error("Failed to delete project");
-
+    const response = await projectsClient.delete(id);
     revalidatePath("/admin/dashboard/projects");
     revalidatePath("/");
-    return res.json();
+    return response;
   } catch (error) {
     console.error("Error:", error);
     throw new Error("Failed to delete project");

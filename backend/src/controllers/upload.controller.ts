@@ -44,6 +44,9 @@ export const deleteFile: RequestHandler<{ fileKey: string }, ApiResponse> = asyn
     res.json({
       status: "success",
       message: "File deleted successfully from AWS bucket",
+      data: {
+        fileKey,
+      },
     });
   } catch (error) {
     next(error);

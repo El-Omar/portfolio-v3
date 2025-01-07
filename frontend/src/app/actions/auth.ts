@@ -1,28 +1,16 @@
 "use server";
 
-import { AUTH } from "@portfolio-v3/shared";
+import { AUTH, LoginResponse, loginSchema } from "@portfolio-v3/shared";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { env } from "@/config/env";
-
-const loginSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(4),
-});
+import { authClient } from "@/lib/api/auth-client";
 
 export type LoginSchema = z.infer<typeof loginSchema>;
 
-type LoginData = {
-  token: string;
-  user: {
-    email: string;
-  };
-  maxAge: number;
-};
-
 export type LoginResult = {
-  data?: LoginData;
+  data?: LoginResponse;
   error?:
     | string
     | {
@@ -50,24 +38,7 @@ export async function login(
   const { email, password } = validationResults.data;
 
   try {
-    const res = await fetch(`${env.API_URL}/${env.CMS_ADMIN_PATH}/auth/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, password }),
-    });
-
-    const data = await res.json();
-
-    if (!res.ok) {
-      return Promise.resolve({
-        error: data.message,
-      });
-    }
-
-    const userData = data.data as LoginData;
-
+    const userData = await authClient.login(email, password);
     const cookie = await cookies();
 
     cookie.set(AUTH.KEY, userData.token, {
@@ -79,7 +50,9 @@ export async function login(
     return Promise.resolve({});
   } catch (error) {
     console.log("Something went wrong my guy, ", error);
-    throw new Error("Something went wrong with loggin in");
+    return Promise.resolve({
+      error: `Something went wrong with logging in: ${error}`,
+    });
   }
 }
 
