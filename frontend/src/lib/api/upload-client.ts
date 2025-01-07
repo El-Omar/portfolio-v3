@@ -1,7 +1,8 @@
-import { ApiResponse, FileUploadResponse } from "@portfolio-v3/shared";
+import { ApiResponse, FileUploadResponse, API_ROUTES } from "@portfolio-v3/shared";
 import { BaseApiClient } from "./base-client";
 import { verifyAuth } from "@/lib/auth/verifyAuth";
 
+const { UPLOADS } = API_ROUTES;
 export class UploadClient extends BaseApiClient {
   async uploadFile(file: File): Promise<string> {
     try {
@@ -22,7 +23,7 @@ export class UploadClient extends BaseApiClient {
       // Get presigned URL from server
       let presignedUrlResponse;
       try {
-        const response = await this.fetch<ApiResponse<FileUploadResponse>>("/uploads/presigned-url", {
+        const response = await this.fetch<ApiResponse<FileUploadResponse>>(UPLOADS.PRESIGNED_URL, {
           method: "POST",
           protected: true,
           body: {
@@ -83,7 +84,7 @@ export class UploadClient extends BaseApiClient {
         throw new Error("No file key provided");
       }
 
-      const response = await this.fetch<{ status: string }>(`/uploads/${fileKey}`, {
+      const response = await this.fetch<{ status: string }>(UPLOADS.BY_KEY(fileKey), {
         method: "DELETE",
         protected: true,
       });

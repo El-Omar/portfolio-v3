@@ -13,6 +13,7 @@ import {
   apiLimiter,
   securityMiddleware,
 } from "./middleware/security.middleware";
+import { API_ROUTES } from "@portfolio-v3/shared";
 
 dotenv.config();
 
@@ -33,9 +34,12 @@ app.use(requestLogger);
 app.use(apiLimiter);
 
 // Routes definitions
-app.use(`${env.API_PREFIX}/${env.CMS_ADMIN_PATH}/auth`, authRoutes);
-app.use(`${env.API_PREFIX}/projects`, projectRoutes);
-app.use(`${env.API_PREFIX}/uploads`, uploadRoutes);
+app.use(
+  `${env.API_PREFIX}/${env.CMS_ADMIN_PATH}${API_ROUTES.AUTH.BASE}`,
+  authRoutes
+);
+app.use(`${env.API_PREFIX}${API_ROUTES.PROJECTS.BASE}`, projectRoutes);
+app.use(`${env.API_PREFIX}${API_ROUTES.UPLOADS.BASE}`, uploadRoutes);
 
 // Error middleware
 app.use(errorHandler);
