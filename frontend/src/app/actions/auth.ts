@@ -44,7 +44,7 @@ export async function login(
     cookie.set(AUTH.KEY, userData.token, {
       ...AUTH.OPTIONS,
       secure: env.NODE_ENV === "production",
-      maxAge: userData.maxAge,
+      maxAge: userData.maxAge / 1000,
     });
 
     return Promise.resolve({});

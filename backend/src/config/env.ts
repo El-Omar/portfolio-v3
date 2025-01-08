@@ -30,8 +30,6 @@ const envSchema = z.object({
   AWS_SECRET_ACCESS_KEY: z.string(),
   AWS_S3_BUCKET: z.string(),
   AWS_REGION: z.string(),
-  AWS_ALLOWED_MIME_TYPES: z.string(),
-  AWS_MAX_FILE_SIZE: z.string(),
 
   // Content Management
   CMS_ADMIN_USERNAME: z.string().email(),

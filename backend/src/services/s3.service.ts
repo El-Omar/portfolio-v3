@@ -3,12 +3,15 @@ import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { s3Client } from "../config/aws";
 import { env } from "../config/env";
 import { BadRequestError } from "../util/errors";
-import { toBytes } from "../util/files";
-
+import {
+  ALLOWED_IMAGE_TYPES,
+  IMAGE_MAX_SIZE,
+  toBytes,
+} from "@portfolio-v3/shared";
 export class S3Service {
   private static readonly instance: S3Service = new S3Service();
-  private readonly maxFileSize = toBytes({ MB: env.AWS_MAX_FILE_SIZE });
-  private readonly allowedMimeTypes = env.AWS_ALLOWED_MIME_TYPES?.split(",");
+  private readonly maxFileSize = toBytes({ MB: IMAGE_MAX_SIZE });
+  private readonly allowedMimeTypes = ALLOWED_IMAGE_TYPES;
 
   private constructor() {}
 
@@ -31,7 +34,7 @@ export class S3Service {
     // Validate file type
     if (fileSize > this.maxFileSize) {
       throw new BadRequestError(
-        `This file is too chunky. That's a big boy! Max allowed is ${this.maxFileSize}MB`
+        `This file is too chunky. That's a big boy! Max allowed is ${this.maxFileSize} in bytes`
       );
     }
 

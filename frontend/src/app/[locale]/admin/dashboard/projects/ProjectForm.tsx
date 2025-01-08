@@ -1,10 +1,9 @@
 "use client";
 
 import { Upload } from "lucide-react";
-import { useState } from "react";
+import { ReactElement, useActionState, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useFormStatus } from "react-dom";
 import { toast } from "sonner";
 import { createProject } from "@/app/actions/projects";
 import { Button } from "@/components/ui/Button";
@@ -13,17 +12,7 @@ import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/Label";
 import { Switch } from "@/components/ui/Switch";
 import { Textarea } from "@/components/ui/Textarea";
-import { Project } from "@portfolio-v3/shared";
-
-// Submit Button with automatic pending state
-function SubmitButton() {
-  const { pending } = useFormStatus();
-  return (
-    <Button type="submit" disabled={pending}>
-      {pending ? "Creating..." : "Create Project"}
-    </Button>
-  );
-}
+import { ApiResponse, Project, ProjectResponse } from "@portfolio-v3/shared";
 
 const initialState: Project = {
   title: "test",
@@ -38,12 +27,32 @@ const initialState: Project = {
   order: 0,
 };
 
-export function ProjectForm() {
+const ProjectForm = (): ReactElement => {
   const router = useRouter();
   const [formData, setFormData] = useState<Project>(initialState);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [result, handleSubmit, isPending] = useActionState<
+    ApiResponse<ProjectResponse> | Project,
+    FormData
+  >(async (previousState, formData) => {
+    // Add image if exists
+    if (imageFile) {
+      formData.set("imageUrl", imageFile);
+    }
+
+    const result = await createProject(previousState, formData);
+
+    if (result?.status === "error") {
+      const error = result.message || "Failed to create project";
+      toast.error(error);
+      return result;
+    }
+
+    toast.success("Project created successfully");
+    router.push("/admin/dashboard/projects");
+    return result;
+  }, initialState);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -78,54 +87,16 @@ export function ProjectForm() {
     reader.readAsDataURL(file);
   };
 
-  const handleTechChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    // Only split into array when there are commas
-    const techs = value.includes(",")
-      ? value
-          .split(",")
-          .map((t) => t.trim())
-          .filter(Boolean)
-      : [value.trim()].filter(Boolean);
-
-    setFormData((prev) => ({
-      ...prev,
-      technologies: techs,
-    }));
-  };
-
-  async function handleSubmit(formData: FormData) {
-    // Create FormData with all fields
-    Object.entries(formData).forEach(([key, value]) => {
-      if (key === "technologies") {
-        formData.set(key, JSON.stringify(value));
-      }
-    });
-
-    // Add image if exists
-    if (imageFile) {
-      formData.set("image", imageFile);
+  const error = (() => {
+    if ("status" in result && result.status === "error") {
+      const msg =
+        result.errors?.join(", ") ||
+        result.message ||
+        "Some unknown error happened";
+      return msg;
     }
-
-    try {
-      const result = await createProject(null, formData);
-
-      if (result.status === "error") {
-        const error = result.message || "Failed to create project";
-        toast.error(error);
-        setError(error);
-        return;
-      }
-
-      toast.success("Project created successfully");
-      router.push("/admin/dashboard/projects");
-      router.refresh();
-    } catch (error) {
-      console.error("Form submission error:", error);
-      toast.error("Failed to create project");
-      setError("Failed to create project: " + JSON.stringify(error));
-    }
-  }
+    return "";
+  })();
 
   return (
     <Card>
@@ -200,8 +171,8 @@ export function ProjectForm() {
             <Input
               id="technologies"
               name="technologies"
-              value={formData.technologies.join(", ")}
-              onChange={handleTechChange}
+              value={formData.technologies}
+              onChange={handleChange}
               required
               placeholder="React, TypeScript, Node.js"
             />
@@ -284,7 +255,9 @@ export function ProjectForm() {
           </div>
 
           <div className="flex gap-4">
-            <SubmitButton />
+            <Button type="submit" disabled={isPending}>
+              {isPending ? "Creating..." : "Create Project"}
+            </Button>
             <Button
               type="button"
               variant="outline"
@@ -297,4 +270,6 @@ export function ProjectForm() {
       </CardContent>
     </Card>
   );
-}
+};
+
+export default ProjectForm;

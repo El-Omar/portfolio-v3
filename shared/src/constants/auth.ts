@@ -13,6 +13,5 @@ export const AUTH: {
   OPTIONS: {
     httpOnly: true,
     sameSite: "strict",
-    path: "/",
   },
 };

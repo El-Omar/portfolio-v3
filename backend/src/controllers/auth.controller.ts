@@ -34,12 +34,6 @@ export const login: RequestHandler<{}, ApiResponse<LoginResponse>> = async (
       }
     );
 
-    res.cookie(AUTH.KEY, token, {
-      ...AUTH.OPTIONS,
-      secure: env.NODE_ENV === "production",
-      maxAge,
-    });
-
     res.json({
       status: "success",
       data: {
@@ -48,7 +42,7 @@ export const login: RequestHandler<{}, ApiResponse<LoginResponse>> = async (
           email: env.CMS_ADMIN_USERNAME,
         },
         maxAge,
-      },
+      }
     });
   } catch (error) {
     next(error);

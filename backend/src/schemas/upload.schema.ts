@@ -1,6 +1,5 @@
 import { z } from "zod";
-import { env } from "../config/env";
-import { toBytes } from "../util/files";
+import { IMAGE_MAX_SIZE, toBytes } from "@portfolio-v3/shared";
 
 export const presignedUrlSchema = z.object({
   body: z.object({
@@ -10,8 +9,8 @@ export const presignedUrlSchema = z.object({
       .number()
       .positive("File size must be positive")
       .max(
-        toBytes({ MB: env.AWS_MAX_FILE_SIZE }),
-        `File size must not exceed ${env.AWS_MAX_FILE_SIZE}MB`
+        toBytes({ MB: IMAGE_MAX_SIZE }),
+        `File size must not exceed ${IMAGE_MAX_SIZE}MB`
       ),
   }),
 });

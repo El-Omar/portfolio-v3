@@ -1,4 +1,4 @@
-// bytesConverter.ts
+import { ALLOWED_IMAGE_TYPES, IMAGE_MAX_SIZE } from "../constants/files";
 
 /**
  * Represents the units of digital storage that can be converted to bytes.
@@ -54,4 +54,35 @@ export const toBytes = ({
     Number(GB) * 1024 ** 3 +
     Number(TB) * 1024 ** 4
   );
+};
+
+type ValidateFileResult = {
+  isValid: boolean;
+  error?: string;
+};
+
+export const validateFile = (
+  file: File,
+  maxSize: number,
+  allowedTypes: string[]
+): ValidateFileResult => {
+  if (file.size > maxSize) {
+    return {
+      isValid: false,
+      error: "File size is too large",
+    };
+  }
+
+  if (!allowedTypes.includes(file.type)) {
+    return {
+      isValid: false,
+      error: "File type is not allowed",
+    };
+  }
+
+  return { isValid: true };
+};
+
+export const validateImageFile = (file: File): ValidateFileResult => {
+  return validateFile(file, IMAGE_MAX_SIZE, ALLOWED_IMAGE_TYPES);
 };

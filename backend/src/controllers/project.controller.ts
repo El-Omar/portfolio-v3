@@ -10,13 +10,11 @@ import {
 } from "../schemas/project.schema";
 import { generateEtag, validateEtag } from "../util/etag";
 import { BadRequestError, NotFoundError } from "../util/errors";
-import { ApiResponse, Project as ProjectType } from "@portfolio-v3/shared";
+import { ApiResponse, PaginationParams, Project as ProjectType } from "@portfolio-v3/shared";
 import { S3Service } from "../services/s3.service";
 
-type GetProjectsQuery = {
-  page?: number;
+type GetProjectsQuery = PaginationParams & {
   featured?: boolean;
-  limit?: number;
 };
 
 // GET PROJECTS /projects
@@ -46,7 +44,7 @@ export const getProjects: RequestHandler<
     res.json({
       status: "success",
       data: projects,
-      pagination: createPaginationResponse(total, pagination),
+      pagination: createPaginationResponse(total, pagination.page, pagination.limit),
     });
 
     return;

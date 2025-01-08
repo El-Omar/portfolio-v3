@@ -1,4 +1,6 @@
 import { env } from "@/config/env";
+import { AUTH } from "@portfolio-v3/shared";
+import { cookies } from "next/headers";
 
 export type RequestOptions = {
   method: "GET" | "POST" | "PATCH" | "DELETE";
@@ -31,10 +33,16 @@ export class BaseApiClient {
       ...options.headers,
     };
 
+    const cookie = await cookies();
+    const authToken = cookie.get(AUTH.KEY)?.value;
+
+    if (options.protected && authToken) {
+      headers.Authorization = `Bearer ${authToken}`;
+    }
+
     const fetchOptions: RequestInit = {
       method: options.method,
       headers,
-      credentials: options.protected ? "include" : "same-origin",
       body: options.body ? JSON.stringify(options.body) : undefined,
       ...(options.next && { next: options.next }),
     };
@@ -43,7 +51,8 @@ export class BaseApiClient {
 
     if (!response.ok) {
       const error = await response.json();
-      throw new Error(error.message || "API call failed");
+      const errorsList = error.errors?.join(", ");
+      throw new Error(errorsList || error.message || "API call failed");
     }
 
     return response.json();

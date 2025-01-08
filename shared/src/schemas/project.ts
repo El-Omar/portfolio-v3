@@ -5,9 +5,7 @@ export const projectSchema = z.object({
   slug: z.string().optional(),
   description: z.string().min(1, "Description is required"),
   technologies: z.array(z.string()).min(1, "At least one technology is required"),
-  imageUrl: z.string().url().optional().refine(url => !!url, {
-    message: "Image URL is required"
-  }),
+  imageUrl: z.string().url().optional(),
   githubUrl: z.string().url().optional(),
   liveUrl: z.string().url().optional(),
   featured: z.boolean().default(false),

@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import { env } from "../config/env";
 import { AuthenticationError, TokenExpiredError } from "../util/errors";
 import { User } from "../types/user";
+import { AUTH } from "@portfolio-v3/shared";
 
 export type AuthRequest = Request & {
   user?: User;
@@ -25,7 +26,7 @@ export const authMiddleware = async (
   next: NextFunction
 ) => {
   try {
-    const token = req.cookies.auth_token;
+    const token = req.headers.authorization?.split(" ")[1] || "";
 
     if (!token) {
       throw new AuthenticationError("No token provided");

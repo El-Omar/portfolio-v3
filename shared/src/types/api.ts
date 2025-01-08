@@ -16,7 +16,7 @@ export type ApiSuccessResponse<T> = {
 
 export type ApiResponse<T = unknown> = ApiSuccessResponse<T> | ApiErrorResponse;
 
-// Pagination types
+// Consolidated pagination types
 export type PaginationParams = {
   page?: number;
   limit?: number;
@@ -24,9 +24,10 @@ export type PaginationParams = {
 
 export type PaginationResponse = {
   total: number;
-  pages: number;
   currentPage: number;
   perPage: number;
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
 };
 
 // Common response types
