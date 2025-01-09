@@ -1,9 +1,10 @@
-import { Eye, Pencil, Plus, Trash2 } from "lucide-react";
+import { Plus } from "lucide-react";
 import Link from "next/link";
 import { ReactElement } from "react";
 import { getProjects } from "@/app/actions/projects";
 import { Button } from "@/components/ui/Button";
 import Image from "next/image";
+import ProjectActions from "@/components/projects/ProjectActions";
 
 const ProjectsPage = async (): Promise<ReactElement> => {
   const projectsData = await getProjects();
@@ -123,21 +124,7 @@ const ProjectsPage = async (): Promise<ReactElement> => {
                     </span>
                   </td>
                   <td className="px-6 py-4">
-                    <div className="flex justify-center gap-2">
-                      <Button variant="outline" size="sm">
-                        <Eye className="h-4 w-4" />
-                      </Button>
-                      <Button variant="outline" size="sm">
-                        <Pencil className="h-4 w-4" />
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="text-red-600 hover:text-red-700"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
+                    <ProjectActions project={project} />
                   </td>
                 </tr>
               ))}

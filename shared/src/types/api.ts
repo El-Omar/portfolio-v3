@@ -1,5 +1,5 @@
 import { Project } from "../schemas/project";
-import { WithEveFields, WithSlug } from "./helpers";
+import { WithEtag, WithEveFields, WithSlug } from "./helpers";
 
 export type ApiErrorResponse = {
   status: "error";
@@ -45,4 +45,4 @@ export type LoginResponse = {
   maxAge: number;
 };
 
-export type ProjectResponse = WithEveFields<WithSlug<Project>>;
+export type ProjectResponse = WithEveFields<WithSlug<WithEtag<Project>>>;

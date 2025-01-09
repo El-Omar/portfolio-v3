@@ -6,7 +6,6 @@ import {
   updateProject,
   deleteProject,
 } from "../controllers/project.controller";
-import { etagMiddleware } from "../middleware/etag.middleware";
 import { validateRequest } from "../middleware/validate.middleware";
 import {
   createProjectSchema,
@@ -15,7 +14,6 @@ import {
 import { authMiddleware } from "../middleware/auth.middleware";
 
 const router = Router();
-router.use(etagMiddleware);
 
 // Public routes
 router.get("/", getProjects);

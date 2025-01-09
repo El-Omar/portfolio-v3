@@ -8,17 +8,26 @@ import { BaseApiClient } from "./base-client";
 import { verifyAuth } from "@/lib/auth/verifyAuth";
 
 const { PROJECTS } = API_ROUTES;
+
 export class ProjectsClient extends BaseApiClient {
   async getAll(): Promise<ApiResponse<ProjectResponse[]>> {
     return this.fetch<ApiResponse<ProjectResponse[]>>(PROJECTS.BASE, {
       method: "GET",
       next: { tags: ["projects"] },
+      // cache: true,
     });
   }
 
-  async getBySlug(slug: string): Promise<ApiResponse<ProjectResponse>> {
+  async getBySlug(
+    slug: string,
+    etag?: string
+  ): Promise<ApiResponse<ProjectResponse>> {
     return this.fetch<ApiResponse<ProjectResponse>>(PROJECTS.BY_SLUG(slug), {
       method: "GET",
+      next: { tags: ["projects"] },
+      // TODO: Uncomment this when we have caching working
+      // cache: true,
+      // etag,
     });
   }
 
@@ -37,7 +46,8 @@ export class ProjectsClient extends BaseApiClient {
 
   async update(
     slug: string,
-    data: Partial<Project>
+    data: Partial<Project>,
+    etag: string
   ): Promise<ApiResponse<ProjectResponse>> {
     const auth = await verifyAuth();
     if (!auth.success) {
@@ -48,10 +58,11 @@ export class ProjectsClient extends BaseApiClient {
       method: "PATCH",
       body: data,
       protected: true,
+      etag,
     });
   }
 
-  async delete(slug: string): Promise<ApiResponse<void>> {
+  async delete(slug: string, etag: string): Promise<ApiResponse<void>> {
     const auth = await verifyAuth();
     if (!auth.success) {
       throw new Error("Authentication required to delete projects");
@@ -60,6 +71,7 @@ export class ProjectsClient extends BaseApiClient {
     return this.fetch<ApiResponse<void>>(PROJECTS.BY_SLUG(slug), {
       method: "DELETE",
       protected: true,
+      etag,
     });
   }
 }

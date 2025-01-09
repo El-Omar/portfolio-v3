@@ -8,9 +8,16 @@ import {
   CreateProjectInput,
   UpdateProjectInput,
 } from "../schemas/project.schema";
-import { generateEtag, validateEtag } from "../util/etag";
+import {
+  generateEtag,
+  compareEtags,
+} from "../util/etag";
 import { BadRequestError, NotFoundError } from "../util/errors";
-import { ApiResponse, PaginationParams, Project as ProjectType } from "@portfolio-v3/shared";
+import {
+  ApiResponse,
+  PaginationParams,
+  Project as ProjectType,
+} from "@portfolio-v3/shared";
 import { S3Service } from "../services/s3.service";
 
 type GetProjectsQuery = PaginationParams & {
@@ -41,13 +48,23 @@ export const getProjects: RequestHandler<
       Project.countDocuments(query),
     ]);
 
-    res.json({
-      status: "success",
-      data: projects,
-      pagination: createPaginationResponse(total, pagination.page, pagination.limit),
+    const projectDocs = projects.map((project) => {
+      const doc = project.toObject();
+      return {
+        ...doc,
+        _etag: generateEtag(doc),
+      };
     });
 
-    return;
+    res.json({
+      status: "success",
+      data: projectDocs,
+      pagination: createPaginationResponse(
+        total,
+        pagination.page,
+        pagination.limit
+      ),
+    });
   } catch (error) {
     next(error);
   }
@@ -56,14 +73,31 @@ export const getProjects: RequestHandler<
 // GET BY SLUG /projects/:slug
 export const getProjectBySlug: RequestHandler<
   { slug: string },
-  ProjectType
+  ApiResponse<ProjectType>
 > = async (req, res, next) => {
   try {
     const project = await Project.findOne({ slug: req.params.slug });
     if (!project) {
       throw new NotFoundError("Project not found");
     }
-    res.json(project);
+
+    const etag = generateEtag(project);
+
+    const ifNoneMatch = req.header("If-None-Match");
+    if (ifNoneMatch && compareEtags(ifNoneMatch, etag)) {
+      res.status(304).end();
+      return;
+    }
+
+    const projectWithEtag = {
+      ...project.toObject(),
+      _etag: etag,
+    };
+
+    res.json({
+      status: "success",
+      data: projectWithEtag,
+    });
   } catch (error) {
     next(error);
   }
@@ -72,13 +106,17 @@ export const getProjectBySlug: RequestHandler<
 // POST /projects
 export const createProject: RequestHandler<
   {},
-  ProjectType,
+  ApiResponse<ProjectType>,
   CreateProjectInput
 > = async (req, res, next) => {
   try {
     const newProject = new Project(req.body);
     await newProject.save();
-    res.status(201).json(newProject);
+
+    res.status(201).json({
+      status: "success",
+      data: newProject,
+    });
   } catch (error) {
     next(error);
   }
@@ -87,7 +125,7 @@ export const createProject: RequestHandler<
 // PATCH /projects/:slug
 export const updateProject: RequestHandler<
   { slug: string },
-  ProjectType,
+  ApiResponse<ProjectType>,
   UpdateProjectInput
 > = async (req, res, next) => {
   try {
@@ -96,18 +134,24 @@ export const updateProject: RequestHandler<
       throw new NotFoundError("Project not found");
     }
 
-    const currentEtag = generateEtag(currentProject);
-    const clientEtag = req.header("If-Match");
-    const { isValid, statusCode, message } = validateEtag(
-      currentEtag,
-      clientEtag
-    );
+    const ifMatch = req.header("If-Match");
 
-    if (!isValid) {
-      throw new BadRequestError(message, statusCode);
+    if (!ifMatch) {
+      throw new BadRequestError(
+        "Precondition Required: If-Match header is required",
+        428
+      );
     }
 
-    // If updating image, delete old one
+    const currentEtag = generateEtag(currentProject);
+
+    if (!compareEtags(ifMatch, currentEtag)) {
+      throw new BadRequestError(
+        "Precondition Failed: Resource has been modified",
+        412
+      );
+    }
+
     if (
       req.body.imageUrl &&
       currentProject.imageUrl &&
@@ -119,7 +163,6 @@ export const updateProject: RequestHandler<
         await s3Service.deleteFile(oldFileKey);
       } catch (error) {
         console.error("Failed to delete old image:", error);
-        // Continue with update even if delete fails
       }
     }
 
@@ -130,7 +173,10 @@ export const updateProject: RequestHandler<
       })
       .save();
 
-    res.json(updatedProject);
+    res.json({
+      status: "success",
+      data: updatedProject,
+    });
   } catch (error) {
     next(error);
   }
@@ -143,36 +189,41 @@ export const deleteProject: RequestHandler<{ slug: string }> = async (
   next
 ) => {
   try {
-    const currentProject = await Project.findOne({ slug: req.params.slug });
-    if (!currentProject) {
+    const project = await Project.findOne({ slug: req.params.slug });
+    if (!project) {
       throw new NotFoundError("Project not found");
     }
 
-    const currentEtag = generateEtag(currentProject);
-    const clientEtag = req.header("If-Match");
-    const { isValid, statusCode, message } = validateEtag(
-      currentEtag,
-      clientEtag
-    );
+    const ifMatch = req.header("If-Match");
 
-    if (!isValid) {
-      throw new BadRequestError(message, statusCode);
+    if (!ifMatch) {
+      throw new BadRequestError(
+        "Precondition Required: If-Match header is required",
+        428
+      );
     }
 
-    // Delete associated image if exists
-    if (currentProject.imageUrl) {
+    const currentEtag = generateEtag(project);
+
+    if (!compareEtags(ifMatch, currentEtag)) {
+      throw new BadRequestError(
+        "Precondition Failed: Resource has been modified",
+        412
+      );
+    }
+
+    if (project.imageUrl) {
       try {
         const s3Service = S3Service.getInstance();
-        const fileKey = s3Service.getFileKey(currentProject.imageUrl);
+        const fileKey = s3Service.getFileKey(project.imageUrl);
         await s3Service.deleteFile(fileKey);
       } catch (error) {
         console.error("Failed to delete project image:", error);
-        // Continue with project deletion even if image delete fails
       }
     }
 
     await Project.deleteOne({ slug: req.params.slug });
-    res.status(204).send();
+    res.status(204).end();
   } catch (error) {
     next(error);
   }

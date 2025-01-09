@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import {
   ApiResponse,
   ProjectResponse,
@@ -21,9 +21,9 @@ type ValidateAndUploadImageResult =
       data: string;
     };
 
-async function validateAndUploadImage(
+export const validateAndUploadImage = async (
   file: File
-): Promise<ValidateAndUploadImageResult> {
+): Promise<ValidateAndUploadImageResult> => {
   try {
     // Use shared validation function
     const validation = validateImageFile(file);
@@ -46,7 +46,7 @@ async function validateAndUploadImage(
   }
 }
 
-export async function getProjects(): Promise<ApiResponse<ProjectResponse[]>> {
+export const getProjects = async (): Promise<ApiResponse<ProjectResponse[]>> => {
   try {
     return await projectsClient.getAll();
   } catch (error) {
@@ -55,9 +55,9 @@ export async function getProjects(): Promise<ApiResponse<ProjectResponse[]>> {
   }
 }
 
-export async function getProjectBySlug(
+export const getProjectBySlug = async (
   slug: string
-): Promise<ApiResponse<ProjectResponse>> {
+): Promise<ApiResponse<ProjectResponse>> => {
   try {
     return await projectsClient.getBySlug(slug);
   } catch (error) {
@@ -71,9 +71,9 @@ type TransformedProjectData = {
   imageFile?: File;
 };
 
-async function transformAndValidateProject(
+export const transformAndValidateProject = async (
   formData: FormData
-): Promise<ApiResponse<TransformedProjectData>> {
+): Promise<ApiResponse<TransformedProjectData>> => {
   try {
     // 1. Convert FormData to object
     const rawData = Object.fromEntries(formData.entries());
@@ -126,10 +126,10 @@ async function transformAndValidateProject(
   }
 }
 
-export async function createProject(
+export const createProject = async (
   _prevState: ApiResponse<ProjectResponse> | Project,
   formData: FormData
-): Promise<ApiResponse<ProjectResponse>> {
+): Promise<ApiResponse<ProjectResponse>> => {
   let uploadedImageUrl: string | undefined;
 
   try {
@@ -181,7 +181,11 @@ export async function createProject(
   }
 }
 
-export async function updateProject(slug: string, formData: FormData) {
+export const updateProject = async (
+  slug: string,
+  formData: FormData,
+  etag: string
+): Promise<ApiResponse<ProjectResponse>> => {
   let uploadedImageUrl: string | undefined;
   try {
     // 1. Transform and validate data
@@ -206,7 +210,7 @@ export async function updateProject(slug: string, formData: FormData) {
     }
 
     // 3. Update project
-    const response = await projectsClient.update(slug, projectData);
+    const response = await projectsClient.update(slug, projectData, etag);
     if (response.status === "error" && uploadedImageUrl) {
       await uploadClient.deleteFile(uploadedImageUrl);
       return response;
@@ -233,14 +237,27 @@ export async function updateProject(slug: string, formData: FormData) {
   }
 }
 
-export async function deleteProject(id: string) {
+export const deleteProject = async (
+  slug: string,
+  etag: string
+): Promise<ApiResponse<void>> => {
   try {
-    const response = await projectsClient.delete(id);
+    const response = await projectsClient.delete(slug, etag);
+
+    // Revalidate the specific tag
+    revalidateTag("projects");
+
+    // Also revalidate paths that might show projects
     revalidatePath("/admin/dashboard/projects");
     revalidatePath("/");
+
     return response;
   } catch (error) {
     console.error("Error:", error);
-    throw new Error("Failed to delete project");
+    return {
+      status: "error",
+      message:
+        error instanceof Error ? error.message : "Failed to delete project",
+    };
   }
 }

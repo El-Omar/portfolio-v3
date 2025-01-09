@@ -7,3 +7,7 @@ export type WithEveFields<T> = T & {
 export type WithSlug<T> = T & {
   slug: string;
 };
+
+export type WithEtag<T> = T & {
+  _etag: string;
+};

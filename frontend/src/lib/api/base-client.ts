@@ -8,6 +8,8 @@ export type RequestOptions = {
   body?: any;
   next?: { tags: string[] };
   protected?: boolean;
+  etag?: string;
+  cache?: boolean;
 };
 
 export class BaseApiClient {
@@ -19,13 +21,7 @@ export class BaseApiClient {
 
   protected async fetch<T>(
     endpoint: string,
-    options: {
-      method: string;
-      body?: unknown;
-      protected?: boolean;
-      headers?: Record<string, string>;
-      next?: NextFetchRequestConfig;
-    }
+    options: RequestOptions
   ): Promise<T> {
     const url = `${this.baseUrl}${endpoint}`;
     const headers: Record<string, string> = {
@@ -40,14 +36,25 @@ export class BaseApiClient {
       headers.Authorization = `Bearer ${authToken}`;
     }
 
-    const fetchOptions: RequestInit = {
+    if (options.etag) {
+      if (options.method === "GET" && options.cache) {
+        headers["If-None-Match"] = options.etag;
+      } else if (["DELETE", "PATCH", "PUT"].includes(options.method)) {
+        headers["If-Match"] = options.etag;
+      }
+    }
+
+    const response = await fetch(url, {
       method: options.method,
       headers,
       body: options.body ? JSON.stringify(options.body) : undefined,
       ...(options.next && { next: options.next }),
-    };
+    });
 
-    const response = await fetch(url, fetchOptions);
+    // If we got a 304 Not Modified or 204 No Content, return null
+    if (response.status === 304 || response.status === 204) {
+      return null as T;
+    }
 
     if (!response.ok) {
       const error = await response.json();
