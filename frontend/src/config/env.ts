@@ -14,6 +14,8 @@ const envSchema = z.object({
   API_URL: z.string(),
   CMS_ADMIN_PATH: z.string(),
   JWT_SECRET: z.string().min(32),
+  AWS_S3_BUCKET: z.string(),
+  AWS_REGION: z.string(),
 });
 
 const parseEnv = () => {

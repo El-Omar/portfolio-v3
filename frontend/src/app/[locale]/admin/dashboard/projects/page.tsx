@@ -3,10 +3,11 @@ import Link from "next/link";
 import { ReactElement } from "react";
 import { getProjects } from "@/app/actions/projects";
 import { Button } from "@/components/ui/Button";
+import Image from "next/image";
 
 const ProjectsPage = async (): Promise<ReactElement> => {
   const projectsData = await getProjects();
-  
+
   if (projectsData.status === "error") {
     return (
       <div className="p-6 text-center">
@@ -30,7 +31,7 @@ const ProjectsPage = async (): Promise<ReactElement> => {
             </Button>
           </Link>
         </div>
-        
+
         <div className="bg-white rounded-lg shadow p-6 text-center">
           <p className="text-gray-600">No projects found</p>
         </div>
@@ -45,7 +46,9 @@ const ProjectsPage = async (): Promise<ReactElement> => {
         <Link href="/admin/dashboard/projects/new">
           <Button>
             <Plus className="mr-2 h-4 w-4" />
-            Add Project
+            <span className="hidden md:block pointer-events-none">
+              Add Project
+            </span>
           </Button>
         </Link>
       </div>
@@ -55,6 +58,7 @@ const ProjectsPage = async (): Promise<ReactElement> => {
           <table className="w-full">
             <thead>
               <tr className="border-b">
+                <th className="px-6 py-4 text-left">Image</th>
                 <th className="px-6 py-4 text-left">Title</th>
                 <th className="px-6 py-4 text-left">Technologies</th>
                 <th className="px-6 py-4 text-left">Featured</th>
@@ -65,6 +69,22 @@ const ProjectsPage = async (): Promise<ReactElement> => {
             <tbody>
               {projects.map((project) => (
                 <tr key={project._id} className="border-b hover:bg-gray-50">
+                  <td className="px-6 py-4">
+                    {project.imageUrl ? (
+                      <div className="relative w-16 h-16">
+                        <Image
+                          src={project.imageUrl}
+                          alt={project.title}
+                          fill
+                          className="object-cover rounded"
+                        />
+                      </div>
+                    ) : (
+                      <div className="w-16 h-16 bg-gray-100 rounded flex items-center justify-center">
+                        <span className="text-gray-400 text-xs">No image</span>
+                      </div>
+                    )}
+                  </td>
                   <td className="px-6 py-4">
                     <div className="font-medium">{project.title}</div>
                     <div className="text-sm text-gray-500">{project.slug}</div>
