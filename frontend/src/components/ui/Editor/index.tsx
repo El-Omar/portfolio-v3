@@ -210,7 +210,7 @@ const Editor = ({ value, onChange, className }: EditorProps) => {
         </Toggle>
       </div>
 
-      <EditorContent editor={editor} className="p-3" />
+      <EditorContent editor={editor} className="p-3 min-h-[200px]" />
     </div>
   );
 };

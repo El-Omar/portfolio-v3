@@ -15,6 +15,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/Dialog";
+import { Link } from "@/i18n/routing";
 
 type Props = {
   project: ProjectResponse;
@@ -41,19 +42,17 @@ const ProjectActions = ({ project }: Props): ReactElement => {
     });
   };
 
-  const onView = () => {
-    console.log("view");
-  };
-
   const onEdit = () => {
     console.log("edit");
   };
 
   return (
     <div className="flex justify-center gap-2">
-      <Button variant="outline" size="sm" onClick={onView}>
-        <Eye className="h-4 w-4" />
-      </Button>
+      <Link href={`/projects/${project.slug}`} target="_blank">
+        <Button variant="outline" size="sm">
+          <Eye className="h-4 w-4" />
+        </Button>
+      </Link>
       <Button variant="outline" size="sm" onClick={onEdit}>
         <Pencil className="h-4 w-4" />
       </Button>

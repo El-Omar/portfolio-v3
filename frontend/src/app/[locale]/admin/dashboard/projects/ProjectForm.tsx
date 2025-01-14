@@ -46,33 +46,37 @@ type AdditionalImage = {
 
 const ProjectForm = ({ onSubmit, isPending, project }: Props): ReactElement => {
   const router = useRouter();
-  const [formData, setFormData] = useState<Project | Record<string, any>>(
+  const [formDataState, setFormDataState] = useState<Project | Record<string, any>>(
     project || initialState
   );
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [additionalImages, setAdditionalImages] = useState<AdditionalImage[]>([]);
 
-  const handleSubmit = (formData: FormData) => {
+  const handleSubmit = (submittedFormData: FormData) => {
     if (imageFile) {
-      formData.set("imageUrl", imageFile);
+      submittedFormData.set("imageUrl", imageFile);
+    }
+
+    if (formDataState.content) {
+      submittedFormData.set("content", formDataState.content);
     }
 
     // Add additional images to formData with index
     additionalImages.forEach((image, index) => {
-      formData.append(`additionalImages[${index}]`, image.file);
-      formData.append(`additionalImageCaptions[${index}]`, image.caption || '');
-      formData.append(`additionalImageClassNames[${index}]`, image.className || '');
+      submittedFormData.append(`additionalImages[${index}]`, image.file);
+      submittedFormData.append(`additionalImageCaptions[${index}]`, image.caption || '');
+      submittedFormData.append(`additionalImageClassNames[${index}]`, image.className || '');
     });
 
-    onSubmit(formData);
+    onSubmit(submittedFormData);
   };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormDataState((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -243,7 +247,7 @@ const ProjectForm = ({ onSubmit, isPending, project }: Props): ReactElement => {
             <Input
               id="title"
               name="title"
-              value={formData.title}
+              value={formDataState.title}
               onChange={handleChange}
               required
             />
@@ -255,7 +259,7 @@ const ProjectForm = ({ onSubmit, isPending, project }: Props): ReactElement => {
             <Textarea
               id="description"
               name="description"
-              value={formData.description}
+              value={formDataState.description}
               onChange={handleChange}
               required
               rows={4}
@@ -266,9 +270,9 @@ const ProjectForm = ({ onSubmit, isPending, project }: Props): ReactElement => {
           <div className="space-y-2">
             <Label htmlFor="content">Content</Label>
             <Editor
-              value={formData.content}
+              value={formDataState.content}
               onChange={(value) =>
-                setFormData((prev) => ({ ...prev, content: value }))
+                setFormDataState((prev) => ({ ...prev, content: value }))
               }
             />
           </div>
@@ -281,7 +285,7 @@ const ProjectForm = ({ onSubmit, isPending, project }: Props): ReactElement => {
             <Input
               id="technologies"
               name="technologies"
-              value={formData.technologies}
+              value={formDataState.technologies}
               onChange={handleChange}
               required
               placeholder="React, TypeScript, Node.js"
@@ -296,7 +300,7 @@ const ProjectForm = ({ onSubmit, isPending, project }: Props): ReactElement => {
                 id="githubUrl"
                 name="githubUrl"
                 type="url"
-                value={formData.githubUrl}
+                value={formDataState.githubUrl}
                 onChange={handleChange}
                 placeholder="https://github.com/..."
               />
@@ -307,7 +311,7 @@ const ProjectForm = ({ onSubmit, isPending, project }: Props): ReactElement => {
                 id="liveUrl"
                 name="liveUrl"
                 type="url"
-                value={formData.liveUrl}
+                value={formDataState.liveUrl}
                 onChange={handleChange}
                 placeholder="https://..."
               />
@@ -322,7 +326,7 @@ const ProjectForm = ({ onSubmit, isPending, project }: Props): ReactElement => {
                 id="startDate"
                 name="startDate"
                 type="date"
-                value={formData.startDate}
+                value={formDataState.startDate}
                 onChange={handleChange}
                 required
               />
@@ -333,7 +337,7 @@ const ProjectForm = ({ onSubmit, isPending, project }: Props): ReactElement => {
                 id="endDate"
                 name="endDate"
                 type="date"
-                value={formData.endDate}
+                value={formDataState.endDate}
                 onChange={handleChange}
               />
             </div>
@@ -346,7 +350,7 @@ const ProjectForm = ({ onSubmit, isPending, project }: Props): ReactElement => {
               id="order"
               name="order"
               type="number"
-              value={formData.order}
+              value={formDataState.order}
               onChange={handleChange}
               min={0}
             />
@@ -356,9 +360,9 @@ const ProjectForm = ({ onSubmit, isPending, project }: Props): ReactElement => {
           <div className="flex items-center gap-2">
             <Switch
               id="featured"
-              checked={formData.featured}
+              checked={formDataState.featured}
               onCheckedChange={(checked) =>
-                setFormData((prev) => ({ ...prev, featured: checked }))
+                setFormDataState((prev) => ({ ...prev, featured: checked }))
               }
             />
             <Label htmlFor="featured">Featured Project</Label>

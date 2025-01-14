@@ -73,6 +73,7 @@ export const transformAndValidateBasicProjectData = async (
       order: Number(rawData.order) || 0,
       ...(!!rawData.githubUrl ? { githubUrl: String(rawData.githubUrl) } : {}),
       ...(!!rawData.liveUrl ? { liveUrl: String(rawData.liveUrl) } : {}),
+      ...(!!rawData.content ? { content: String(rawData.content) } : {}),
     };
 
     // 3. Validate the basic project data, we will validate the images in the next step
