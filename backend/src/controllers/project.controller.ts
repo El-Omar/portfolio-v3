@@ -8,10 +8,7 @@ import {
   CreateProjectInput,
   UpdateProjectInput,
 } from "../schemas/project.schema";
-import {
-  generateEtag,
-  compareEtags,
-} from "../util/etag";
+import { generateEtag, compareEtags } from "../util/etag";
 import { BadRequestError, NotFoundError } from "../util/errors";
 import {
   ApiResponse,
@@ -110,7 +107,9 @@ export const createProject: RequestHandler<
   CreateProjectInput
 > = async (req, res, next) => {
   try {
-    const newProject = new Project(req.body);
+    const { ...projectData } = req.body;
+    const newProject = new Project(projectData);
+
     await newProject.save();
 
     res.status(201).json({
@@ -135,7 +134,6 @@ export const updateProject: RequestHandler<
     }
 
     const ifMatch = req.header("If-Match");
-
     if (!ifMatch) {
       throw new BadRequestError(
         "Precondition Required: If-Match header is required",
@@ -144,7 +142,6 @@ export const updateProject: RequestHandler<
     }
 
     const currentEtag = generateEtag(currentProject);
-
     if (!compareEtags(ifMatch, currentEtag)) {
       throw new BadRequestError(
         "Precondition Failed: Resource has been modified",
@@ -152,6 +149,7 @@ export const updateProject: RequestHandler<
       );
     }
 
+    // Handle main image deletion
     if (
       req.body.imageUrl &&
       currentProject.imageUrl &&
@@ -163,6 +161,28 @@ export const updateProject: RequestHandler<
         await s3Service.deleteFile(oldFileKey);
       } catch (error) {
         console.error("Failed to delete old image:", error);
+      }
+    }
+
+    // Handle additional images deletion
+    if (req.body.additionalImages) {
+      const oldUrls =
+        currentProject.additionalImages?.map((img) => img.url) || [];
+      const newUrls = req.body.additionalImages.map((img) => img.url);
+      const urlsToDelete = oldUrls.filter((url) => !newUrls.includes(url));
+
+      if (urlsToDelete.length > 0) {
+        try {
+          const s3Service = S3Service.getInstance();
+          await Promise.all(
+            urlsToDelete.map((url) => {
+              const key = s3Service.getFileKey(url);
+              return s3Service.deleteFile(key);
+            })
+          );
+        } catch (error) {
+          console.error("Failed to delete old additional images:", error);
+        }
       }
     }
 
@@ -195,7 +215,6 @@ export const deleteProject: RequestHandler<{ slug: string }> = async (
     }
 
     const ifMatch = req.header("If-Match");
-
     if (!ifMatch) {
       throw new BadRequestError(
         "Precondition Required: If-Match header is required",
@@ -204,7 +223,6 @@ export const deleteProject: RequestHandler<{ slug: string }> = async (
     }
 
     const currentEtag = generateEtag(project);
-
     if (!compareEtags(ifMatch, currentEtag)) {
       throw new BadRequestError(
         "Precondition Failed: Resource has been modified",
@@ -212,17 +230,7 @@ export const deleteProject: RequestHandler<{ slug: string }> = async (
       );
     }
 
-    if (project.imageUrl) {
-      try {
-        const s3Service = S3Service.getInstance();
-        const fileKey = s3Service.getFileKey(project.imageUrl);
-        await s3Service.deleteFile(fileKey);
-      } catch (error) {
-        console.error("Failed to delete project image:", error);
-      }
-    }
-
-    await Project.deleteOne({ slug: req.params.slug });
+    await project.deleteOne();
     res.status(204).end();
   } catch (error) {
     next(error);
