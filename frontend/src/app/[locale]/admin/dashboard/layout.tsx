@@ -15,7 +15,7 @@ const DashboardLayout = async ({ children }: Props): Promise<ReactElement> => {
   }
 
   return (
-    <div className="flex h-min-screen w-full md:px-16 px-4 py-6">
+    <div className="flex min-h-screen w-full md:px-16 px-4 py-6">
       <DashboardSidebar />
       <main className="flex-1 p-8 shadow-lg rounded-lg bg-white">{children}</main>
     </div>
