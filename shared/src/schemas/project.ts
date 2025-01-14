@@ -4,7 +4,6 @@ const imageMetadataSchema = z.object({
   url: z.string().url(),
   caption: z.string().optional(),
   className: z.string().optional(), 
-  order: z.number().optional(),
 });
 
 export const projectSchema = z.object({

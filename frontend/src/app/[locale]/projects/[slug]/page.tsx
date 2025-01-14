@@ -4,16 +4,14 @@ import { getProjectBySlug } from "@/app/actions/projects";
 import ProjectDetail from "@/components/projects/ProjectDetail";
 
 type ProjectPageProps = {
-  params: {
-    slug: string;
-  };
+  params: Promise<{ slug: string }>;
 };
 
 const ProjectPage = async ({
   params,
 }: ProjectPageProps): Promise<ReactElement> => {
-  
-  const projectData = await getProjectBySlug(params.slug);
+  const { slug } = await params;
+  const projectData = await getProjectBySlug(slug);
 
   if (projectData.status === "error" || !projectData.data) {
     notFound();
