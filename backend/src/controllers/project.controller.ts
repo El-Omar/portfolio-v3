@@ -16,12 +16,15 @@ import {
   Project as ProjectType,
 } from "@portfolio-v3/shared";
 import { S3Service } from "../services/s3.service";
+import { getProjection } from "../util/projection";
 
 type GetProjectsQuery = PaginationParams & {
   featured?: boolean;
+  fields?: string;
+  include?: boolean;
 };
 
-// GET PROJECTS /projects
+// GET projects endpoint: /projects
 export const getProjects: RequestHandler<
   {},
   ApiResponse<ProjectType[]>,
@@ -29,8 +32,10 @@ export const getProjects: RequestHandler<
   GetProjectsQuery
 > = async (req, res, next) => {
   try {
-    const { featured } = req.query;
+    const { featured, fields, include = true } = req.query;
     const query = featured ? { featured: true } : {};
+
+    const projection = getProjection(fields, include);
 
     const pagination = getPaginationParams({
       page: req.query.page,
@@ -39,6 +44,7 @@ export const getProjects: RequestHandler<
 
     const [projects, total] = await Promise.all([
       Project.find(query)
+        .select(projection)
         .sort({ order: 1, createdAt: -1 })
         .limit(pagination.limit)
         .skip(pagination.offset),
@@ -67,7 +73,7 @@ export const getProjects: RequestHandler<
   }
 };
 
-// GET BY SLUG /projects/:slug
+// GET project by slug endpoint: /projects/:slug
 export const getProjectBySlug: RequestHandler<
   { slug: string },
   ApiResponse<ProjectType>
@@ -100,7 +106,7 @@ export const getProjectBySlug: RequestHandler<
   }
 };
 
-// POST /projects
+// POST projects endpoint: /projects
 export const createProject: RequestHandler<
   {},
   ApiResponse<ProjectType>,
@@ -121,7 +127,7 @@ export const createProject: RequestHandler<
   }
 };
 
-// PATCH /projects/:slug
+// PATCH projects endpoint: /projects/:slug
 export const updateProject: RequestHandler<
   { slug: string },
   ApiResponse<ProjectType>,
@@ -202,7 +208,7 @@ export const updateProject: RequestHandler<
   }
 };
 
-// DELETE /projects/:slug
+// DELETE projects endpoint: /projects/:slug
 export const deleteProject: RequestHandler<{ slug: string }> = async (
   req,
   res,
