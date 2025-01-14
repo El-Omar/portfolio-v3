@@ -8,7 +8,7 @@ import {
   projectSchema,
   validateImageFile,
 } from "@portfolio-v3/shared";
-import { projectsClient } from "@/lib/api/projects-client";
+import { GetProjectsOptions, projectsClient } from "@/lib/api/projects-client";
 import { uploadClient } from "@/lib/api/upload-client";
 
 type ValidateAndUploadImageResult =
@@ -46,9 +46,9 @@ export const validateAndUploadImage = async (
   }
 }
 
-export const getProjects = async (): Promise<ApiResponse<ProjectResponse[]>> => {
+export const getProjects = async (options: GetProjectsOptions = {}): Promise<ApiResponse<ProjectResponse[]>> => {
   try {
-    return await projectsClient.getAll();
+    return await projectsClient.getAll(options);
   } catch (error) {
     console.error("Error:", error);
     throw new Error("Failed to load projects");

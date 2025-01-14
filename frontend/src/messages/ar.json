@@ -74,5 +74,14 @@
     "testimonials": {
       "title": "أشخاص <accent>عملت معهم</accent>"
     }
+  },
+  "projects": {
+    "backToProjects": "العودة الى المشاريع",
+    "viewSource": "عرض المصدر",
+    "visitSite": "زيارة الموقع",
+    "timeline": {
+      "to": "إلى",
+      "present": "الحاضر"
+    }
   }
 }

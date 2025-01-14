@@ -9,12 +9,28 @@ import { verifyAuth } from "@/lib/auth/verifyAuth";
 
 const { PROJECTS } = API_ROUTES;
 
+export type GetProjectsOptions = {
+  featured?: boolean;
+  fields?: string[];
+  include?: boolean;
+  page?: number;
+  limit?: number;
+};
+
 export class ProjectsClient extends BaseApiClient {
-  async getAll(): Promise<ApiResponse<ProjectResponse[]>> {
+  async getAll(options: GetProjectsOptions = {}): Promise<ApiResponse<ProjectResponse[]>> {
+    const params: Record<string, string> = {};
+    
+    if (options.featured) params.featured = 'true';
+    if (options.fields?.length) params.fields = options.fields.join(',');
+    if (options.include !== undefined) params.include = String(options.include);
+    if (options.page) params.page = String(options.page);
+    if (options.limit) params.limit = String(options.limit);
+
     return this.fetch<ApiResponse<ProjectResponse[]>>(PROJECTS.BASE, {
       method: "GET",
+      params,
       next: { tags: ["projects"] },
-      // cache: true,
     });
   }
 

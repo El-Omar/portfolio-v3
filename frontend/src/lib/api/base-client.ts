@@ -10,9 +10,10 @@ export type RequestOptions = {
   protected?: boolean;
   etag?: string;
   cache?: boolean;
+  params?: Record<string, string>;
 };
 
-export class BaseApiClient {
+export abstract class BaseApiClient {
   private baseUrl: string;
 
   constructor() {
@@ -23,7 +24,22 @@ export class BaseApiClient {
     endpoint: string,
     options: RequestOptions
   ): Promise<T> {
-    const url = `${this.baseUrl}${endpoint}`;
+    let url = `${this.baseUrl}${endpoint}`;
+
+    // Add query parameters if they exist
+    if (options.params) {
+      const searchParams = new URLSearchParams();
+      Object.entries(options.params).forEach(([key, value]) => {
+        if (value !== undefined) {
+          searchParams.append(key, value);
+        }
+      });
+      const queryString = searchParams.toString();
+      if (queryString) {
+        url += `?${queryString}`;
+      }
+    }
+
     const headers: Record<string, string> = {
       "Content-Type": "application/json",
       ...options.headers,

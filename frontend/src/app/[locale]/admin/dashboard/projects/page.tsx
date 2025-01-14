@@ -17,7 +17,6 @@ const ProjectsPage = async (): Promise<ReactElement> => {
       </div>
     );
   }
-
   const projects = projectsData.data ?? [];
 
   if (projects.length === 0) {

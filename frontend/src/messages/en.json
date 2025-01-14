@@ -74,5 +74,15 @@
     "testimonials": {
       "title": "Superstars I've <accent>worked with</accent>"
     }
+  },
+  "projects": {
+    "title": "My <accent>Projects</accent>",
+    "backToProjects": "Back to Projects",
+    "viewSource": "View Source",
+    "visitSite": "Visit Site",
+    "timeline": {
+      "to": "to",
+      "present": "Present"
+    }
   }
 }
