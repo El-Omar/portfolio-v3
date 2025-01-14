@@ -12,7 +12,7 @@ import { Switch } from "@/components/ui/Switch";
 import { Textarea } from "@/components/ui/Textarea";
 import { Project, ProjectResponse, validateImageFile } from "@portfolio-v3/shared";
 import { useRouter } from "@/i18n/routing";
-// import { Editor } from "@/components/ui/Editor";
+import Editor from "@/components/ui/Editor";
 import { X } from "lucide-react";
 
 type Props = {
@@ -263,16 +263,15 @@ const ProjectForm = ({ onSubmit, isPending, project }: Props): ReactElement => {
           </div>
 
           {/* Content (Rich Text) */}
-          {/* <div className="space-y-2">
+          <div className="space-y-2">
             <Label htmlFor="content">Content</Label>
             <Editor
-              id="content"
               value={formData.content}
               onChange={(value) =>
                 setFormData((prev) => ({ ...prev, content: value }))
               }
             />
-          </div> */}
+          </div>
 
           {/* Technologies */}
           <div className="space-y-2">
