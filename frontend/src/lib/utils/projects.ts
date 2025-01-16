@@ -15,33 +15,53 @@ export const transformProjectImageData = (
 
   // Find all additional image entries and group them
   entries.forEach(([key, value]) => {
+    const index = key.match(/\[(\d+)\]/)?.[1];
+    if (!index) {
+      return;
+    }
+
+    const currentIndex = parseInt(index);
+
     if (key.startsWith("additionalImages[")) {
-      const index = key.match(/\[(\d+)\]/)?.[1];
-      if (index) {
-        const i = parseInt(index);
-        if (!additionalImages[i]) additionalImages[i] = { file: value as File };
-        else additionalImages[i].file = value as File;
+      if (value instanceof File) {
+        if (!additionalImages[currentIndex]) {
+          additionalImages[currentIndex] = { file: value, preview: "" };
+        } else {
+          additionalImages[currentIndex].file = value;
+        }
       }
     } else if (key.startsWith("additionalImageCaptions[")) {
-      const index = key.match(/\[(\d+)\]/)?.[1];
-      if (index) {
-        const i = parseInt(index);
-        if (!additionalImages[i])
-          additionalImages[i] = { file: null as unknown as File };
-        additionalImages[i].caption = value as string;
+      if (!additionalImages[currentIndex]) {
+        additionalImages[currentIndex] = {
+          file: null,
+          preview: "",
+        };
       }
+      additionalImages[currentIndex].caption = value as string;
     } else if (key.startsWith("additionalImageClassNames[")) {
-      const index = key.match(/\[(\d+)\]/)?.[1];
-      if (index) {
-        const i = parseInt(index);
-        if (!additionalImages[i])
-          additionalImages[i] = { file: null as unknown as File };
-        additionalImages[i].className = value as string;
+      if (!additionalImages[currentIndex]) {
+        additionalImages[currentIndex] = {
+          file: null,
+          preview: "",
+        };
       }
+      additionalImages[currentIndex].className = value as string;
+    }
+    else if (key.startsWith("additionalImageUrls[")) {
+      if (!additionalImages[currentIndex]) {
+        additionalImages[currentIndex] = {
+          file: null,
+          preview: value as string,
+        };
+      }
+      additionalImages[currentIndex].preview = value as string;
     }
   });
 
-  return { imageFile, additionalImages };
+  return {
+    imageFile: imageFile instanceof File ? imageFile : undefined,
+    additionalImages,
+  };
 };
 
 type TransformedBasicProjectData = {
@@ -71,9 +91,10 @@ export const transformAndValidateBasicProjectData = async (
         : undefined,
       featured: Boolean(rawData.featured),
       order: Number(rawData.order) || 0,
-      ...(!!rawData.githubUrl ? { githubUrl: String(rawData.githubUrl) } : {}),
-      ...(!!rawData.liveUrl ? { liveUrl: String(rawData.liveUrl) } : {}),
-      ...(!!rawData.content ? { content: String(rawData.content) } : {}),
+      githubUrl: rawData.githubUrl ? String(rawData.githubUrl) : undefined,
+      liveUrl: rawData.liveUrl ? String(rawData.liveUrl) : undefined,
+      videoUrl: rawData.videoUrl ? String(rawData.videoUrl) : undefined,
+      content: rawData.content ? String(rawData.content) : undefined,
     };
 
     // 3. Validate the basic project data, we will validate the images in the next step

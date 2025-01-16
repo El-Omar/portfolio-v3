@@ -42,10 +42,6 @@ const ProjectActions = ({ project }: Props): ReactElement => {
     });
   };
 
-  const onEdit = () => {
-    console.log("edit");
-  };
-
   return (
     <div className="flex justify-center gap-2">
       <Link href={`/projects/${project.slug}`} target="_blank">
@@ -53,9 +49,11 @@ const ProjectActions = ({ project }: Props): ReactElement => {
           <Eye className="h-4 w-4" />
         </Button>
       </Link>
-      <Button variant="outline" size="sm" onClick={onEdit}>
-        <Pencil className="h-4 w-4" />
-      </Button>
+      <Link href={`/admin/dashboard/projects/edit/${project.slug}`}>
+        <Button variant="outline" size="sm">
+          <Pencil className="h-4 w-4" />
+        </Button>
+      </Link>
       <Dialog>
         <DialogTrigger asChild>
           <Button

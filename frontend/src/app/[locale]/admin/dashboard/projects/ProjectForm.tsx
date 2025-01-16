@@ -10,10 +10,17 @@ import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/Label";
 import { Switch } from "@/components/ui/Switch";
 import { Textarea } from "@/components/ui/Textarea";
-import { Project, ProjectResponse, validateImageFile } from "@portfolio-v3/shared";
+import {
+  Project,
+  ProjectResponse,
+  validateImageFile,
+} from "@portfolio-v3/shared";
 import { useRouter } from "@/i18n/routing";
 import Editor from "@/components/ui/Editor";
 import { X } from "lucide-react";
+import { AdditionalImage } from "@/types/Project";
+import LoadingWrapper from "@/components/ui/LoadingWrapper";
+import { extractDateFromISOString } from "@/lib/utils/dates";
 
 type Props = {
   onSubmit: (formData: FormData) => void;
@@ -30,28 +37,43 @@ const initialState: Project = {
   additionalImages: [],
   githubUrl: "",
   liveUrl: "",
+  videoUrl: "",
   featured: false,
   startDate: "",
   endDate: "",
   order: 0,
 };
 
-// Define the type for our additional image state
-type AdditionalImage = {
-  file: File;
-  preview: string;
-  caption?: string;
-  className?: string;
-};
-
 const ProjectForm = ({ onSubmit, isPending, project }: Props): ReactElement => {
   const router = useRouter();
-  const [formDataState, setFormDataState] = useState<Project | Record<string, any>>(
-    project || initialState
+  
+  const initialFormDataState = (() => {
+    if (project) {
+      return {
+        ...project,
+        startDate: project.startDate ? extractDateFromISOString(project.startDate) : "",
+        endDate: project.endDate ? extractDateFromISOString(project.endDate) : "",
+      };
+    }
+    return initialState;
+  })();
+
+  const [formDataState, setFormDataState] = useState<
+    Project | Record<string, any>
+  >(initialFormDataState);
+
+  const [imagePreview, setImagePreview] = useState<string | null>(
+    project?.imageUrl || null
   );
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
-  const [additionalImages, setAdditionalImages] = useState<AdditionalImage[]>([]);
+  const [additionalImages, setAdditionalImages] = useState<AdditionalImage[]>(
+    project?.additionalImages?.map((img) => ({
+      file: null,
+      preview: img.url,
+      caption: img.caption || "",
+      className: img.className || ""
+    })) || []
+  );
 
   const handleSubmit = (submittedFormData: FormData) => {
     if (imageFile) {
@@ -62,11 +84,19 @@ const ProjectForm = ({ onSubmit, isPending, project }: Props): ReactElement => {
       submittedFormData.set("content", formDataState.content);
     }
 
-    // Add additional images to formData with index
     additionalImages.forEach((image, index) => {
-      submittedFormData.append(`additionalImages[${index}]`, image.file);
-      submittedFormData.append(`additionalImageCaptions[${index}]`, image.caption || '');
-      submittedFormData.append(`additionalImageClassNames[${index}]`, image.className || '');
+      if (image.file) {
+        submittedFormData.append(`additionalImages[${index}]`, image.file);
+      }
+      if (image.preview) {
+        submittedFormData.append(`additionalImageUrls[${index}]`, image.preview);
+      }
+      if (image.caption) {
+        submittedFormData.append(`additionalImageCaptions[${index}]`, image.caption || "");
+      }
+      if (image.className) {
+        submittedFormData.append(`additionalImageClassNames[${index}]`, image.className || "");
+      }
     });
 
     onSubmit(submittedFormData);
@@ -91,7 +121,6 @@ const ProjectForm = ({ onSubmit, isPending, project }: Props): ReactElement => {
 
     setImageFile(file);
 
-    // Preview image
     const reader = new FileReader();
     reader.onloadend = () => {
       setImagePreview(reader.result as string);
@@ -99,11 +128,12 @@ const ProjectForm = ({ onSubmit, isPending, project }: Props): ReactElement => {
     reader.readAsDataURL(file);
   };
 
-  const handleAdditionalImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleAdditionalImageChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const files = e.target.files;
     if (!files) return;
 
-    // Validate and process each file
     Array.from(files).forEach((file) => {
       const validation = validateImageFile(file);
       if (!validation.isValid) {
@@ -111,28 +141,36 @@ const ProjectForm = ({ onSubmit, isPending, project }: Props): ReactElement => {
         return;
       }
 
-      // Preview image
       const reader = new FileReader();
       reader.onloadend = () => {
-        setAdditionalImages(prev => [...prev, {
-          file,
-          preview: reader.result as string,
-          caption: '',
-          className: ''
-        }]);
+        setAdditionalImages((prev) => [
+          ...prev,
+          {
+            file,
+            preview: reader.result as string,
+            caption: "",
+            className: "",
+          },
+        ]);
       };
       reader.readAsDataURL(file);
     });
   };
 
   const handleRemoveAdditionalImage = (index: number) => {
-    setAdditionalImages(prev => prev.filter((_, i) => i !== index));
+    setAdditionalImages((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const handleRemoveImage = () => {
+    setImageFile(null);
+    setImagePreview(null);
+    setFormDataState((prev) => ({ ...prev, imageUrl: "" }));
   };
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Create New Project</CardTitle>
+        <CardTitle>{project ? "Edit Project" : "Create New Project"}</CardTitle>
       </CardHeader>
       <CardContent>
         <form action={handleSubmit} className="space-y-6">
@@ -141,20 +179,31 @@ const ProjectForm = ({ onSubmit, isPending, project }: Props): ReactElement => {
             <Label htmlFor="image">Project Image</Label>
             <div className="flex items-center gap-4">
               {imagePreview && (
-                <div className="relative w-24 h-24">
+                <div className="relative w-24 h-24 group">
                   <Image
                     src={imagePreview}
                     alt="Preview"
                     fill
                     className="object-cover rounded"
                   />
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    size="icon"
+                    className="absolute -top-2 -right-2 h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity"
+                    onClick={handleRemoveImage}
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
                 </div>
               )}
               <div className="flex-1">
                 <Label htmlFor="image-upload" className="cursor-pointer block">
                   <div className="flex items-center gap-2 p-2 border-2 border-dashed rounded-lg hover:bg-gray-50">
                     <Upload className="w-4 h-4" />
-                    <span>Upload image</span>
+                    <span>
+                      {imagePreview ? "Change image" : "Upload image"}
+                    </span>
                   </div>
                   <input
                     id="image-upload"
@@ -173,7 +222,10 @@ const ProjectForm = ({ onSubmit, isPending, project }: Props): ReactElement => {
             <Label htmlFor="additional-images">Additional Images</Label>
             <div className="flex items-center gap-4">
               <div className="flex-1">
-                <Label htmlFor="additional-images-upload" className="cursor-pointer block">
+                <Label
+                  htmlFor="additional-images-upload"
+                  className="cursor-pointer block"
+                >
                   <div className="flex items-center gap-2 p-2 border-2 border-dashed rounded-lg hover:bg-gray-50">
                     <Upload className="w-4 h-4" />
                     <span>Upload additional images</span>
@@ -210,27 +262,35 @@ const ProjectForm = ({ onSubmit, isPending, project }: Props): ReactElement => {
                       >
                         <X className="h-4 w-4" />
                       </Button>
-                      
+
                       <Input
                         type="text"
                         placeholder="Add caption"
                         value={image.caption}
                         onChange={(e) => {
-                          setAdditionalImages(prev => prev.map((img, i) => 
-                            i === index ? { ...img, caption: e.target.value } : img
-                          ));
+                          setAdditionalImages((prev) =>
+                            prev.map((img, i) =>
+                              i === index
+                                ? { ...img, caption: e.target.value }
+                                : img
+                            )
+                          );
                         }}
                         className="mt-auto bg-white/80 dark:bg-black/50 text-sm"
                       />
-                      
+
                       <Input
                         type="text"
                         placeholder="Add className"
                         value={image.className}
                         onChange={(e) => {
-                          setAdditionalImages(prev => prev.map((img, i) => 
-                            i === index ? { ...img, className: e.target.value } : img
-                          ));
+                          setAdditionalImages((prev) =>
+                            prev.map((img, i) =>
+                              i === index
+                                ? { ...img, className: e.target.value }
+                                : img
+                            )
+                          );
                         }}
                         className="bg-white/80 dark:bg-black/50 text-sm"
                       />
@@ -274,6 +334,19 @@ const ProjectForm = ({ onSubmit, isPending, project }: Props): ReactElement => {
               onChange={(value) =>
                 setFormDataState((prev) => ({ ...prev, content: value }))
               }
+            />
+          </div>
+
+          {/* Video URL */}
+          <div className="space-y-2">
+            <Label htmlFor="videoUrl">Video URL</Label>
+            <Input
+              id="videoUrl"
+              name="videoUrl"
+              type="url"
+              value={formDataState.videoUrl}
+              onChange={handleChange}
+              placeholder="https://youtube.com/... or https://vimeo.com/..."
             />
           </div>
 
@@ -370,7 +443,9 @@ const ProjectForm = ({ onSubmit, isPending, project }: Props): ReactElement => {
 
           <div className="flex gap-4">
             <Button type="submit" disabled={isPending}>
-              {isPending ? "Creating..." : "Create Project"}
+              <LoadingWrapper isLoading={isPending}>
+                {project ? "Update project" : "Create project"}
+              </LoadingWrapper>
             </Button>
             <Button
               type="button"

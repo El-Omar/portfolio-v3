@@ -1,5 +1,6 @@
 export type AdditionalImage = {
-  file: File;
+  file: File | null;
+  preview: string;
   caption?: string;
   className?: string;
 };

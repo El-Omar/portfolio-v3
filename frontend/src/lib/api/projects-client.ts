@@ -18,11 +18,13 @@ export type GetProjectsOptions = {
 };
 
 export class ProjectsClient extends BaseApiClient {
-  async getAll(options: GetProjectsOptions = {}): Promise<ApiResponse<ProjectResponse[]>> {
+  async getAll(
+    options: GetProjectsOptions = {}
+  ): Promise<ApiResponse<ProjectResponse[]>> {
     const params: Record<string, string> = {};
-    
-    if (options.featured) params.featured = 'true';
-    if (options.fields?.length) params.fields = options.fields.join(',');
+
+    if (options.featured) params.featured = "true";
+    if (options.fields?.length) params.fields = options.fields.join(",");
     if (options.include !== undefined) params.include = String(options.include);
     if (options.page) params.page = String(options.page);
     if (options.limit) params.limit = String(options.limit);
@@ -62,8 +64,8 @@ export class ProjectsClient extends BaseApiClient {
 
   async update(
     slug: string,
-    data: Partial<Project>,
-    etag: string
+    _etag: string,
+    data: Partial<Project>
   ): Promise<ApiResponse<ProjectResponse>> {
     const auth = await verifyAuth();
     if (!auth.success) {
@@ -74,7 +76,7 @@ export class ProjectsClient extends BaseApiClient {
       method: "PATCH",
       body: data,
       protected: true,
-      etag,
+      etag: _etag,
     });
   }
 

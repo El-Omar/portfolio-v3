@@ -11,8 +11,10 @@ import {
 import { GetProjectsOptions, projectsClient } from "@/lib/api/projects-client";
 import { uploadClient } from "@/lib/api/upload-client";
 import { ValidateAndUploadImageResult } from "@/types/Project";
-import { transformAndValidateBasicProjectData, transformProjectImageData } from "@/lib/utils/projects";
-
+import {
+  transformAndValidateBasicProjectData,
+  transformProjectImageData,
+} from "@/lib/utils/projects";
 
 export const validateAndUploadImage = async (
   file: File
@@ -44,7 +46,10 @@ export const getProjects = async (
     return await projectsClient.getAll(options);
   } catch (error) {
     console.error("Error:", error);
-    throw new Error("Failed to load projects");
+    return {
+      status: "error",
+      message: "Failed to load projects",
+    };
   }
 };
 
@@ -55,7 +60,10 @@ export const getProjectBySlug = async (
     return await projectsClient.getBySlug(slug);
   } catch (error) {
     console.error("Error:", error);
-    throw new Error("Failed to load project");
+    return {
+      status: "error",
+      message: "Failed to load project",
+    };
   }
 };
 
@@ -67,7 +75,7 @@ export const createProject = async (
   const uploadedAdditionalImages: ProjectImage[] = [];
 
   try {
-    // 1. Transform and validate the basic project data, 
+    // 1. Transform and validate the basic project data,
     // we will transform and validate the images in the next step
     const validationResult =
       await transformAndValidateBasicProjectData(formData);
@@ -94,7 +102,7 @@ export const createProject = async (
     // 3. Handle additional images upload
     if (additionalImages?.length) {
       for (const image of additionalImages) {
-        const uploadResult = await validateAndUploadImage(image.file);
+        const uploadResult = await validateAndUploadImage(image.file!);
         if (!uploadResult.success) {
           // Clean up any images we've already uploaded
           await Promise.all(
@@ -167,16 +175,17 @@ export const createProject = async (
 };
 
 export const updateProject = async (
-  slug: string,
+  _prevState: ApiResponse<ProjectResponse> | Project | null,
   formData: FormData,
-  etag: string
+  projectToUpdate: ProjectResponse
 ): Promise<ApiResponse<ProjectResponse>> => {
   let uploadedImageUrl: string | undefined;
   const uploadedAdditionalImages: ProjectImage[] = [];
 
   try {
     // 1. Transform and validate the basic project data
-    const validationResult = await transformAndValidateBasicProjectData(formData);
+    const validationResult =
+      await transformAndValidateBasicProjectData(formData);
     if (validationResult.status === "error") {
       return validationResult;
     }
@@ -195,20 +204,46 @@ export const updateProject = async (
       }
       uploadedImageUrl = uploadResult.data;
       projectData.imageUrl = uploadedImageUrl;
+    } else {
+      // Keep existing image if no new one was uploaded
+      projectData.imageUrl = projectToUpdate.imageUrl;
     }
 
-    // 3. Handle additional images upload
+    // 3. Handle additional images
     if (additionalImages?.length) {
-      for (const image of additionalImages) {
-        const uploadResult = await validateAndUploadImage(image.file);
+      // Keep track of which images need to be uploaded
+      const imagesToUpload = additionalImages.filter((img) => img.file);
+
+      // Keep existing images and update their metadata
+      const keptImages = (projectToUpdate.additionalImages || [])
+        ?.map((existingImg) => {
+          // Find if this existing image has updated metadata
+          const updatedImage = additionalImages.find(
+            (newImg) => !newImg.file && newImg.preview === existingImg.url
+          );
+
+          if (updatedImage) {
+            // Return existing image with potentially updated metadata
+            return {
+              url: existingImg.url,
+              caption: updatedImage.caption ?? existingImg.caption,
+              className: updatedImage.className ?? existingImg.className,
+            };
+          }
+          return null;
+        })
+        .filter(Boolean) as ProjectImage[];
+
+      // Upload new images
+      for (const image of imagesToUpload) {
+        const uploadResult = await validateAndUploadImage(image.file!);
         if (!uploadResult.success) {
           // Clean up any images we've already uploaded
           await Promise.all(
-            uploadedAdditionalImages.map((img) => uploadClient.deleteFile(img.url))
+            uploadedAdditionalImages.map((img) =>
+              uploadClient.deleteFile(img.url)
+            )
           );
-          if (uploadedImageUrl) {
-            await uploadClient.deleteFile(uploadedImageUrl);
-          }
           return {
             status: "error",
             message: uploadResult.error,
@@ -220,11 +255,24 @@ export const updateProject = async (
           className: image.className,
         });
       }
-      projectData.additionalImages = uploadedAdditionalImages;
+
+      // Combine kept images with newly uploaded ones
+      projectData.additionalImages = [
+        ...keptImages,
+        ...uploadedAdditionalImages,
+      ];
+    } else {
+      // No additional images in form data means all were removed
+      projectData.additionalImages = [];
     }
 
     // 4. Update project
-    const response = await projectsClient.update(slug, projectData, etag);
+    const response = await projectsClient.update(
+      projectToUpdate.slug,
+      projectToUpdate._etag,
+      projectData
+    );
+
     if (response.status === "error") {
       // Clean up uploaded images if project update fails
       if (uploadedImageUrl) {
@@ -236,6 +284,7 @@ export const updateProject = async (
       return response;
     }
 
+    revalidateTag("projects");
     revalidatePath("/admin/dashboard/projects");
     revalidatePath("/");
     return response;
@@ -251,10 +300,15 @@ export const updateProject = async (
     if (uploadedAdditionalImages.length) {
       try {
         await Promise.all(
-          uploadedAdditionalImages.map((img) => uploadClient.deleteFile(img.url))
+          uploadedAdditionalImages.map((img) =>
+            uploadClient.deleteFile(img.url)
+          )
         );
       } catch (deleteError) {
-        console.error("Failed to delete uploaded additional images:", deleteError);
+        console.error(
+          "Failed to delete uploaded additional images:",
+          deleteError
+        );
       }
     }
 
@@ -274,10 +328,7 @@ export const deleteProject = async (
   try {
     const response = await projectsClient.delete(slug, etag);
 
-    // Revalidate the specific tag
     revalidateTag("projects");
-
-    // Also revalidate paths that might show projects
     revalidatePath("/admin/dashboard/projects");
     revalidatePath("/");
 
