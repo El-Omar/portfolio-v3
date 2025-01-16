@@ -1,5 +1,5 @@
 import { env } from "@/config/env";
-import { AUTH } from "@portfolio-v3/shared";
+import { ApiResponse, AUTH } from "@portfolio-v3/shared";
 import { cookies } from "next/headers";
 
 export type RequestOptions = {
@@ -23,7 +23,7 @@ export abstract class BaseApiClient {
   protected async fetch<T>(
     endpoint: string,
     options: RequestOptions
-  ): Promise<T> {
+  ): Promise<ApiResponse<T>> {
     let url = `${this.baseUrl}${endpoint}`;
 
     // Add query parameters if they exist
@@ -69,13 +69,19 @@ export abstract class BaseApiClient {
 
     // If we got a 304 Not Modified or 204 No Content, return null
     if (response.status === 304 || response.status === 204) {
-      return null as T;
+      return {
+        status: "success",
+        data: null as T,
+      };
     }
 
     if (!response.ok) {
       const error = await response.json();
       const errorsList = error.errors?.join(", ");
-      throw new Error(errorsList || error.message || "API call failed");
+      return {
+        status: "error",
+        message: errorsList || error.message || "API call failed",
+      };
     }
 
     return response.json();

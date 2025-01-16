@@ -29,7 +29,13 @@ export const validateAndUploadImage = async (
     }
 
     const imageUrl = await uploadClient.uploadFile(file);
-    return { success: true, data: imageUrl };
+    if (imageUrl.status !== "success") {
+      return {
+        success: false,
+        error: imageUrl.message || "Failed to upload image",
+      };
+    }
+    return { success: true, data: imageUrl.data };
   } catch (error) {
     console.error("Image upload error:", error);
     return {

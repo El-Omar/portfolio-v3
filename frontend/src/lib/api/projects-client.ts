@@ -29,7 +29,7 @@ export class ProjectsClient extends BaseApiClient {
     if (options.page) params.page = String(options.page);
     if (options.limit) params.limit = String(options.limit);
 
-    return this.fetch<ApiResponse<ProjectResponse[]>>(PROJECTS.BASE, {
+    return this.fetch<ProjectResponse[]>(PROJECTS.BASE, {
       method: "GET",
       params,
       next: { tags: ["projects"] },
@@ -40,7 +40,7 @@ export class ProjectsClient extends BaseApiClient {
     slug: string,
     etag?: string
   ): Promise<ApiResponse<ProjectResponse>> {
-    return this.fetch<ApiResponse<ProjectResponse>>(PROJECTS.BY_SLUG(slug), {
+    return this.fetch<ProjectResponse>(PROJECTS.BY_SLUG(slug), {
       method: "GET",
       next: { tags: ["projects"] },
       // TODO: Uncomment this when we have caching working
@@ -52,10 +52,13 @@ export class ProjectsClient extends BaseApiClient {
   async create(data: Project): Promise<ApiResponse<ProjectResponse>> {
     const auth = await verifyAuth();
     if (!auth.success) {
-      throw new Error("Authentication required to create projects");
+      return {
+        status: "error",
+        message: "Authentication required to create projects",
+      };
     }
 
-    return this.fetch<ApiResponse<ProjectResponse>>(PROJECTS.BASE, {
+    return this.fetch<ProjectResponse>(PROJECTS.BASE, {
       method: "POST",
       body: data,
       protected: true,
@@ -69,10 +72,13 @@ export class ProjectsClient extends BaseApiClient {
   ): Promise<ApiResponse<ProjectResponse>> {
     const auth = await verifyAuth();
     if (!auth.success) {
-      throw new Error("Authentication required to update projects");
+      return {
+        status: "error",
+        message: "Authentication required to update projects",
+      };
     }
 
-    return this.fetch<ApiResponse<ProjectResponse>>(PROJECTS.BY_SLUG(slug), {
+    return this.fetch<ProjectResponse>(PROJECTS.BY_SLUG(slug), {
       method: "PATCH",
       body: data,
       protected: true,
@@ -83,10 +89,13 @@ export class ProjectsClient extends BaseApiClient {
   async delete(slug: string, etag: string): Promise<ApiResponse<void>> {
     const auth = await verifyAuth();
     if (!auth.success) {
-      throw new Error("Authentication required to delete projects");
+      return {
+        status: "error",
+        message: "Authentication required to delete projects",
+      };
     }
 
-    return this.fetch<ApiResponse<void>>(PROJECTS.BY_SLUG(slug), {
+    return this.fetch<void>(PROJECTS.BY_SLUG(slug), {
       method: "DELETE",
       protected: true,
       etag,

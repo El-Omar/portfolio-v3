@@ -19,7 +19,7 @@ export type LoginResult = {
 };
 
 export async function login(
-  prevState: unknown,
+  _prevState: unknown,
   formData: FormData,
 ): Promise<LoginResult> {
   const rawFormData = {
@@ -30,9 +30,9 @@ export async function login(
   const validationResults = loginSchema.safeParse(rawFormData);
 
   if (!validationResults.success) {
-    return Promise.resolve({
+    return {
       error: validationResults.error.flatten().fieldErrors,
-    });
+    };
   }
 
   const { email, password } = validationResults.data;
@@ -41,18 +41,28 @@ export async function login(
     const userData = await authClient.login(email, password);
     const cookie = await cookies();
 
-    cookie.set(AUTH.KEY, userData.token, {
+    if (userData.status !== "success") {
+      return {
+        error: userData.message,
+      };
+    }
+
+    const { token, maxAge } = userData.data;
+
+    cookie.set(AUTH.KEY, token, {
       ...AUTH.OPTIONS,
       secure: env.NODE_ENV === "production",
-      maxAge: userData.maxAge / 1000,
+      maxAge: maxAge / 1000,
     });
 
-    return Promise.resolve({});
+    return {
+      data: userData.data,
+    };
   } catch (error) {
     console.log("Something went wrong my guy, ", error);
-    return Promise.resolve({
+    return {
       error: `Something went wrong with logging in: ${error}`,
-    });
+    };
   }
 }
 
@@ -64,5 +74,5 @@ export async function logout() {
     cookie.delete(AUTH.KEY);
   }
 
-  redirect("/");
+  redirect("/admin");
 }

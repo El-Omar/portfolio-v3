@@ -1,14 +1,37 @@
 import { BaseApiClient } from "./base-client";
 import { env } from "@/config/env";
-import { LoginResponse } from "@portfolio-v3/shared";
+import { ApiResponse, LoginResponse } from "@portfolio-v3/shared";
 
 export class AuthClient extends BaseApiClient {
-  async login(email: string, password: string): Promise<LoginResponse> {
+  async login(
+    email: string,
+    password: string
+  ): Promise<ApiResponse<LoginResponse>> {
     const endpoint = `/${env.CMS_ADMIN_PATH}/auth/login`;
-    return this.fetch<{ data: LoginResponse }>(endpoint, {
-      method: "POST",
-      body: { email, password },
-    }).then((res) => res.data);
+
+    try {
+      const response = await this.fetch<LoginResponse>(endpoint, {
+        method: "POST",
+        body: { email, password },
+      });
+
+      if (response.status !== "success") {
+        return {
+          status: "error",
+          message: response.message || "Failed to login",
+        };
+      } 
+
+      return {
+        status: "success",
+        data: response.data,
+      };
+    } catch (error) {
+      return {
+        status: "error",
+        message: error instanceof Error ? error.message : "Failed to login",
+      };
+    }
   }
 }
 
