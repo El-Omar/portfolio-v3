@@ -3,18 +3,15 @@ import {
   ProjectResponse,
   API_ROUTES,
   Project,
+  GetProjectsQuery,
 } from "@portfolio-v3/shared";
 import { BaseApiClient } from "./base-client";
 import { verifyAuth } from "@/lib/auth/verifyAuth";
 
 const { PROJECTS } = API_ROUTES;
 
-export type GetProjectsOptions = {
-  featured?: boolean;
+export type GetProjectsOptions = GetProjectsQuery & {
   fields?: string[];
-  include?: boolean;
-  page?: number;
-  limit?: number;
 };
 
 export class ProjectsClient extends BaseApiClient {
@@ -23,7 +20,10 @@ export class ProjectsClient extends BaseApiClient {
   ): Promise<ApiResponse<ProjectResponse[]>> {
     const params: Record<string, string> = {};
 
-    if (options.featured) params.featured = "true";
+    if (options.featured !== undefined)
+      params.featured = String(options.featured);
+    if (options.published !== undefined)
+      params.published = String(options.published);
     if (options.fields?.length) params.fields = options.fields.join(",");
     if (options.include !== undefined) params.include = String(options.include);
     if (options.page) params.page = String(options.page);

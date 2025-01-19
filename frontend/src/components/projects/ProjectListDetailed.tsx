@@ -8,8 +8,6 @@ const ProjectCard = ({ project, index }: { project: any; index: number }) => {
   const aspectRatios = [
     "aspect-[4/3]",
     "aspect-[3/4]",
-    // "aspect-[16/9]",
-    // "aspect-[1/1]",
   ];
   const aspectRatio = aspectRatios[index % aspectRatios.length];
 
@@ -22,12 +20,12 @@ const ProjectCard = ({ project, index }: { project: any; index: number }) => {
           >
             <div className="absolute inset-0 bg-neutral-200 group-hover:opacity-90 transition-opacity duration-300"></div>
             <div className="relative h-[calc(100%_-_0rem)] w-[calc(100%_-_0rem)]">
-              {/* <Image
+              <Image
                 src={project.imageUrl}
                 alt={project.title}
                 fill
                 className="object-cover group-hover:scale-105 duration-300"
-              /> */}
+              />
             </div>
           </div>
         )}
@@ -43,7 +41,7 @@ const ProjectCard = ({ project, index }: { project: any; index: number }) => {
 };
 
 const ProjectsListDetailed = async (): Promise<ReactElement> => {
-  const projectsData = await getProjects();
+  const projectsData = await getProjects({ published: true });
 
   if (projectsData.status === "error") {
     return (

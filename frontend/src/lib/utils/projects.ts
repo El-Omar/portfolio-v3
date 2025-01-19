@@ -46,8 +46,7 @@ export const transformProjectImageData = (
         };
       }
       additionalImages[currentIndex].className = value as string;
-    }
-    else if (key.startsWith("additionalImageUrls[")) {
+    } else if (key.startsWith("additionalImageUrls[")) {
       if (!additionalImages[currentIndex]) {
         additionalImages[currentIndex] = {
           file: null,
@@ -89,12 +88,13 @@ export const transformAndValidateBasicProjectData = async (
       endDate: rawData.endDate
         ? new Date(String(rawData.endDate)).toISOString()
         : undefined,
-      featured: Boolean(rawData.featured),
       order: Number(rawData.order) || 0,
       githubUrl: rawData.githubUrl ? String(rawData.githubUrl) : undefined,
       liveUrl: rawData.liveUrl ? String(rawData.liveUrl) : undefined,
       videoUrl: rawData.videoUrl ? String(rawData.videoUrl) : undefined,
       content: rawData.content ? String(rawData.content) : undefined,
+      featured: Boolean(rawData.featured),
+      published: Boolean(rawData.published),
     };
 
     // 3. Validate the basic project data, we will validate the images in the next step

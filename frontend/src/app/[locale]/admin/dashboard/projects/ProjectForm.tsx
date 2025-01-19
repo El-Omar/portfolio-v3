@@ -39,6 +39,7 @@ const initialState: Project = {
   liveUrl: "",
   videoUrl: "",
   featured: false,
+  published: true,
   startDate: "",
   endDate: "",
   order: 0,
@@ -46,13 +47,17 @@ const initialState: Project = {
 
 const ProjectForm = ({ onSubmit, isPending, project }: Props): ReactElement => {
   const router = useRouter();
-  
+
   const initialFormDataState = (() => {
     if (project) {
       return {
         ...project,
-        startDate: project.startDate ? extractDateFromISOString(project.startDate) : "",
-        endDate: project.endDate ? extractDateFromISOString(project.endDate) : "",
+        startDate: project.startDate
+          ? extractDateFromISOString(project.startDate)
+          : "",
+        endDate: project.endDate
+          ? extractDateFromISOString(project.endDate)
+          : "",
       };
     }
     return initialState;
@@ -71,7 +76,7 @@ const ProjectForm = ({ onSubmit, isPending, project }: Props): ReactElement => {
       file: null,
       preview: img.url,
       caption: img.caption || "",
-      className: img.className || ""
+      className: img.className || "",
     })) || []
   );
 
@@ -89,13 +94,22 @@ const ProjectForm = ({ onSubmit, isPending, project }: Props): ReactElement => {
         submittedFormData.append(`additionalImages[${index}]`, image.file);
       }
       if (image.preview) {
-        submittedFormData.append(`additionalImageUrls[${index}]`, image.preview);
+        submittedFormData.append(
+          `additionalImageUrls[${index}]`,
+          image.preview
+        );
       }
       if (image.caption) {
-        submittedFormData.append(`additionalImageCaptions[${index}]`, image.caption || "");
+        submittedFormData.append(
+          `additionalImageCaptions[${index}]`,
+          image.caption || ""
+        );
       }
       if (image.className) {
-        submittedFormData.append(`additionalImageClassNames[${index}]`, image.className || "");
+        submittedFormData.append(
+          `additionalImageClassNames[${index}]`,
+          image.className || ""
+        );
       }
     });
 
@@ -430,15 +444,30 @@ const ProjectForm = ({ onSubmit, isPending, project }: Props): ReactElement => {
           </div>
 
           {/* Featured Switch */}
-          <div className="flex items-center gap-2">
-            <Switch
-              id="featured"
-              checked={formDataState.featured}
-              onCheckedChange={(checked) =>
-                setFormDataState((prev) => ({ ...prev, featured: checked }))
-              }
-            />
-            <Label htmlFor="featured">Featured Project</Label>
+          <div className="flex items-center gap-8">
+            <div className="flex items-center gap-2">
+              <Switch
+                id="featured"
+                name="featured"
+                checked={formDataState.featured}
+                onCheckedChange={(checked) => {
+                  setFormDataState((prev) => ({ ...prev, featured: checked }));
+                }}
+              />
+              <Label htmlFor="featured">Featured Project</Label>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <Switch
+                id="published"
+                name="published"
+                checked={formDataState.published}
+                onCheckedChange={(checked) => {
+                  setFormDataState((prev) => ({ ...prev, published: checked }));
+                }}
+              />
+              <Label htmlFor="published">Published</Label>
+            </div>
           </div>
 
           <div className="flex gap-4">

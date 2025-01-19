@@ -42,12 +42,12 @@ const Editor = ({ value, onChange, className }: EditorProps) => {
       Link.configure({
         openOnClick: false,
         HTMLAttributes: {
-          class: 'text-primary underline underline-offset-4',
+          class: "text-primary underline underline-offset-4",
         },
       }),
       Image.configure({
         HTMLAttributes: {
-          class: 'rounded-lg border border-border',
+          class: "rounded-lg border border-border",
         },
       }),
       AccentText,
@@ -215,4 +215,4 @@ const Editor = ({ value, onChange, className }: EditorProps) => {
   );
 };
 
-export default Editor; 
+export default Editor;

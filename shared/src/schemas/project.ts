@@ -3,7 +3,7 @@ import { z } from "zod";
 const imageMetadataSchema = z.object({
   url: z.string().url(),
   caption: z.string().optional(),
-  className: z.string().optional(), 
+  className: z.string().optional(),
 });
 
 export const projectSchema = z.object({
@@ -18,6 +18,7 @@ export const projectSchema = z.object({
   githubUrl: z.string().url().optional(),
   liveUrl: z.string().url().optional(),
   featured: z.boolean().default(false),
+  published: z.boolean().default(true),
   startDate: z.string().datetime(),
   endDate: z.string().datetime().optional(),
   order: z.number().optional(),

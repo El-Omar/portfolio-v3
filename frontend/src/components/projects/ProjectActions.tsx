@@ -16,6 +16,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/Dialog";
 import { Link } from "@/i18n/routing";
+import ViewJson from "@/components/ui/ViewJson";
 
 type Props = {
   project: ProjectResponse;
@@ -54,6 +55,7 @@ const ProjectActions = ({ project }: Props): ReactElement => {
           <Pencil className="h-4 w-4" />
         </Button>
       </Link>
+      <ViewJson data={project} title={`Project: ${project.title}`} />
       <Dialog>
         <DialogTrigger asChild>
           <Button

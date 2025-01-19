@@ -8,7 +8,7 @@ const imageMetadataSchema = new Schema({
   url: { type: String, required: true },
   caption: String,
   className: String,
-  order: Number,
+  published: { type: Boolean, default: true },
 });
 
 const ProjectSchema: Schema = new Schema<ProjectDocument>(
@@ -27,6 +27,7 @@ const ProjectSchema: Schema = new Schema<ProjectDocument>(
     startDate: { type: String, required: true },
     endDate: { type: String },
     order: { type: Number },
+    published: { type: Boolean, default: true },
   },
   { timestamps: true, versionKey: false }
 );

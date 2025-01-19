@@ -46,3 +46,10 @@ export type LoginResponse = {
 };
 
 export type ProjectResponse = WithEveFields<WithSlug<WithEtag<Project>>>;
+
+export type GetProjectsQuery = PaginationParams & {
+  featured?: boolean;
+  fields?: string;
+  include?: boolean;
+  published?: boolean;
+};

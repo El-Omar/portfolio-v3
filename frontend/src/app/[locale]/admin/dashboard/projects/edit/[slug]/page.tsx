@@ -4,13 +4,14 @@ import EditProjectForm from "./EditProjectForm";
 import { notFound } from "next/navigation";
 
 type Props = {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 };
 
 const EditProjectPage = async ({ params }: Props): Promise<ReactElement> => {
-  const projectData = await getProjectBySlug(params.slug);
+  const pars = await params;
+  const projectData = await getProjectBySlug(pars.slug);
 
   if (projectData.status === "error" || !projectData.data) {
     notFound();

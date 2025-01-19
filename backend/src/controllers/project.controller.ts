@@ -12,16 +12,15 @@ import { generateEtag, compareEtags } from "../util/etag";
 import { BadRequestError, NotFoundError } from "../util/errors";
 import {
   ApiResponse,
-  PaginationParams,
+  GetProjectsQuery,
   Project as ProjectType,
 } from "@portfolio-v3/shared";
 import { S3Service } from "../services/s3.service";
 import { getProjection } from "../util/projection";
 
-type GetProjectsQuery = PaginationParams & {
-  featured?: boolean;
-  fields?: string;
-  include?: boolean;
+type ReceivedProjectQuery = GetProjectsQuery & {
+  published?: string;
+  featured?: string;
 };
 
 // GET projects endpoint: /projects
@@ -29,11 +28,19 @@ export const getProjects: RequestHandler<
   {},
   ApiResponse<ProjectType[]>,
   {},
-  GetProjectsQuery
+  ReceivedProjectQuery
 > = async (req, res, next) => {
   try {
-    const { featured, fields, include = true } = req.query;
-    const query = featured ? { featured: true } : {};
+    const { featured, fields, include = true, published } = req.query;
+    const query: GetProjectsQuery = {};
+
+    if (published !== undefined) {
+      query.published = published === "true";
+    }
+
+    if (featured !== undefined) {
+      query.featured = featured === "true";
+    }
 
     const projection = getProjection(fields, include);
 

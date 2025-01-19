@@ -63,7 +63,8 @@ const ProjectsPage = async (): Promise<ReactElement> => {
                 <th className="px-6 py-4 text-left">Technologies</th>
                 <th className="px-6 py-4 text-left">Featured</th>
                 <th className="px-6 py-4 text-left">Status</th>
-                <th className="px-6 py-4 text-left">Display Order</th>
+                <th className="px-6 py-4 text-left">Order</th>
+                <th className="px-6 py-4 text-left">Published</th>
                 <th className="px-6 py-4 text-center">Actions</th>
               </tr>
             </thead>
@@ -125,7 +126,18 @@ const ProjectsPage = async (): Promise<ReactElement> => {
                   </td>
                   <td className="px-6 py-4">
                     <span className="px-2 py-1 text-xs rounded bg-gray-100">
-                      {project.order || "Not set"}
+                      {project.order}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4">
+                    <span
+                      className={`px-2 py-1 text-xs rounded ${
+                        project.published
+                          ? "bg-green-100 text-green-800"
+                          : "bg-yellow-100 text-yellow-800"
+                      }`}
+                    >
+                      {project.published ? "Published" : "Draft"}
                     </span>
                   </td>
                   <td className="px-6 py-4">
