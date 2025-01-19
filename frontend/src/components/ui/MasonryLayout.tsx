@@ -17,25 +17,52 @@ type WrappedItem = {
 
 type Props = {
   children: ReactNode;
+  columns?: {
+    default: number;
+    md?: number;
+    lg?: number;
+  };
+  gap?: string;
+  className?: string;
 };
 
-const MasonryLayout = ({ children }: Props): JSX.Element => {
-  const [columns, setColumns] = useState<number>(2);
+const MasonryLayout = ({ 
+  children, 
+  columns = { default: 1, md: 2, lg: 3 },
+  gap = "gap-8",
+  className = ""
+}: Props): JSX.Element => {
+  const [currentColumns, setCurrentColumns] = useState<number>(columns.default);
+
+  // Generate grid columns classes based on the columns configuration
+  const gridColumnsClass = useMemo(() => {
+    // Always start with 1 column on mobile
+    const baseClass = 'grid-cols-1';
+    // Add medium and large breakpoint classes if specified
+    const mdCols = columns.md ? `md:grid-cols-${columns.md}` : '';
+    const lgCols = columns.lg ? `lg:grid-cols-${columns.lg}` : '';
+    
+    return `${baseClass} ${mdCols} ${lgCols}`.trim();
+  }, [columns]);
 
   useEffect(() => {
     const updateColumns = (): void => {
-      if (window.innerWidth < 1024) setColumns(1);
-      else setColumns(2);
+      if (window.innerWidth >= 1024) {
+        setCurrentColumns(columns.lg || columns.md || columns.default);
+      } else if (window.innerWidth >= 768) {
+        setCurrentColumns(columns.md || columns.default);
+      } else {
+        setCurrentColumns(1); // Always 1 column on mobile
+      }
     };
 
     updateColumns();
     const debouncedResize = debounce(updateColumns, 100);
     window.addEventListener("resize", debouncedResize);
     return () => window.removeEventListener("resize", debouncedResize);
-  }, []);
+  }, [columns]);
 
   const distributeItems = useMemo((): WrappedItem[][] => {
-    // Convert children to array and ensure each child has a stable key
     const childrenArray: WrappedItem[] = Children.toArray(children).map(
       (child, index) => ({
         key: `item-${index}`,
@@ -43,30 +70,30 @@ const MasonryLayout = ({ children }: Props): JSX.Element => {
       }),
     );
 
-    if (columns === 1) {
+    if (currentColumns === 1) {
       return [childrenArray];
     }
 
     const columnArrays: WrappedItem[][] = Array.from(
-      { length: columns },
+      { length: currentColumns },
       () => [],
     );
 
     childrenArray.forEach((child, index) => {
-      const columnIndex = index % columns;
+      const columnIndex = index % currentColumns;
       columnArrays[columnIndex].push(child);
     });
 
     return columnArrays;
-  }, [children, columns]);
+  }, [children, currentColumns]);
 
   return (
-    <div className="w-full max-w-6xl mx-auto px-4">
-      <div className="flex flex-wrap justify-center gap-8">
+    <div className={`w-full mx-auto ${className}`}>
+      <div className={`grid ${gridColumnsClass} ${gap}`}>
         {distributeItems.map((column, columnIndex) => (
           <div
             key={`column-${columnIndex}`}
-            className="flex-1 flex flex-col gap-8 min-w-[300px] max-w-[600px]"
+            className={`flex flex-col ${gap}`}
           >
             {column.map(({ key, content }) => (
               <Fragment key={key}>{content}</Fragment>

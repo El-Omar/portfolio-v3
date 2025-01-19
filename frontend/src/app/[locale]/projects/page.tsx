@@ -1,7 +1,6 @@
 import { ReactElement, Suspense } from "react";
 import { useTranslations } from "next-intl";
 import Title from "@/components/ui/Title";
-import TitleAccent from "@/components/ui/TitleAccent";
 import ProjectsListDetailed from "@/components/projects/ProjectListDetailed";
 
 const ProjectsPage = (): ReactElement => {
@@ -10,9 +9,9 @@ const ProjectsPage = (): ReactElement => {
   return (
     <main className="flex flex-col items-center container">
       <section className="w-full md:py-20 py-10">
-        <Title className="mb-12">
+        <Title className="mb-12 text-center md:text-6xl">
           {t.rich("title", {
-            accent: (chunk) => <TitleAccent>{chunk}</TitleAccent>,
+            accent: (chunk) => <>{chunk}</>,
           })}
         </Title>
 

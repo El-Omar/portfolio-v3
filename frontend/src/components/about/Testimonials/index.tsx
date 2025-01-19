@@ -18,7 +18,7 @@ const Testimonials = (): ReactElement => {
       </Title>
 
       <div className="container mx-auto px-4">
-        <MasonryLayout>
+        <MasonryLayout columns={{ default: 2, md: 2 }}>
           {testimonials.map((testimonial) => (
             <TestimonialCard key={testimonial.author} {...testimonial} />
           ))}

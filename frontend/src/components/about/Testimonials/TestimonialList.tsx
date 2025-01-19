@@ -10,15 +10,42 @@ export const testimonials: TestimonialType[] = [
     gradient: "red",
   },
   {
-    review:
-      "I had the privilege of working with Elomar for three years, and he's an exceptional frontend developer and UX designer. Elomar is a down-to-earth team player who brings positive energy and laughter to the team while staying laser-focused when it matters most. His dedication is unmatched, he's not afraid to put in the extra hours to meet even the toughest deadlines, always delivering top-quality work. Elomar's blend of technical expertise, creativity, and work ethic makes him an invaluable asset to any team.",
+    review: (
+      <>
+        I had the privilege of working with Elomar for three years, and he's an
+        exceptional frontend developer and UX designer. Elomar is a
+        down-to-earth team player who brings positive energy and laughter to the
+        team while staying laser-focused when it matters most.
+        <br />
+        <br />
+        His dedication is unmatched, he's not afraid to put in the extra hours
+        to meet even the toughest deadlines, always delivering top-quality work.
+        Elomar's blend of technical expertise, creativity, and work ethic makes
+        him an invaluable asset to any team.
+      </>
+    ),
+
     author: "Pieter De Clercq",
     image: "pieter.jpeg",
     role: "Software Engineer @ Deliverect",
   },
   {
-    review:
-      "Working with Elomar at Deliverect was an absolute pleasure. As a Front-End Developer, his attention to detail and ability to deliver high-quality work were impressive. We collaborated on a few projects, and I was always impressed by his problem-solving skills and commitment to bringing the best user experience to life. Elomar is a true team player and a fantastic asset to any project.",
+    review: (
+      <>
+        Working with Elomar has been a truly enriching experience. His ability
+        as a Frontend Developer to seamlessly bridge technical implementation
+        with user-focused design is remarkable. He has a sharp eye for detail,
+        anticipates potential challenges, and ensures that every project
+        benefits from efficient, high-quality solutions.
+        <br />
+        <br />
+        What sets Elomar apart is his proactive approach during brainstorming
+        and design discussions, where his ideas consistently add value. His
+        positive energy and strong sense of teamwork make him a joy to work
+        with. Elomar's mix of expertise, creativity, and collaborative spirit
+        makes him an exceptional contributor to any team
+      </>
+    ),
     author: "Alvaro",
     image: "alvaro.jpeg",
     role: "Software Engineer @ Deliverect",

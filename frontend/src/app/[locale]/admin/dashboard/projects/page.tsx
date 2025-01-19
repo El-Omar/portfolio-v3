@@ -42,7 +42,7 @@ const ProjectsPage = async (): Promise<ReactElement> => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold">Projects</h1>
+        <h1 className="text-3xl font-bold">Projects ({projects.length})</h1>
         <Link href="/admin/dashboard/projects/new">
           <Button>
             <Plus className="mr-2 h-4 w-4" />
@@ -63,6 +63,7 @@ const ProjectsPage = async (): Promise<ReactElement> => {
                 <th className="px-6 py-4 text-left">Technologies</th>
                 <th className="px-6 py-4 text-left">Featured</th>
                 <th className="px-6 py-4 text-left">Status</th>
+                <th className="px-6 py-4 text-left">Display Order</th>
                 <th className="px-6 py-4 text-center">Actions</th>
               </tr>
             </thead>
@@ -120,6 +121,11 @@ const ProjectsPage = async (): Promise<ReactElement> => {
                   <td className="px-6 py-4">
                     <span className={`px-2 py-1 text-xs rounded`}>
                       {new Date(project.startDate).getFullYear()}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4">
+                    <span className="px-2 py-1 text-xs rounded bg-gray-100">
+                      {project.order || "Not set"}
                     </span>
                   </td>
                   <td className="px-6 py-4">

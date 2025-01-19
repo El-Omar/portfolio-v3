@@ -33,7 +33,7 @@ const TestimonialCard = ({
     <article
       className={`p-8 rounded-lg ${bg} flex flex-col justify-between shadow-md`}
     >
-      <Paragraph className="md:text-lg italic">&quot;{review}&quot;</Paragraph>
+      <Paragraph className="md:text-lg lg:w-full italic">&quot;{review}&quot;</Paragraph>
       <div className="mt-4 flex items-center gap-4">
         <Image
           width={50}
