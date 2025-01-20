@@ -5,26 +5,35 @@ import { getProjects } from "@/app/actions/projects";
 import MasonryLayout from "@/components/ui/MasonryLayout";
 
 const ProjectCard = ({ project, index }: { project: any; index: number }) => {
-  const aspectRatios = [
-    "aspect-[4/3]",
-    "aspect-[3/4]",
-  ];
+  const aspectRatios = ["aspect-[4/3]", "aspect-[3/4]"];
   const aspectRatio = aspectRatios[index % aspectRatios.length];
+
+  // More subtle, professional gradient combinations
+  const overlays = [
+    "from-neutral-200/30 to-neutral-400/20", // Clean, professional
+    "from-stone-200/30 to-stone-400/20",     // Warm, minimal
+    "from-zinc-200/30 to-zinc-400/20",       // Cool, sophisticated
+    "from-slate-200/30 to-slate-400/20",     // Modern, subtle
+  ];
+
+  const overlayGradient =
+    project.overlayColor || overlays[index % overlays.length];
 
   return (
     <Link href={`/projects/${project.slug}`} className="group block">
       <div className="space-y-4">
         {project.imageUrl && (
           <div
-            className={`relative ${aspectRatio} overflow-hidden bg-neutral-100 flex items-center justify-center `}
+            className={`relative ${aspectRatio} overflow-hidden bg-gradient-to-br ${overlayGradient} p-4 sm:p-6 hover:from-neutral-100/40 hover:to-neutral-300/30 transition-colors duration-300`}
           >
-            <div className="absolute inset-0 bg-neutral-200 group-hover:opacity-90 transition-opacity duration-300"></div>
-            <div className="relative h-[calc(100%_-_0rem)] w-[calc(100%_-_0rem)]">
+            <div
+              className={`relative h-full w-full rounded-lg shadow-lg overflow-hidden`}
+            >
               <Image
                 src={project.imageUrl}
                 alt={project.title}
                 fill
-                className="object-cover group-hover:scale-105 duration-300"
+                className="object-cover group-hover:scale-105 duration-300 z-10"
               />
             </div>
           </div>
