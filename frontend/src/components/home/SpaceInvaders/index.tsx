@@ -47,7 +47,7 @@ const SpaceInvaders = (): ReactElement | null => {
             {t("highScore")}: <span className="value font-dm-sans">0</span>
           </span>
         </div>
-        <p className="my-12 instructions instructions text-sm text-neutral-400 text-center">
+        <p className="mt-12  instructions instructions text-sm text-neutral-400 text-center">
           {t("instructions")}
         </p>
       </div>

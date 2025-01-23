@@ -15,11 +15,9 @@ const Title = ({
   const isArabic = locale === "ar";
 
   const className = twMerge(
-    "text-4xl",
-    !isArabic
-      ? "tracking-tight font-dm-sans md:text-5xl"
-      : "font-amiri md:text-6xl",
-    _className,
+    "text-4xl md:text-6xl md:leading-tight",
+    !isArabic ? "tracking-tight font-dm-sans" : "font-amiri",
+    _className
   );
 
   return <h2 className={className}>{children}</h2>;

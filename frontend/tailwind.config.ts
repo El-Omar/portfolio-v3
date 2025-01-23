@@ -19,6 +19,11 @@ const config: Config = {
       },
       colors: {
         ["cool-red"]: "#f0574a",
+        gold: {
+          DEFAULT: "#FFC100",
+          light: "#FFD54F",
+          dark: "#FFB300",
+        },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -60,6 +65,10 @@ const config: Config = {
       },
     },
   },
-  plugins: [require("@tailwindcss/typography")],
+  plugins: [
+    require("@tailwindcss/typography"),
+    require("tailwindcss-motion"),
+    require("tailwindcss-intersect"),
+  ],
 };
 export default config;

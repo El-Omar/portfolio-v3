@@ -1,16 +1,24 @@
 import Image from "next/image";
 import { ReactElement } from "react";
+import { twMerge } from "tailwind-merge";
 
 type Props = {
   invert?: boolean;
+  className?: string;
 };
 
-const BilingualLogo = ({ invert }: Props): ReactElement => {
+const BilingualLogo = ({ invert, className }: Props): ReactElement => {
   return (
     <figure
-      className={`flex items-center rtl:flex-row-reverse rtl:justify-end ${invert ? "text-neutral-200" : "text-neutral-900"}`}
+      className={twMerge(
+        "flex items-center rtl:flex-row-reverse rtl:justify-end",
+        invert ? "text-neutral-200" : "text-neutral-900",
+        className
+      )}
     >
-      <strong className="text-2xl font-rakkas mt-6 -mr-0.5">ـمر</strong>
+      <strong className="text-2xl font-rakkas mt-6 -mr-0.5 leading-[0]">
+        ـمر
+      </strong>
       <Image
         src="/img/logo@2x.png"
         alt="Logo"
@@ -18,7 +26,9 @@ const BilingualLogo = ({ invert }: Props): ReactElement => {
         height={24.245}
         className={`${invert ? "invert" : ""}`}
       />
-      <span className="text-2xl font-pacifico mt-0 -ml-0.5">omar</span>
+      <span className="text-2xl font-pacifico mt-0 -ml-0.5 leading-[0]">
+        omar
+      </span>
     </figure>
   );
 };

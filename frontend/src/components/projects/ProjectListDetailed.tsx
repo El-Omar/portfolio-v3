@@ -8,41 +8,41 @@ const ProjectCard = ({ project, index }: { project: any; index: number }) => {
   const aspectRatios = ["aspect-[4/3]", "aspect-[3/4]"];
   const aspectRatio = aspectRatios[index % aspectRatios.length];
 
-  // More subtle, professional gradient combinations
-  const overlays = [
-    "from-neutral-200/30 to-neutral-400/20", // Clean, professional
-    "from-stone-200/30 to-stone-400/20",     // Warm, minimal
-    "from-zinc-200/30 to-zinc-400/20",       // Cool, sophisticated
-    "from-slate-200/30 to-slate-400/20",     // Modern, subtle
-  ];
-
-  const overlayGradient =
-    project.overlayColor || overlays[index % overlays.length];
-
   return (
-    <Link href={`/projects/${project.slug}`} className="group block">
+    <Link
+      href={`/projects/${project.slug}`}
+      className="group block shadow-xl rounded-xl overflow-hidden"
+    >
       <div className="space-y-4">
         {project.imageUrl && (
-          <div
-            className={`relative ${aspectRatio} overflow-hidden bg-gradient-to-br ${overlayGradient} p-4 sm:p-6 hover:from-neutral-100/40 hover:to-neutral-300/30 transition-colors duration-300`}
-          >
-            <div
-              className={`relative h-full w-full rounded-lg shadow-lg overflow-hidden`}
-            >
-              <Image
-                src={project.imageUrl}
-                alt={project.title}
-                fill
-                className="object-cover group-hover:scale-105 duration-300 z-10"
-              />
-            </div>
+          <div className={`relative ${aspectRatio}`}>
+            <Image
+              src={project.imageUrl}
+              alt={project.title}
+              fill
+              className="object-cover"
+            />
           </div>
         )}
-        <div className="space-y-2 text-center">
-          <h2 className="font-medium">{project.title}</h2>
+        <div className="py-4 text-center">
+          <h2 className="font-medium text-lg text-neutral-900 dark:text-neutral-100">
+            {project.title}
+          </h2>
           <p className="text-sm text-neutral-600 dark:text-neutral-400">
             {project.description}
           </p>
+          <div className="flex flex-wrap gap-2 justify-center">
+            {project.technologies.slice(0, 3).map((tech: string) => (
+              <span
+                key={tech}
+                className="px-2.5 py-1 text-xs rounded-full
+                    bg-neutral-100 dark:bg-neutral-800/50
+                    text-neutral-600 dark:text-neutral-400"
+              >
+                {tech}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
     </Link>

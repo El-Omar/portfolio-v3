@@ -1,39 +1,54 @@
 import Image from "next/image";
 import { ReactElement } from "react";
+import { Link } from "@/i18n/routing";
+import { ArrowUpRight } from "lucide-react";
 
 const BlogCard = (): ReactElement => {
   return (
-    <article className="overflow-hidden rounded-lg shadow transition hover:shadow-lg">
-      <figure className="relative h-56 w-full">
+    <Link 
+      href="/blog/post-slug"
+      className="group flex flex-col overflow-hidden"
+    >
+      {/* Image Container */}
+      <div className="relative aspect-[16/9] w-full overflow-hidden bg-neutral-200 dark:bg-neutral-800">
         <Image
-          alt="Title"
-          src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80"
-          className="h-56 object-cover"
+          alt="Blog post thumbnail"
+          src="https://images.unsplash.com/photo-1524758631624-e2822e304c36"
           fill
+          className="object-cover transition-transform duration-500 group-hover:scale-105"
         />
-      </figure>
+        
+        {/* Arrow Icon */}
+        <div className="absolute top-4 right-4 p-2 
+          bg-neutral-900/90 dark:bg-neutral-800/90 
+          rounded-full opacity-0 translate-y-2 group-hover:opacity-100 
+          group-hover:translate-y-0 transition-all duration-300
+          border border-neutral-800/20 dark:border-neutral-700/50"
+        >
+          <ArrowUpRight className="w-4 h-4 text-white" />
+        </div>
+      </div>
 
-      <div className="bg-white p-4 sm:p-6">
-        <time dateTime="2022-10-10" className="block text-xs text-gray-500">
-          {" "}
-          10th Oct 2022{" "}
-        </time>
+      {/* Content */}
+      <div className="flex-1 space-y-3 p-4 bg-neutral-100 dark:bg-neutral-800 border-t border-neutral-200 dark:border-neutral-700">
+        <div className="flex items-center gap-2">
+          <time className="text-xs uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+            March 15, 2024
+          </time>
+          <span className="text-xs px-2 py-0.5 bg-neutral-200 dark:bg-neutral-700 text-neutral-600 dark:text-neutral-400 rounded">
+            Design Systems
+          </span>
+        </div>
 
-        <a href="#">
-          <h3 className="mt-0.5 text-lg text-gray-900">
-            How to position your furniture for positivity
-          </h3>
-        </a>
+        <h3 className="text-lg font-medium group-hover:text-cool-red transition-colors duration-300">
+          Building scalable design systems
+        </h3>
 
-        <p className="mt-2 line-clamp-3 text-sm/relaxed text-gray-500">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Recusandae
-          dolores, possimus pariatur animi temporibus nesciunt praesentium
-          dolore sed nulla ipsum eveniet corporis quidem, mollitia itaque minus
-          soluta, voluptates neque explicabo tempora nisi culpa eius atque
-          dignissimos. Molestias explicabo corporis voluptatem?
+        <p className="text-sm text-neutral-600 dark:text-neutral-400 line-clamp-2">
+          Learn how to create and maintain a design system that grows with your product. We'll cover component architecture, documentation, and team collaboration.
         </p>
       </div>
-    </article>
+    </Link>
   );
 };
 

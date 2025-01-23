@@ -11,7 +11,6 @@ const SpaceInvaders = (spaceInvaderRef: RefObject<HTMLDivElement>) => {
   const resultDisplay = $spaceInvaders.querySelector(`.result`);
   const playBtn = $spaceInvaders.querySelector(`.btn-play`);
   const $highScore = $spaceInvaders.querySelector(`.high-score .value`);
-  const instructions = $spaceInvaders.querySelector(".instructions");
 
   if (!resultDisplay || !playBtn || !$highScore) {
     return;
@@ -193,8 +192,14 @@ const SpaceInvaders = (spaceInvaderRef: RefObject<HTMLDivElement>) => {
     );
 
     resultDisplay.textContent = `Score: ${result > 0 ? result : ``}`;
-    document.addEventListener("keyup", shoot);
-    document.addEventListener("keydown", moveShooter);
+    document.addEventListener("keyup", e => {
+      e.preventDefault();
+      shoot(e);
+    });
+    document.addEventListener("keydown", e => {
+      e.preventDefault();
+      moveShooter(e);
+    });
     invaderId = setInterval(moveInvaders, difficulty);
   };
 
@@ -203,7 +208,6 @@ const SpaceInvaders = (spaceInvaderRef: RefObject<HTMLDivElement>) => {
     if (!isPlaying || (isGameOver && !isPlaying)) {
       currentTarget.classList.add(`is-playing`);
       resultDisplay.classList.remove(`hidden`);
-      instructions?.classList.add("invisible");
       startGame();
       currentTarget.blur();
     }

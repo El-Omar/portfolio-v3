@@ -1,17 +1,22 @@
 import { useLocale } from "next-intl";
 import { ReactElement, ReactNode } from "react";
+import { twMerge } from "tailwind-merge";
 
 type Props = {
   children: ReactNode;
+  className?: string;
 };
 
-const TitleAccent = ({ children }: Props): ReactElement => {
+const TitleAccent = ({ children, className }: Props): ReactElement => {
   const locale = useLocale();
   const isArabic = locale === "ar";
 
   return (
     <span
-      className={`font-${!isArabic ? "baskerville" : "rakkas"} text-cool-red`}
+      className={twMerge(
+        `font-${!isArabic ? "baskerville" : "rakkas"}`,
+        className
+      )}
     >
       {children}
     </span>

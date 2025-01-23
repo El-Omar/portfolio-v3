@@ -7403,6 +7403,16 @@ tailwindcss-animate@^1.0.7:
   resolved "https://registry.yarnpkg.com/tailwindcss-animate/-/tailwindcss-animate-1.0.7.tgz#318b692c4c42676cc9e67b19b78775742388bef4"
   integrity sha512-bl6mpH3T7I3UFxuvDEXLxy/VuFxBk5bbzplh7tXI68mwMokNYd1t9qPBHlnyTwfa4JGC4zP516I1hYYtQ/vspA==
 
+tailwindcss-intersect@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/tailwindcss-intersect/-/tailwindcss-intersect-2.0.1.tgz#1fed95e81944f9352c7b5d1deb5b9cc43e183531"
+  integrity sha512-0NcIGTKvJwNvMZBKMiykddJdKmJUb3eeVCvy366UP7tS/Sxdxc5E3pR9rwPMLxmhFIYiMdbCKn2G7GfZ8zB/TQ==
+
+tailwindcss-motion@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/tailwindcss-motion/-/tailwindcss-motion-1.0.1.tgz#2e2f634ff83c1ecfc2eb7d9eed8670710061775b"
+  integrity sha512-ZqarvI3XSclT46Dq1wOo9qG9Yx0TIyEtkMfTo8l0JuVKvO1WiSbvAECuTqdYHpC9Ml7abuJIk7u907SBHYprwQ==
+
 tailwindcss@^3.4.1:
   version "3.4.17"
   resolved "https://registry.yarnpkg.com/tailwindcss/-/tailwindcss-3.4.17.tgz#ae8406c0f96696a631c790768ff319d46d5e5a63"

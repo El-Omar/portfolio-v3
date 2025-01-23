@@ -19,6 +19,13 @@ const buttonVariants = cva(
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
         plain: "text-primary",
+        fancy: `
+          relative px-4 py-2 rounded-sm
+          text-neutral-900 dark:text-neutral-100
+          uppercase tracking-wider text-sm
+          transition-all duration-300 border-b-2 border-neutral-200  dark:border-neutral-800
+          hover:bg-neutral-100 dark:hover:bg-neutral-800
+        `,
       },
       size: {
         default: "h-10 px-4 py-2",
@@ -31,7 +38,7 @@ const buttonVariants = cva(
       variant: "default",
       size: "default",
     },
-  },
+  }
 );
 
 export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> &

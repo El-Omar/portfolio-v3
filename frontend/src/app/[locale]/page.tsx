@@ -1,66 +1,87 @@
-import { BookOpen } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { useTranslations } from "next-intl";
 import BlogCard from "@/components/blog/BlogCard";
 import Design from "@/components/home/Design";
 import Develop from "@/components/home/Develop";
 import Intro from "@/components/home/Intro";
+import Stats from "@/components/home/Stats";
 import Projects from "@/components/home/Projects";
 import { Button } from "@/components/ui/Button";
 import Title from "@/components/ui/Title";
 import TitleAccent from "@/components/ui/TitleAccent";
 import { Link } from "@/i18n/routing";
-import ContactWithSpaceInvaders from "@/components/home/GetInTouch";
+import ContactWithSpaceInvaders from "@/components/home/ContactWithSpaceInvaders";
+import SectionTransition from "@/components/home/SectionTransition";
+import Paragraph from "@/components/ui/Paragraph";
 
 const Home = () => {
   const t = useTranslations("home");
 
   return (
     <main className="flex flex-col items-center container">
-      <section className="w-full md:py-20 py-10 xl:mt-6">
+      <section className="w-full md:py-8 py-10">
         <Intro />
       </section>
-      <section className="mt-10 md:mt-20 md:p-20 px-4 py-10 bg-neutral-100 dark:bg-neutral-800 flex flex-col gap-4 w-full">
-        <Title className="text-center">
-          {t.rich("expertise.title", {
-            br: () => <br className="md:block" />,
-            accent: (chunk) => <TitleAccent>{chunk}</TitleAccent>,
-          })}
-        </Title>
-        <section className="flex flex-col gap-12 mt-6">
-          <Design />
-          <Develop />
-          <Button className="self-center" variant="default" asChild>
-            <Link href="/about">
-              {t("expertise.readMore")} <BookOpen />
-            </Link>
-          </Button>
-        </section>
+      <Stats />
+      <SectionTransition
+        title="Crafting"
+        titleAccent="digital experiences"
+        subtitle="that leave an"
+        subtitleAccent="impact"
+      />
+      <section className="w-full">
+        <div className="container mx-auto pb-32">
+          <div className="flex flex-col gap-64">
+            <div className="w-full">
+              <Design />
+            </div>
+            <div className="w-full">
+              <Develop />
+            </div>
+          </div>
+        </div>
       </section>
-      <article className="w-full md:px-12 md:py-20 xl:p-20 xl:py-28 px-4 py-10">
-        <header>
-          <Title>
-            {t.rich("work.title", {
-              accent: (chunk) => <TitleAccent>{chunk}</TitleAccent>,
-            })}
-          </Title>
-        </header>
-        <section className="flex justify-between gap-8 mt-8 flex-wrap">
+      <SectionTransition
+        title="Showcasing"
+        titleAccent="projects"
+        subtitle="I've worked"
+        subtitleAccent="on"
+        align="right"
+      />
+      <article className="w-full py-20 relative">
+        <div className="absolute w-[200vw] -left-[50vw] h-full top-0 -right-[50vw] bg-neutral-100 dark:bg-neutral-900/50" />
+        <div className="container mx-auto px-6 relative">
           <Projects />
-        </section>
+        </div>
       </article>
-      <article className="flex flex-col gap-12 mt-20 w-full md:px-12 md:py-20 xl:p-20 px-4 py-10 bg-neutral-100 dark:bg-neutral-800">
-        <header>
-          <Title className="text-center">{t("blog.title")}</Title>
-        </header>
-        <section className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-4 lg:gap-8">
-          <BlogCard />
-          <BlogCard />
-          <BlogCard />
-          <BlogCard />
-        </section>
-        <Button className="self-center" variant="outline">
-          {t("blog.readMore")}
-        </Button>
+      <article className="w-full py-32">
+        <div className="container mx-auto px-6">
+          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-20 mb-16">
+            <div className="flex-1 space-y-6">
+              <Title>
+                Writing about <br />
+                <TitleAccent>nothing & everything</TitleAccent>
+              </Title>
+              <Paragraph className="text-neutral-600 dark:text-neutral-400 max-w-xl">
+                Here's where I explore storytelling and share some fragments of random thoughts; 
+                sometimes about tech, mostly about life.
+              </Paragraph>
+            </div>
+            <div className="flex-1 flex justify-end">
+              <Button variant="fancy" asChild>
+                <Link href="/blog">
+                  View all posts <ArrowRight />
+                </Link>
+              </Button>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <BlogCard />
+            <BlogCard />
+            <BlogCard />
+          </div>
+        </div>
       </article>
       <ContactWithSpaceInvaders />
     </main>

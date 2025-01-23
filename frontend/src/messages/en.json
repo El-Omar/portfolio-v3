@@ -2,7 +2,7 @@
   "navigation": {
     "home": "Home",
     "blog": "Blog",
-    "about": "About me",
+    "about": "About",
     "contact": "Contact"
   },
   "footer": {
@@ -12,16 +12,17 @@
   },
   "home": {
     "intro": {
-      "title": "Sup! I'm Elomar, and I love <br></br> designing <accent>cool experiences</accent>.",
-      "description": "I'm a web developer and UI/UX designer who keeps things simple. I also <blog>write</blog>, snap some cool shots with my phone, and stay active with sports. Stick around and check out my work!"
+      "greeting": "Hello there!",
+      "title": "Sup! I'm Elomar, and I love designing cool experiences.",
+      "description": "Hi, I'm Elomar, a web developer and designer who believes in the power of simplicity. I craft clean, intuitive digital experiences and explore various topics through my <blog>writing</blog>. Come take a look at what I do."
     },
     "expertise": {
       "title": "Expertise <accent>& experience</accent>",
-      "designTitle": "Design with intent",
+      "designTitle": "Design with <br></br> <accent>intent</accent>",
       "designDescription": "I design with <strong>purpose</strong>—solving problems and simplifying experiences. By focusing on core user needs, I craft solutions that are clear, effective, and leave a lasting impact.",
-      "developTitle": "Develop with precision",
+      "developTitle": "Develop with <br></br> <accent>precision</accent>",
       "developDescription": "Balancing <strong>quality</strong> and <strong>time efficiency</strong> isn't easy, but finding the optimal solution is where I excel. I bring a methodical approach to every project, ensuring both excellence and timely delivery. (And no, my workspace doesn't actually look like this)",
-      "readMore": "Read more about me"
+      "readMore": "Get to know me"
     },
     "work": {
       "title":"Here's some <accent>work</accent>"
