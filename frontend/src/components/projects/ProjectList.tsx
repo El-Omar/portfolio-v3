@@ -4,7 +4,7 @@ import { ReactElement } from "react";
 import { Link } from "@/i18n/routing";
 import { ArrowUpRight } from "lucide-react";
 
-const Projects = async (): Promise<ReactElement> => {
+const ProjectList = async (): Promise<ReactElement> => {
   const response = await getProjects({ published: true });
 
   if (response.status === "error") {
@@ -85,4 +85,4 @@ const Projects = async (): Promise<ReactElement> => {
   );
 };
 
-export default Projects;
+export default ProjectList;

@@ -1,3 +1,4 @@
+import { twMerge } from "tailwind-merge";
 import Title from "../ui/Title";
 import TitleAccent from "../ui/TitleAccent";
 
@@ -7,7 +8,8 @@ interface SectionTransitionProps {
   subtitle?: string;
   subtitleAccent?: string;
   className?: string;
-  align?: 'left' | 'right';
+  align?: "left" | "right" | "center";
+  ref?: React.RefObject<HTMLDivElement>;
 }
 
 const SectionTransition = ({
@@ -16,12 +18,15 @@ const SectionTransition = ({
   subtitle,
   subtitleAccent,
   className = "",
-  align = 'left'
+  align = "left",
+  ref,
 }: SectionTransitionProps) => {
   return (
-    <div className={`w-full py-40 ${className}`}>
+    <div className={twMerge(`w-full py-40 ${className}`)} ref={ref}>
       <div className="container mx-auto px-6">
-        <div className={`space-y-2 ${align === 'right' ? 'text-right' : ''}`}>
+        <div
+          className={`space-y-2 ${align === "right" ? "text-right" : align === "center" ? "text-center" : ""}`}
+        >
           <Title className="text-3xl md:text-4xl lg:text-5xl">
             {title} {titleAccent && <TitleAccent>{titleAccent}</TitleAccent>}
           </Title>
@@ -39,4 +44,4 @@ const SectionTransition = ({
   );
 };
 
-export default SectionTransition; 
+export default SectionTransition;

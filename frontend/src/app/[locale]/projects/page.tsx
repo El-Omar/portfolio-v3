@@ -1,7 +1,7 @@
 import { ReactElement, Suspense } from "react";
 import { useTranslations } from "next-intl";
 import Title from "@/components/ui/Title";
-import ProjectsListDetailed from "@/components/projects/ProjectListDetailed";
+import ProjectList from "@/components/projects/ProjectList";
 
 const ProjectsPage = (): ReactElement => {
   const t = useTranslations("projects");
@@ -22,7 +22,7 @@ const ProjectsPage = (): ReactElement => {
             </div>
           }
         >
-          <ProjectsListDetailed />
+          <ProjectList />
         </Suspense>
       </section>
     </main>

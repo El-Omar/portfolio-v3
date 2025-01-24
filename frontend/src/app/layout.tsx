@@ -12,6 +12,7 @@ import {
   fontPacifico,
   fontRakkas,
 } from "@/lib/utils/fonts";
+import IntersectObserverProvider from "@/components/providers/IntersectObserverProvider";
 
 export const metadata: Metadata = {
   title: "Home - Elomar",
@@ -33,10 +34,12 @@ export default function RootLayout({
         dark:bg-neutral-700 text-gray-900 dark:text-gray-100 font-inter`}
         suppressHydrationWarning
       >
-        <ThemeProvider>
-          {children}
-          <Toaster />
-        </ThemeProvider>
+        <IntersectObserverProvider>
+          <ThemeProvider>
+            {children}
+            <Toaster />
+          </ThemeProvider>
+        </IntersectObserverProvider>
       </body>
     </html>
   );
