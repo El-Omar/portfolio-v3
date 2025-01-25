@@ -31,10 +31,10 @@ const Home = async () => {
       </Container>
       <Container>
         <SectionTransition
-          title="Crafting"
-          titleAccent="digital experiences"
-          subtitle="that leave an"
-          subtitleAccent="impact"
+          title="Creating an"
+          titleAccent="impact"
+          subtitle="requires you"
+          subtitleAccent="to"
         />
       </Container>
       <Container>

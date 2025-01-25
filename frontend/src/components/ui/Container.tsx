@@ -9,7 +9,7 @@ const Container = ({
   className?: string;
 }) => {
   return (
-    <div className={twMerge("container px-5 lg:px-0", className)}>
+    <div className={twMerge("container px-5", className)}>
       {children}
     </div>
   );

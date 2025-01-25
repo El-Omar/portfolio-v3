@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Moon, Sun } from "lucide-react";
+import { Moon, Sun, X } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useLocale } from "next-intl";
 import { Dispatch, ReactElement, SetStateAction } from "react";
@@ -11,12 +11,21 @@ import { Button } from "../ui/Button";
 import { Link } from "@/i18n/routing";
 import { usePages } from "@/lib/hooks/usePages";
 import { useThemeStore } from "@/stores/themeStore";
+import Title from "../ui/Title";
+import TitleAccent from "../ui/TitleAccent";
 
 type Props = {
   toggleSidebar: () => void;
   isAnimating: boolean;
   setIsAnimating: Dispatch<SetStateAction<boolean>>;
 };
+
+const menuItems = [
+  { path: "/", label: "home" },
+  { path: "/blog", label: "writing" },
+  { path: "/about", label: "about" },
+  { path: "/contact", label: "contact" },
+];
 
 const Sidebar = ({
   toggleSidebar,
@@ -31,47 +40,83 @@ const Sidebar = ({
   return (
     <>
       <motion.div
-        className="fixed w-full h-full inset-0 bg-neutral-600 dark:bg-neutral-200 z-50"
+        className="fixed inset-0 bg-black/20 backdrop-blur-sm z-50"
         onClick={toggleSidebar}
         initial={{ opacity: 0 }}
-        animate={{ opacity: 0.3 }}
-        transition={{ ease: "circInOut", duration: 0.38 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.3 }}
       />
       <motion.div
-        className="z-50 fixed w-80 h-screen bg-white/85 dark:bg-neutral-700/85 rtl:left-0 right-0 top-0"
+        className="z-50 fixed w-[min(100vw,520px)] h-screen bg-white dark:bg-neutral-900 rtl:left-0 right-0 top-0"
         initial={{ x: locale === "ar" ? "-100%" : "100%" }}
         animate={{ x: 0 }}
-        transition={{ ease: "circInOut", duration: 0.38 }}
+        exit={{ x: locale === "ar" ? "-100%" : "100%" }}
+        transition={{ duration: 0.3 }}
       >
-        <ul className="w-80 h-[calc(100vh_-_6rem)] flex flex-col gap-2 pt-20 px-4 fixed right-0 rtl:left-0 top-0">
-          {pages.map(({ path, label, icon }) => (
-            <li key={path}>
-              <Link
+        <div className="flex flex-col h-full">
+          {/* Header */}
+          <div className="relative h-40 border-b border-neutral-200 dark:border-neutral-800">
+            <div className="relative p-8 flex flex-col justify-between h-full">
+              <Button
+                variant="ghost"
                 onClick={toggleSidebar}
-                href={path}
-                className={twMerge(
-                  "flex w-full items-center gap-3 py-3 pl-4 transition-colors",
-                  pathname === path
-                    ? "bg-neutral-200 dark:bg-cool-red text-cool-red dark:text-white"
-                    : "hover:bg-neutral-100 dark:hover:bg-cool-red/20",
-                )}
+                className="absolute top-6 right-8 hover:bg-transparent"
               >
-                {icon}
-                <p className="text-sm font-semibold">{label}</p>
-              </Link>
-            </li>
-          ))}
-        </ul>
-        <div className="fixed flex flex-col justify-end bottom-0 h-24 w-80 p-4">
-          <aside className="flex justify-between items-end border-t border-gray-300 dark:border-gray-500 pt-5">
-            <Button onClick={toggleTheme} variant="secondary" size="icon">
-              {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
-            </Button>
-            <LanguageSwitcher
-              isAnimating={isAnimating}
-              setIsAnimating={setIsAnimating}
-            />
-          </aside>
+                <X className="w-8 h-8 text-cool-red" />
+              </Button>
+              <div className="space-y-2">
+                <Title className="text-5xl">
+                  Navigation<TitleAccent>.</TitleAccent>
+                </Title>
+              </div>
+            </div>
+          </div>
+
+          {/* Navigation */}
+          <nav className="flex-1 overflow-y-auto py-12">
+            <ul className="px-8 space-y-8">
+              {menuItems.map(({ path, label }) => (
+                <li key={path}>
+                  <Link
+                    onClick={toggleSidebar}
+                    href={path}
+                    className={twMerge(
+                      "block transition-colors relative group",
+                      pathname === path
+                        ? "text-neutral-900 dark:text-white"
+                        : "text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300"
+                    )}
+                  >
+                    <Title className="text-6xl md:text-7xl group-hover:text-cool-red transition-colors">
+                      {label}
+                      {pathname === path && (
+                        <TitleAccent className="ml-4">.</TitleAccent>
+                      )}
+                    </Title>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          {/* Footer */}
+          <div className="border-t border-neutral-200 dark:border-neutral-800 p-8">
+            <div className="flex items-center justify-between">
+              <Button
+                onClick={toggleTheme}
+                variant="ghost"
+                size="icon"
+                className="text-neutral-400 hover:text-neutral-900 dark:hover:text-white"
+              >
+                {isDarkMode ? <Sun size={24} /> : <Moon size={24} />}
+              </Button>
+              <LanguageSwitcher
+                isAnimating={isAnimating}
+                setIsAnimating={setIsAnimating}
+              />
+            </div>
+          </div>
         </div>
       </motion.div>
     </>

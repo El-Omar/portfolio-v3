@@ -32,7 +32,6 @@ const Navigation = ({
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const toggleSidebar = () => setIsOpen((toggle) => !toggle);
-  const navToggleClassName = `bg-primary transition-all duration-150 ease-in-out`;
 
   return (
     <>
@@ -74,21 +73,17 @@ const Navigation = ({
             </AnimationConfig>
           </motion.figure>
         </Link>
-        <Button
-          variant="link"
-          className="group hover:no-underline flex flex-col gap-1 items-end px-6"
-          onClick={toggleSidebar}
-        >
-          <div
-            className={`${!isOpen ? "w-[21px] group-hover:w-[24px]" : "group-hover:w-[21px] w-[24px]"} h-[3px] ${navToggleClassName}`}
-          />
-          <div
-            className={`${!isOpen ? "w-[18px] group-hover:w-[24px]" : "group-hover:w-[18px] w-[24px]"} h-[3px] ${navToggleClassName}`}
-          />
-          <div
-            className={`${!isOpen ? "w-[19px] group-hover:w-[24px]" : "group-hover:w-[19px] w-[24px]"} h-[3px] ${navToggleClassName}`}
-          />
-        </Button>
+        {!isOpen && (
+          <Button
+            variant="link"
+            className="group hover:no-underline flex flex-col gap-1 items-end px-6"
+            onClick={toggleSidebar}
+          >
+            <div className={`w-[21px] h-[3px] group-hover:w-[24px] bg-primary transition-all duration-150 ease-in-out`} />
+            <div className={`w-[18px] h-[3px] group-hover:w-[24px] bg-primary transition-all duration-150 ease-in-out`} />
+            <div className={`w-[19px] h-[3px] group-hover:w-[24px] bg-primary transition-all duration-150 ease-in-out`} />
+          </Button>
+        )}
       </nav>
     </>
   );

@@ -23,22 +23,20 @@ const SectionTransition = ({
 }: SectionTransitionProps) => {
   return (
     <div className={twMerge(`w-full py-40 ${className}`)} ref={ref}>
-      <div className="container mx-auto px-6">
-        <div
-          className={`space-y-2 ${align === "right" ? "text-right" : align === "center" ? "text-center" : ""}`}
-        >
-          <Title className="text-3xl md:text-4xl lg:text-5xl">
-            {title} {titleAccent && <TitleAccent>{titleAccent}</TitleAccent>}
+      <div
+        className={`space-y-2 ${align === "right" ? "text-right" : align === "center" ? "text-center" : ""}`}
+      >
+        <Title className="text-3xl md:text-4xl lg:text-5xl">
+          {title} {titleAccent && <TitleAccent>{titleAccent}</TitleAccent>}
+        </Title>
+        {subtitle && (
+          <Title className="text-3xl md:text-4xl lg:text-5xl opacity-50">
+            {subtitle}{" "}
+            {subtitleAccent && (
+              <TitleAccent className="">{subtitleAccent}</TitleAccent>
+            )}
           </Title>
-          {subtitle && (
-            <Title className="text-3xl md:text-4xl lg:text-5xl opacity-50">
-              {subtitle}{" "}
-              {subtitleAccent && (
-                <TitleAccent className="">{subtitleAccent}.</TitleAccent>
-              )}
-            </Title>
-          )}
-        </div>
+        )}
       </div>
     </div>
   );
