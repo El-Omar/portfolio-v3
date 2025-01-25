@@ -1,0 +1,47 @@
+import { ReactElement } from "react";
+import { ArrowRight } from "lucide-react";
+import BlogCard from "@/components/blog/BlogCard";
+import { Button } from "@/components/ui/Button";
+import Title from "@/components/ui/Title";
+import TitleAccent from "@/components/ui/TitleAccent";
+import { Link } from "@/i18n/routing";
+import Paragraph from "@/components/ui/Paragraph";
+import Container from "@/components/ui/Container";
+
+const BlogSection = (): ReactElement => {
+  return (
+    <Container>
+      <article className="w-full py-32">
+        <div className="px-6">
+          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-20 mb-16">
+            <div className="flex-1 space-y-6">
+              <Title>
+                Writing about <br />
+                <TitleAccent>nothing & everything</TitleAccent>
+              </Title>
+              <Paragraph className="text-neutral-600 dark:text-neutral-400 max-w-xl">
+                Here's where I explore storytelling and share some fragments of
+                random thoughts; sometimes about tech, mostly about life.
+              </Paragraph>
+            </div>
+            <div className="flex-1 flex justify-end">
+              <Button variant="fancy" asChild>
+                <Link href="/blog">
+                  View all posts <ArrowRight />
+                </Link>
+              </Button>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <BlogCard />
+            <BlogCard />
+            <BlogCard />
+          </div>
+        </div>
+      </article>
+    </Container>
+  );
+};
+
+export default BlogSection;

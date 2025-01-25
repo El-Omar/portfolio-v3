@@ -1,3 +1,5 @@
+"use client";
+
 import { useRef } from "react";
 import { useScroll, useTransform } from "framer-motion";
 import { ProjectResponse } from "@portfolio-v3/shared";
