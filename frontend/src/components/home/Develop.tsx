@@ -11,21 +11,24 @@ const Develop = () => {
   const t = useTranslations("home.expertise");
 
   return (
-    <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-20">
+    <div className="relative w-full flex flex-col lg:flex-row justify-start items-start lg:items-center gap-20">
+      {/* Dot */}
+      <div className="absolute bottom-[calc(50%_-_8rem)] rounded-full left-0 w-64 h-64 bg-neutral-200 opacity-50 z-50"></div>
+
       {/* Left content */}
-      <div className="flex-1 space-y-6 flex flex-col items-start lg:items-end">
-        <Title className="lg:w-[470px] md:w-96 md:max-w-full max-w-96 w-full">
+      <div className="space-y-6 relative z-50">
+        <Title>
           {t.rich("developTitle", {
             br: () => <br />,
             accent: (chunks) => <TitleAccent>{chunks}</TitleAccent>,
           })}
         </Title>
-        <Paragraph className="text-neutral-600 dark:text-neutral-400 max-w-xl">
+        <Paragraph>
           {t.rich("developDescription", {
             strong: (chunks) => <strong>{chunks}</strong>,
           })}
         </Paragraph>
-        <div className="lg:w-[470px] md:w-96 md:max-w-full max-w-96 w-full">
+        <div className="">
           <Link href="/about" className="">
             <Button variant="fancy">
               {t("readMore")} <ArrowRight />
@@ -35,42 +38,52 @@ const Develop = () => {
       </div>
 
       {/* Right image composition */}
-      <div className="flex-1 relative order-1 lg:order-2 lg:block lg:w-auto flex w-full">
-        <div className="relative aspect-[4/3] w-full max-w-[300px] lg:max-w-[420px] mx-auto">
+      <div
+        className="relative w-full lg:w-1/2
+        flex flex-col items-center justify-center"
+      >
+        <div className="relative w-[80%] aspect-[4/3] bg-neutral-200">
+          {/* Dot */}
+          <div
+            className="absolute rounded-full bg-primary z-30
+            lg:-top-8 lg:-right-8 lg:w-16 lg:h-16
+            -top-6 -right-6 w-12 h-12
+            "
+          ></div>
+
+          {/* Main image */}
           <Image
             src="/img/develop.jpeg"
             alt="Development process"
             fill
             className="object-cover z-20"
           />
-          <div
-            className="absolute 
-              -bottom-[45px] sm:-bottom-[60px] lg:-bottom-[90px]
-              -right-[5%] sm:-right-[8%] lg:-right-[12%]
-              w-[60%] aspect-[4/3] bg-gold z-10"
-          >
-            <Image
-              src="/img/wireframes.jpeg"
-              alt="Development detail"
-              fill
-              className="object-cover"
-            />
-          </div>
-          <div
-            className="absolute 
-              -bottom-12 sm:-bottom-16 lg:-bottom-24 
-              left-4 sm:left-6 lg:left-8 
+        </div>
+        <div
+          className="absolute 
+              right-0 -bottom-10 sm:-bottom-16 lg:-bottom-20
+              w-[60%] aspect-[4/3] bg-neutral-200 z-10"
+        >
+          <Image
+            src="/img/wireframes.jpeg"
+            alt="Development detail"
+            fill
+            className="object-cover"
+          />
+        </div>
+        <div
+          className="absolute 
+              left-0 -bottom-12 sm:-bottom-16 lg:-bottom-24 
               w-24 sm:w-28 lg:w-32 
               h-24 sm:h-28 lg:h-32 
               bg-neutral-200 flex items-center justify-center z-30"
-          >
-            <Image
-              src="/img/plants2.jpg"
-              alt="Development detail"
-              fill
-              className="object-cover"
-            />
-          </div>
+        >
+          <Image
+            src="/img/plants2.jpg"
+            alt="Development detail"
+            fill
+            className="object-cover"
+          />
         </div>
       </div>
     </div>

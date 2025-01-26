@@ -27,7 +27,6 @@ const IntroHeader = () => {
         <Title>
           Developer <br />
           <TitleAccent>& Designer</TitleAccent>
-          {/* <span className="font-serif italic">& Designer</span> */}
         </Title>
         <Paragraph className="md:text-lg lg:w-[400px]">
           {t.rich("description", {

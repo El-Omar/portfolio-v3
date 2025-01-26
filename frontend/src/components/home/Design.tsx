@@ -8,56 +8,70 @@ const Design = () => {
   const t = useTranslations("home.expertise");
 
   return (
-    <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-20">
+    <div className="relative w-full flex flex-col lg:flex-row justify-start items-start lg:items-center gap-20">
       {/* Left image composition */}
-      <div className="flex-1 relative order-1 lg:-order-1 lg:block lg:w-auto flex w-full">
-        <div className="relative aspect-[4/3] w-full max-w-[300px] lg:max-w-[420px] mx-auto lg:ml-auto">
+      <div
+        className="relative w-full lg:w-1/2
+        flex flex-col items-center justify-center
+        order-1 lg:-order-1"
+      >
+        <div className="relative w-[80%] aspect-[4/3] bg-neutral-200">
+          {/* Dot */}
+          <div
+            className="absolute rounded-full bg-primary z-30
+            lg:-top-8 lg:-right-8 lg:w-16 lg:h-16
+            -top-6 -right-6 w-12 h-12
+            "
+          ></div>
+
+          {/* Main image */}
           <Image
             src="/img/design.jpg"
             alt="Design process"
             fill
             className="object-cover z-20"
           />
-          <div
-            className="absolute 
-            -bottom-[45px] sm:-bottom-[60px] lg:-bottom-[90px] 
-            -left-[5%] sm:-left-[8%] lg:-left-[10%] 
-            w-[60%] aspect-[4/3] bg-red-500 z-10"
-          >
-            <Image
-              src="/img/notes.jpg"
-              alt="Design detail"
-              fill
-              className="object-cover"
-            />
-          </div>
-          <div
-            className="absolute 
-            -bottom-12 sm:-bottom-16 lg:-bottom-20 
-            right-4 sm:right-6 lg:right-8 
+        </div>
+        <div
+          className="absolute 
+            -bottom-10 sm:-bottom-16 lg:-bottom-20 left-0
+            w-[60%] aspect-[4/3] bg-neutral-200 z-10"
+        >
+          <Image
+            src="/img/notes.jpg"
+            alt="Design detail"
+            fill
+            className="object-cover"
+          />
+        </div>
+        <div
+          className="absolute 
+            -bottom-10 sm:-bottom-16 lg:-bottom-20 
+            right-0 
             w-24 sm:w-28 lg:w-32 
             h-24 sm:h-28 lg:h-32 
             bg-neutral-200 flex items-center justify-center z-30"
-          >
-            <Image
-              src="/img/plants.jpg"
-              alt="Design detail"
-              fill
-              className="object-cover"
-            />
-          </div>
+        >
+          <Image
+            src="/img/plants.jpg"
+            alt="Design detail"
+            fill
+            className="object-cover"
+          />
         </div>
       </div>
 
-      {/* Left content */}
-      <div className="flex-1 space-y-6">
+      {/* Dot */}
+      <div className="absolute bottom-[calc(50%_-_8rem)] rounded-full right-0 w-64 h-64 bg-neutral-200 opacity-50 z-50"></div>
+
+      <div className="space-y-6 relative z-50">
         <Title>
           {t.rich("designTitle", {
             br: () => <br />,
             accent: (chunks) => <TitleAccent>{chunks}</TitleAccent>,
           })}
         </Title>
-        <Paragraph className="text-neutral-600 dark:text-neutral-400 max-w-xl">
+        <Paragraph>
           {t.rich("designDescription", {
             strong: (chunks) => <strong>{chunks}</strong>,
           })}

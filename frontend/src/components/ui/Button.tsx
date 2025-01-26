@@ -20,11 +20,14 @@ const buttonVariants = cva(
         link: "text-primary underline-offset-4 hover:underline",
         plain: "text-primary",
         fancy: `
+          group z-50
           relative px-4 py-2 rounded-sm
           text-neutral-900 dark:text-neutral-100
           uppercase tracking-wider text-sm
-          transition-all duration-300 border-b-2 border-neutral-200  dark:border-neutral-800
-          hover:bg-neutral-100 dark:hover:bg-neutral-800
+          transition-all duration-300 
+          border-b-2 border-neutral-200 dark:border-neutral-800
+          overflow-hidden
+          hover:bg-gold
         `,
       },
       size: {

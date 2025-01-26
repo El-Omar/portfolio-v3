@@ -13,16 +13,12 @@ const ExpertiseSection = (): ReactElement => {
         subtitle="requires you"
         subtitleAccent="to"
       />
-      <div className="pb-32 flex flex-col gap-64">
-        <div className="w-full">
-          <Design />
-        </div>
-        <div className="w-full">
-          <Develop />
-        </div>
+      <div className="pb-0 lg:pb-32 flex flex-col gap-52">
+        <Design />
+        <Develop />
       </div>
     </Container>
   );
 };
 
-export default ExpertiseSection; 
+export default ExpertiseSection;

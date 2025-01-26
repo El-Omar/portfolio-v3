@@ -1,11 +1,9 @@
 "use client";
 
 import {
-  MapPin,
   Code2,
   PencilRuler,
   CalendarFold,
-  Globe,
   IdCard,
   ArrowDownRight,
   Minus,
@@ -66,7 +64,7 @@ const cards = [
       },
     },
     description:
-      "Expert in UX, with a strong background in graphic design, and photo editing, with experience beyond the professional.",
+      "Expert in UX, with a strong background in graphic design & photo editing, and experience beyond the professional.",
   },
   {
     icon: <Code2 className="text-cool-red dark:text-neutral-400" size={26} />,
@@ -74,7 +72,7 @@ const cards = [
     info: {
       primary: {
         label: "Focus",
-        value: "Frontend Specialist",
+        value: "Fullstack Developer",
       },
       secondary: {
         label: "Technologies",
