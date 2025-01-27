@@ -3,7 +3,7 @@ import ProjectColumn from "./ProjectColumn";
 
 type Props = {
   projects: ProjectResponse[];
-}
+};
 
 const ProjectsParallax = ({ projects }: Props) => {
   const columns = projects.reduce((acc, project, i) => {
@@ -20,6 +20,6 @@ const ProjectsParallax = ({ projects }: Props) => {
       </div>
     </div>
   );
-}; 
+};
 
 export default ProjectsParallax;

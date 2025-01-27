@@ -1,10 +1,10 @@
+import { Github, Linkedin } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { ReactElement } from "react";
 import Acknowledgments from "./Acknowledgments";
 import BilingualLogo from "../ui/BilingualLogo";
 import { Link } from "@/i18n/routing";
 import { PAGES, usePages } from "@/lib/hooks/usePages";
-import { Github, Linkedin } from "lucide-react";
 
 const Footer = (): ReactElement => {
   const pages = usePages();
@@ -33,13 +33,16 @@ const Footer = (): ReactElement => {
               <BilingualLogo />
             </Link>
             <p className="text-sm text-neutral-600 dark:text-neutral-400">
-              Developer, designer, and occasional writer. Building digital experiences with purpose.
+              Developer, designer, and occasional writer. Building digital
+              experiences with purpose.
             </p>
           </div>
 
           {/* Navigation */}
           <div className="space-y-4">
-            <h3 className="text-sm font-medium uppercase tracking-wider text-neutral-400">Navigation</h3>
+            <h3 className="text-sm font-medium uppercase tracking-wider text-neutral-400">
+              Navigation
+            </h3>
             <nav>
               <ul className="space-y-3">
                 {pages.map(({ path, label }) => (
@@ -58,7 +61,9 @@ const Footer = (): ReactElement => {
 
           {/* Social */}
           <div className="space-y-4">
-            <h3 className="text-sm font-medium uppercase tracking-wider text-neutral-400">Connect</h3>
+            <h3 className="text-sm font-medium uppercase tracking-wider text-neutral-400">
+              Connect
+            </h3>
             <div className="flex gap-4">
               {socialLinks.map(({ icon, href, label }) => (
                 <a
@@ -77,7 +82,9 @@ const Footer = (): ReactElement => {
 
           {/* Copyright */}
           <div className="space-y-4">
-            <h3 className="text-sm font-medium uppercase tracking-wider text-neutral-400">Legal</h3>
+            <h3 className="text-sm font-medium uppercase tracking-wider text-neutral-400">
+              Legal
+            </h3>
             <div className="text-sm text-neutral-600 dark:text-neutral-400">
               {t("copyright", { year: new Date().getFullYear() })}
             </div>

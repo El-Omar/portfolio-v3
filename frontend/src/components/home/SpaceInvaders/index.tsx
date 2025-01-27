@@ -1,12 +1,12 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { ReactElement, useEffect, useRef } from "react";
 
 import InitGame from "./spaceInvaders";
 import SpaceInvadersStyles from "./SpaceInvadersStyles";
 import { Button } from "@/components/ui/Button";
 import { useIsMobile } from "@/lib/hooks/useIsMobile";
-import { useTranslations } from "next-intl";
 
 const SpaceInvaders = (): ReactElement | null => {
   const t = useTranslations("home.spaceInvaders");

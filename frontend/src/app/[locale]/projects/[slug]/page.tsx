@@ -19,9 +19,7 @@ const ProjectPage = async ({
 
   const project = projectData.data;
 
-  return (
-    <ProjectDetail project={project} />
-  );
+  return <ProjectDetail project={project} />;
 };
 
 export default ProjectPage;

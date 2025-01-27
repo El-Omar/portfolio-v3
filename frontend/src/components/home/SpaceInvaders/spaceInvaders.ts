@@ -192,11 +192,11 @@ const SpaceInvaders = (spaceInvaderRef: RefObject<HTMLDivElement>) => {
     );
 
     resultDisplay.textContent = `Score: ${result > 0 ? result : ``}`;
-    document.addEventListener("keyup", e => {
+    document.addEventListener("keyup", (e) => {
       e.preventDefault();
       shoot(e);
     });
-    document.addEventListener("keydown", e => {
+    document.addEventListener("keydown", (e) => {
       e.preventDefault();
       moveShooter(e);
     });

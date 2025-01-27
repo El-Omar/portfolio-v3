@@ -12,16 +12,16 @@ export const testimonials: TestimonialType[] = [
   {
     review: (
       <>
-        I had the privilege of working with Elomar for three years, and he's an
-        exceptional frontend developer and UX designer. Elomar is a
+        I had the privilege of working with Elomar for three years, and
+        he&apos;s an exceptional frontend developer and UX designer. Elomar is a
         down-to-earth team player who brings positive energy and laughter to the
         team while staying laser-focused when it matters most.
         <br />
         <br />
-        His dedication is unmatched, he's not afraid to put in the extra hours
-        to meet even the toughest deadlines, always delivering top-quality work.
-        Elomar's blend of technical expertise, creativity, and work ethic makes
-        him an invaluable asset to any team.
+        His dedication is unmatched, he&apos;s not afraid to put in the extra
+        hours to meet even the toughest deadlines, always delivering top-quality
+        work. Elomar&apos;s blend of technical expertise, creativity, and work
+        ethic makes him an invaluable asset to any team.
       </>
     ),
 
@@ -42,8 +42,8 @@ export const testimonials: TestimonialType[] = [
         What sets Elomar apart is his proactive approach during brainstorming
         and design discussions, where his ideas consistently add value. His
         positive energy and strong sense of teamwork make him a joy to work
-        with. Elomar's mix of expertise, creativity, and collaborative spirit
-        makes him an exceptional contributor to any team
+        with. Elomar&apos;s mix of expertise, creativity, and collaborative
+        spirit makes him an exceptional contributor to any team
       </>
     ),
     author: "Alvaro",
@@ -52,7 +52,7 @@ export const testimonials: TestimonialType[] = [
   },
   {
     review:
-      "Working with Elomar has been a fantastic experience as a designer. As a programmer, he has a remarkable ability to think alongside the design process, quickly grasping what is expected and offering valuable input. His insights often highlight how small tweaks in the design can significantly streamline development, saving time without compromising quality. Elomar's collaborative mindset and practical recommendations make him an invaluable partner in creating designs that are both visually compelling and technically efficient to implement.",
+      "Working with Elomar has been a fantastic experience as a designer. As a programmer, he has a remarkable ability to think alongside the design process, quickly grasping what is expected and offering valuable input. His insights often highlight how small tweaks in the design can significantly streamline development, saving time without compromising quality. Elomar&apos;s collaborative mindset and practical recommendations make him an invaluable partner in creating designs that are both visually compelling and technically efficient to implement.",
     author: "Karel van Haeverbeek",
     image: "karel.jpeg",
     role: "UI/UX Designer @ Deliverect",
@@ -60,7 +60,7 @@ export const testimonials: TestimonialType[] = [
   },
   {
     review:
-      "Elomar is an exceptional professional you can fully trust with your project. He doesn't just deliver what's asked; he becomes a true partner in the process, offering valuable insights and creative problem-solving every step of the way. With Elomar, no challenge is too great—he consistently finds innovative solutions.",
+      "Elomar is an exceptional professional you can fully trust with your project. He doesn&apos;t just deliver what&apos;s asked; he becomes a true partner in the process, offering valuable insights and creative problem-solving every step of the way. With Elomar, no challenge is too great—he consistently finds innovative solutions.",
     author: "Yoshi",
     image: "yoshi.jpeg",
     role: "Digital Designer & Marketeer",

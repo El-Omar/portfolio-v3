@@ -1,3 +1,4 @@
+import { Send } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { ReactElement } from "react";
 import SpaceInvaders from "./SpaceInvaders";
@@ -5,7 +6,6 @@ import { Button } from "../ui/Button";
 import Paragraph from "../ui/Paragraph";
 import Title from "../ui/Title";
 import TitleAccent from "../ui/TitleAccent";
-import { Send } from "lucide-react";
 
 const ContactWithSpaceInvaders = (): ReactElement => {
   const t = useTranslations("home.contact");
@@ -21,12 +21,13 @@ const ContactWithSpaceInvaders = (): ReactElement => {
         <div className="flex flex-col lg:flex-row items-center justify-between gap-20 mb-16">
           <div className="flex-1 space-y-6">
             <Title>
-              Let's create <br />
+              Let&apos;s create <br />
               <TitleAccent>something together</TitleAccent>
             </Title>
             <Paragraph className="text-neutral-600 dark:text-neutral-400 max-w-xl">
-              Have a project in mind or just want to chat? I'm always open to new ideas 
-              and collaborations. Or you can try beating my Space Invaders high score.
+              Have a project in mind or just want to chat? I&apos;m always open
+              to new ideas and collaborations. Or you can try beating my Space
+              Invaders high score.
             </Paragraph>
             <div className="flex gap-4 items-center">
               <Button variant="fancy" asChild>
@@ -36,7 +37,7 @@ const ContactWithSpaceInvaders = (): ReactElement => {
               </Button>
             </div>
           </div>
-          
+
           <div className="flex-1 flex justify-center">
             <div className="bg-neutral-100 dark:bg-neutral-800 p-6 rounded-sm">
               <SpaceInvaders />

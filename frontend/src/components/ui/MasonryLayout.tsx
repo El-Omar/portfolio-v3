@@ -26,22 +26,22 @@ type Props = {
   className?: string;
 };
 
-const MasonryLayout = ({ 
-  children, 
+const MasonryLayout = ({
+  children,
   columns = { default: 1, md: 2, lg: 3 },
   gap = "gap-8",
-  className = ""
+  className = "",
 }: Props): JSX.Element => {
   const [currentColumns, setCurrentColumns] = useState<number>(columns.default);
 
   // Generate grid columns classes based on the columns configuration
   const gridColumnsClass = useMemo(() => {
     // Always start with 1 column on mobile
-    const baseClass = 'grid-cols-1';
+    const baseClass = "grid-cols-1";
     // Add medium and large breakpoint classes if specified
-    const mdCols = columns.md ? `md:grid-cols-${columns.md}` : '';
-    const lgCols = columns.lg ? `lg:grid-cols-${columns.lg}` : '';
-    
+    const mdCols = columns.md ? `md:grid-cols-${columns.md}` : "";
+    const lgCols = columns.lg ? `lg:grid-cols-${columns.lg}` : "";
+
     return `${baseClass} ${mdCols} ${lgCols}`.trim();
   }, [columns]);
 
@@ -91,10 +91,7 @@ const MasonryLayout = ({
     <div className={`w-full mx-auto ${className}`}>
       <div className={`grid ${gridColumnsClass} ${gap}`}>
         {distributeItems.map((column, columnIndex) => (
-          <div
-            key={`column-${columnIndex}`}
-            className={`flex flex-col ${gap}`}
-          >
+          <div key={`column-${columnIndex}`} className={`flex flex-col ${gap}`}>
             {column.map(({ key, content }) => (
               <Fragment key={key}>{content}</Fragment>
             ))}

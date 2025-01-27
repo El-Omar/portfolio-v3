@@ -1,8 +1,8 @@
 "use client";
 
-import { useRef } from "react";
-import { useScroll, useTransform } from "framer-motion";
 import { ProjectResponse } from "@portfolio-v3/shared";
+import { useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
 import ProjectCard from "./ProjectCard";
 
 type Props = {

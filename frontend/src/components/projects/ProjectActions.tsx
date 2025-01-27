@@ -1,11 +1,11 @@
 "use client";
 
-import { Eye, Pencil, Trash2 } from "lucide-react";
-import { Button } from "@/components/ui/Button";
 import { ProjectResponse } from "@portfolio-v3/shared";
+import { Eye, Pencil, Trash2 } from "lucide-react";
 import { ReactElement, useTransition } from "react";
-import { deleteProject } from "@/app/actions/projects";
 import { toast } from "sonner";
+import { deleteProject } from "@/app/actions/projects";
+import { Button } from "@/components/ui/Button";
 import {
   Dialog,
   DialogContent,
@@ -15,8 +15,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/Dialog";
-import { Link } from "@/i18n/routing";
 import ViewJson from "@/components/ui/ViewJson";
+import { Link } from "@/i18n/routing";
 
 type Props = {
   project: ProjectResponse;
@@ -38,6 +38,7 @@ const ProjectActions = ({ project }: Props): ReactElement => {
           return;
         }
       } catch (error) {
+        console.error(error);
         toast.error("Failed to delete project");
       }
     });
@@ -71,7 +72,8 @@ const ProjectActions = ({ project }: Props): ReactElement => {
           <DialogHeader>
             <DialogTitle>Delete Project</DialogTitle>
             <DialogDescription>
-              Are you sure you want to delete "{project.title}"? This action cannot be undone.
+              Are you sure you want to delete &quot;{project.title}&quot;? This
+              action cannot be undone.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>

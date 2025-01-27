@@ -1,10 +1,10 @@
 "use client";
 
-import { ReactElement, useActionState } from "react";
-import ProjectForm from "../ProjectForm";
 import { ApiResponse, Project, ProjectResponse } from "@portfolio-v3/shared";
-import { createProject } from "@/app/actions/projects";
+import { ReactElement, useActionState } from "react";
 import { toast } from "sonner";
+import ProjectForm from "../ProjectForm";
+import { createProject } from "@/app/actions/projects";
 import { useRouter } from "@/i18n/routing";
 
 const NewProjectPage = (): ReactElement => {
@@ -13,7 +13,6 @@ const NewProjectPage = (): ReactElement => {
     ApiResponse<ProjectResponse> | Project | null,
     FormData
   >(async (previousState, formData) => {
-
     const result = await createProject(previousState, formData);
 
     if (result?.status === "error") {

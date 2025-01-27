@@ -1,10 +1,10 @@
 "use client";
 
-import { useRouter } from "@/i18n/routing";
-import { updateProject } from "@/app/actions/projects";
 import { ApiResponse, Project, ProjectResponse } from "@portfolio-v3/shared";
-import { toast } from "sonner";
 import { useActionState } from "react";
+import { toast } from "sonner";
+import { updateProject } from "@/app/actions/projects";
+import { useRouter } from "@/i18n/routing";
 import ProjectForm from "../../ProjectForm";
 
 type Props = {
@@ -55,4 +55,4 @@ const EditProjectForm = ({ project }: Props) => {
   );
 };
 
-export default EditProjectForm; 
+export default EditProjectForm;

@@ -10,4 +10,4 @@ const StatsSection = (): ReactElement => {
   );
 };
 
-export default StatsSection; 
+export default StatsSection;

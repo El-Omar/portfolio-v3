@@ -1,7 +1,7 @@
-import { ReactElement, Suspense } from "react";
 import { useTranslations } from "next-intl";
-import Title from "@/components/ui/Title";
+import { ReactElement, Suspense } from "react";
 import ProjectList from "@/components/projects/ProjectList";
+import Title from "@/components/ui/Title";
 
 const ProjectsPage = (): ReactElement => {
   const t = useTranslations("projects");

@@ -1,5 +1,5 @@
-import { AdditionalImage } from "@/types/Project";
 import { ApiResponse, Project, projectSchema } from "@portfolio-v3/shared";
+import { AdditionalImage } from "@/types/Project";
 
 type TransformedImageProjectData = {
   imageFile?: File;
@@ -7,7 +7,7 @@ type TransformedImageProjectData = {
 };
 
 export const transformProjectImageData = (
-  formData: FormData
+  formData: FormData,
 ): TransformedImageProjectData => {
   const imageFile = formData.get("imageUrl") as File;
   const additionalImages: AdditionalImage[] = [];
@@ -68,7 +68,7 @@ type TransformedBasicProjectData = {
 };
 
 export const transformAndValidateBasicProjectData = async (
-  formData: FormData
+  formData: FormData,
 ): Promise<ApiResponse<TransformedBasicProjectData>> => {
   try {
     // 1. Convert FormData to object

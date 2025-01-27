@@ -1,11 +1,11 @@
+import { ApiResponse, LoginResponse } from "@portfolio-v3/shared";
 import { BaseApiClient } from "./base-client";
 import { env } from "@/config/env";
-import { ApiResponse, LoginResponse } from "@portfolio-v3/shared";
 
 export class AuthClient extends BaseApiClient {
   async login(
     email: string,
-    password: string
+    password: string,
   ): Promise<ApiResponse<LoginResponse>> {
     const endpoint = `/${env.CMS_ADMIN_PATH}/auth/login`;
 
@@ -20,7 +20,7 @@ export class AuthClient extends BaseApiClient {
           status: "error",
           message: response.message || "Failed to login",
         };
-      } 
+      }
 
       return {
         status: "success",

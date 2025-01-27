@@ -1,7 +1,7 @@
-import { ReactElement } from "react";
-import { getProjectBySlug } from "@/app/actions/projects";
-import EditProjectForm from "./EditProjectForm";
 import { notFound } from "next/navigation";
+import { ReactElement } from "react";
+import EditProjectForm from "./EditProjectForm";
+import { getProjectBySlug } from "@/app/actions/projects";
 
 type Props = {
   params: Promise<{
@@ -20,4 +20,4 @@ const EditProjectPage = async ({ params }: Props): Promise<ReactElement> => {
   return <EditProjectForm project={projectData.data} />;
 };
 
-export default EditProjectPage; 
+export default EditProjectPage;

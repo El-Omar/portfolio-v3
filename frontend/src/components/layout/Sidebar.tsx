@@ -8,11 +8,10 @@ import { Dispatch, ReactElement, SetStateAction } from "react";
 import { twMerge } from "tailwind-merge";
 import LanguageSwitcher from "./LanguageSwitcher";
 import { Button } from "../ui/Button";
-import { Link } from "@/i18n/routing";
-import { usePages } from "@/lib/hooks/usePages";
-import { useThemeStore } from "@/stores/themeStore";
 import Title from "../ui/Title";
 import TitleAccent from "../ui/TitleAccent";
+import { Link } from "@/i18n/routing";
+import { useThemeStore } from "@/stores/themeStore";
 
 type Props = {
   toggleSidebar: () => void;
@@ -34,7 +33,6 @@ const Sidebar = ({
 }: Props): ReactElement => {
   const { isDarkMode, toggleTheme } = useThemeStore();
   const pathname = usePathname();
-  const pages = usePages();
   const locale = useLocale();
 
   return (
@@ -85,7 +83,7 @@ const Sidebar = ({
                       "block transition-colors relative group",
                       pathname === path
                         ? "text-neutral-900 dark:text-white"
-                        : "text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300"
+                        : "text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300",
                     )}
                   >
                     <Title className="text-6xl md:text-7xl group-hover:text-cool-red transition-colors">

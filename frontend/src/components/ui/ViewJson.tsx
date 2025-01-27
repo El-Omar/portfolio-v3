@@ -1,7 +1,7 @@
 "use client";
 
-import { ReactElement } from "react";
 import { Code2 } from "lucide-react";
+import { ReactElement } from "react";
 import { Button } from "@/components/ui/Button";
 import {
   Dialog,
@@ -29,13 +29,11 @@ const ViewJson = ({ data, title = "JSON Data" }: Props): ReactElement => {
           <DialogTitle>{title}</DialogTitle>
         </DialogHeader>
         <pre className="bg-neutral-100 dark:bg-neutral-900 p-4 rounded-lg overflow-x-auto">
-          <code className="text-sm">
-            {JSON.stringify(data, null, 2)}
-          </code>
+          <code className="text-sm">{JSON.stringify(data, null, 2)}</code>
         </pre>
       </DialogContent>
     </Dialog>
   );
 };
 
-export default ViewJson; 
+export default ViewJson;

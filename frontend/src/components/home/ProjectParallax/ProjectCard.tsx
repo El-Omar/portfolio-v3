@@ -1,14 +1,14 @@
+import { ProjectResponse } from "@portfolio-v3/shared";
 import { motion, MotionValue } from "framer-motion";
 import Image from "next/image";
 import { Link } from "@/i18n/routing";
-import { ProjectResponse } from "@portfolio-v3/shared";
 
 type Props = {
   project: ProjectResponse;
   index: number;
   y: MotionValue<number>;
   firstColumn?: boolean;
-}
+};
 
 const ProjectCard = ({ project, index, y, firstColumn = false }: Props) => {
   const correctIndex = firstColumn ? index * 2 + 1 : index * 2 + 2;
@@ -62,6 +62,6 @@ const ProjectCard = ({ project, index, y, firstColumn = false }: Props) => {
       </Link>
     </motion.div>
   );
-}; 
+};
 
 export default ProjectCard;

@@ -79,9 +79,15 @@ const Navigation = ({
             className="group hover:no-underline flex flex-col gap-1 items-end px-6"
             onClick={toggleSidebar}
           >
-            <div className={`w-[21px] h-[3px] group-hover:w-[24px] bg-primary transition-all duration-150 ease-in-out`} />
-            <div className={`w-[18px] h-[3px] group-hover:w-[24px] bg-primary transition-all duration-150 ease-in-out`} />
-            <div className={`w-[19px] h-[3px] group-hover:w-[24px] bg-primary transition-all duration-150 ease-in-out`} />
+            <div
+              className={`w-[21px] h-[3px] group-hover:w-[24px] bg-primary transition-all duration-150 ease-in-out`}
+            />
+            <div
+              className={`w-[18px] h-[3px] group-hover:w-[24px] bg-primary transition-all duration-150 ease-in-out`}
+            />
+            <div
+              className={`w-[19px] h-[3px] group-hover:w-[24px] bg-primary transition-all duration-150 ease-in-out`}
+            />
           </Button>
         )}
       </nav>

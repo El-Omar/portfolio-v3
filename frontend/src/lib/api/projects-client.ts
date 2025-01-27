@@ -1,9 +1,9 @@
 import {
-  ApiResponse,
-  ProjectResponse,
   API_ROUTES,
-  Project,
+  ApiResponse,
   GetProjectsQuery,
+  Project,
+  ProjectResponse,
 } from "@portfolio-v3/shared";
 import { BaseApiClient } from "./base-client";
 import { verifyAuth } from "@/lib/auth/verifyAuth";
@@ -16,7 +16,7 @@ export type GetProjectsOptions = GetProjectsQuery & {
 
 export class ProjectsClient extends BaseApiClient {
   async getAll(
-    options: GetProjectsOptions = {}
+    options: GetProjectsOptions = {},
   ): Promise<ApiResponse<ProjectResponse[]>> {
     const params: Record<string, string> = {};
 
@@ -36,10 +36,7 @@ export class ProjectsClient extends BaseApiClient {
     });
   }
 
-  async getBySlug(
-    slug: string,
-    etag?: string
-  ): Promise<ApiResponse<ProjectResponse>> {
+  async getBySlug(slug: string): Promise<ApiResponse<ProjectResponse>> {
     return this.fetch<ProjectResponse>(PROJECTS.BY_SLUG(slug), {
       method: "GET",
       next: { tags: ["projects"] },
@@ -68,7 +65,7 @@ export class ProjectsClient extends BaseApiClient {
   async update(
     slug: string,
     _etag: string,
-    data: Partial<Project>
+    data: Partial<Project>,
   ): Promise<ApiResponse<ProjectResponse>> {
     const auth = await verifyAuth();
     if (!auth.success) {

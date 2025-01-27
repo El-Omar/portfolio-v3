@@ -2,7 +2,7 @@ import { twMerge } from "tailwind-merge";
 import Title from "../ui/Title";
 import TitleAccent from "../ui/TitleAccent";
 
-interface SectionTransitionProps {
+type SectionTransitionProps = {
   title: string;
   titleAccent?: string;
   subtitle?: string;
@@ -10,7 +10,7 @@ interface SectionTransitionProps {
   className?: string;
   align?: "left" | "right" | "center";
   ref?: React.RefObject<HTMLDivElement>;
-}
+};
 
 const SectionTransition = ({
   title,

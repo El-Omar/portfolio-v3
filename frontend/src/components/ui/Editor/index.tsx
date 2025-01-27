@@ -1,25 +1,23 @@
 "use client";
 
-import { useEditor, EditorContent } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
-import Link from "@tiptap/extension-link";
 import Image from "@tiptap/extension-image";
-import { Toggle } from "@/components/ui/Toggle";
-import { cn } from "@/lib/utils/cn";
+import Link from "@tiptap/extension-link";
+import { EditorContent, useEditor } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
 import {
   Bold,
+  Image as ImageIcon,
   Italic,
+  Link as LinkIcon,
   List,
   ListOrdered,
   Quote,
   Redo,
+  Sparkles,
   Strikethrough,
   Undo,
-  Link as LinkIcon,
-  Image as ImageIcon,
-  Sparkles,
 } from "lucide-react";
-import { Separator } from "@/components/ui/Separator";
+import { AccentText } from "./AccentText";
 import {
   Select,
   SelectContent,
@@ -27,7 +25,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/Select";
-import { AccentText } from "./AccentText";
+import { Separator } from "@/components/ui/Separator";
+import { Toggle } from "@/components/ui/Toggle";
+import { cn } from "@/lib/utils/cn";
 
 type EditorProps = {
   value: string;
@@ -57,7 +57,7 @@ const Editor = ({ value, onChange, className }: EditorProps) => {
       attributes: {
         class: cn(
           "prose dark:prose-invert prose-sm sm:prose-base max-w-none focus:outline-none",
-          className
+          className,
         ),
       },
     },

@@ -1,12 +1,12 @@
-import { ReactElement } from "react";
 import { ArrowRight } from "lucide-react";
+import { ReactElement } from "react";
 import BlogCard from "@/components/blog/BlogCard";
 import { Button } from "@/components/ui/Button";
+import Container from "@/components/ui/Container";
+import Paragraph from "@/components/ui/Paragraph";
 import Title from "@/components/ui/Title";
 import TitleAccent from "@/components/ui/TitleAccent";
 import { Link } from "@/i18n/routing";
-import Paragraph from "@/components/ui/Paragraph";
-import Container from "@/components/ui/Container";
 
 const BlogSection = (): ReactElement => {
   return (
@@ -20,8 +20,9 @@ const BlogSection = (): ReactElement => {
                 <TitleAccent>nothing & everything</TitleAccent>
               </Title>
               <Paragraph className="text-neutral-600 dark:text-neutral-400 max-w-xl">
-                Here's where I explore storytelling and share some fragments of
-                random thoughts; sometimes about tech, mostly about life.
+                Here&apos;s where I explore storytelling and share some
+                fragments of random thoughts; sometimes about tech, mostly about
+                life.
               </Paragraph>
             </div>
             <div className="flex-1 flex justify-end">

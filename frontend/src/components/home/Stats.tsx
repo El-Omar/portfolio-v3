@@ -1,18 +1,18 @@
 "use client";
 
 import {
-  Code2,
-  PencilRuler,
-  CalendarFold,
-  IdCard,
   ArrowDownRight,
+  CalendarFold,
+  Code2,
+  IdCard,
   Minus,
+  PencilRuler,
 } from "lucide-react";
 import { useState } from "react";
 
 const yearsOfExperience = Math.floor(
   (new Date().getTime() - new Date("2018-06-01").getTime()) /
-    (1000 * 60 * 60 * 24 * 365.25)
+    (1000 * 60 * 60 * 24 * 365.25),
 );
 
 const cards = [

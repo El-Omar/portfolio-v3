@@ -15,7 +15,7 @@ const TitleAccent = ({ children, className }: Props): ReactElement => {
     <span
       className={twMerge(
         `font-${!isArabic ? "baskerville" : "rakkas"}`,
-        className
+        className,
       )}
     >
       {children}

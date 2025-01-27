@@ -51,10 +51,8 @@ const ParallaxTitleSection = ({
       <div
         className={twMerge(
           `pointer-events-none h-[50vh] flex items-center justify-center relative ${
-            isSticky && !reachedBottom
-              ? "fixed top-0 left-0 right-0"
-              : ""
-          } ${reachedBottom ? "absolute top-auto bottom-0 left-0 right-0" : ""} ${titleClassName}`
+            isSticky && !reachedBottom ? "fixed top-0 left-0 right-0" : ""
+          } ${reachedBottom ? "absolute top-auto bottom-0 left-0 right-0" : ""} ${titleClassName}`,
         )}
       >
         {title}

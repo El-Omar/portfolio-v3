@@ -1,11 +1,11 @@
-import { env } from "@/config/env";
 import { ApiResponse, AUTH } from "@portfolio-v3/shared";
 import { cookies } from "next/headers";
+import { env } from "@/config/env";
 
 export type RequestOptions = {
   method: "GET" | "POST" | "PATCH" | "DELETE";
   headers?: Record<string, string>;
-  body?: any;
+  body?: Record<string, unknown>;
   next?: { tags: string[] };
   protected?: boolean;
   etag?: string;
@@ -22,7 +22,7 @@ export abstract class BaseApiClient {
 
   protected async fetch<T>(
     endpoint: string,
-    options: RequestOptions
+    options: RequestOptions,
   ): Promise<ApiResponse<T>> {
     let url = `${this.baseUrl}${endpoint}`;
 

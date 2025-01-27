@@ -1,10 +1,10 @@
 import { ProjectResponse } from "@portfolio-v3/shared";
-import { useTranslations } from "next-intl";
+import { ArrowLeft, Calendar, Github, Globe } from "lucide-react";
 import Image from "next/image";
-import { Link } from "@/i18n/routing";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/Button";
 import { Card, CardContent } from "@/components/ui/Card";
-import { ArrowLeft, Github, Globe, Calendar } from "lucide-react";
+import { Link } from "@/i18n/routing";
 
 type ProjectDetailProps = {
   project: ProjectResponse;
@@ -72,28 +72,34 @@ const ProjectDetail = ({ project }: ProjectDetailProps) => {
               </div>
 
               {/* Additional Images Gallery */}
-              {project.additionalImages && project.additionalImages.length > 0 && (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
-                  {project.additionalImages.map((image, index) => (
-                    <div
-                      key={index}
-                      className="group relative aspect-video rounded-lg overflow-hidden"
-                    >
-                      <Image
-                        src={image.url}
-                        alt={image.caption || `${project.title} screenshot ${index + 1}`}
-                        fill
-                        className="object-cover transition-transform group-hover:scale-105"
-                      />
-                      {image.caption && (
-                        <div className="absolute bottom-0 left-0 right-0 p-3 bg-black/50 backdrop-blur-sm">
-                          <p className="text-sm text-white">{image.caption}</p>
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              )}
+              {project.additionalImages &&
+                project.additionalImages.length > 0 && (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
+                    {project.additionalImages.map((image, index) => (
+                      <div
+                        key={index}
+                        className="group relative aspect-video rounded-lg overflow-hidden"
+                      >
+                        <Image
+                          src={image.url}
+                          alt={
+                            image.caption ||
+                            `${project.title} screenshot ${index + 1}`
+                          }
+                          fill
+                          className="object-cover transition-transform group-hover:scale-105"
+                        />
+                        {image.caption && (
+                          <div className="absolute bottom-0 left-0 right-0 p-3 bg-black/50 backdrop-blur-sm">
+                            <p className="text-sm text-white">
+                              {image.caption}
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
             </CardContent>
           </Card>
 

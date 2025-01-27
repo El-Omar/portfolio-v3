@@ -3,8 +3,8 @@
 import { FileText, FolderKanban, Layout, LogOut } from "lucide-react";
 import Link from "next/link";
 import { ReactElement } from "react";
-import { usePathname } from "@/i18n/routing";
 import { logout } from "@/app/actions/auth";
+import { usePathname } from "@/i18n/routing";
 
 const DashboardSidebar = (): ReactElement => {
   const pathname = usePathname();

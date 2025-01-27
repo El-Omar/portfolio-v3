@@ -1,13 +1,13 @@
+import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { ReactElement } from "react";
 
 import BilingualLogo from "../ui/BilingualLogo";
-import Title from "../ui/Title";
-import IconPen from "@/components/assets/pen.svg";
 import Paragraph from "../ui/Paragraph";
-import { Link } from "@/i18n/routing";
-import Image from "next/image";
+import Title from "../ui/Title";
 import TitleAccent from "../ui/TitleAccent";
+import IconPen from "@/components/assets/pen.svg";
+import { Link } from "@/i18n/routing";
 
 const Intro = (): ReactElement => {
   return (

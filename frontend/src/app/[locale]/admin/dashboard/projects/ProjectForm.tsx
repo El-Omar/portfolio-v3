@@ -1,26 +1,27 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { Upload } from "lucide-react";
-import { ReactElement, useState } from "react";
-import Image from "next/image";
-import { toast } from "sonner";
-import { Button } from "@/components/ui/Button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
-import { Input } from "@/components/ui/Input";
-import { Label } from "@/components/ui/Label";
-import { Switch } from "@/components/ui/Switch";
-import { Textarea } from "@/components/ui/Textarea";
 import {
   Project,
   ProjectResponse,
   validateImageFile,
 } from "@portfolio-v3/shared";
-import { useRouter } from "@/i18n/routing";
-import Editor from "@/components/ui/Editor";
+import { Upload } from "lucide-react";
 import { X } from "lucide-react";
-import { AdditionalImage } from "@/types/Project";
+import Image from "next/image";
+import { ReactElement, useState } from "react";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/Button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
+import Editor from "@/components/ui/Editor";
+import { Input } from "@/components/ui/Input";
+import { Label } from "@/components/ui/Label";
 import LoadingWrapper from "@/components/ui/LoadingWrapper";
+import { Switch } from "@/components/ui/Switch";
+import { Textarea } from "@/components/ui/Textarea";
+import { useRouter } from "@/i18n/routing";
 import { extractDateFromISOString } from "@/lib/utils/dates";
+import { AdditionalImage } from "@/types/Project";
 
 type Props = {
   onSubmit: (formData: FormData) => void;
@@ -68,7 +69,7 @@ const ProjectForm = ({ onSubmit, isPending, project }: Props): ReactElement => {
   >(initialFormDataState);
 
   const [imagePreview, setImagePreview] = useState<string | null>(
-    project?.imageUrl || null
+    project?.imageUrl || null,
   );
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [additionalImages, setAdditionalImages] = useState<AdditionalImage[]>(
@@ -77,7 +78,7 @@ const ProjectForm = ({ onSubmit, isPending, project }: Props): ReactElement => {
       preview: img.url,
       caption: img.caption || "",
       className: img.className || "",
-    })) || []
+    })) || [],
   );
 
   const handleSubmit = (submittedFormData: FormData) => {
@@ -86,7 +87,7 @@ const ProjectForm = ({ onSubmit, isPending, project }: Props): ReactElement => {
     }
 
     if (formDataState.content) {
-      submittedFormData.set("content", formDataState.content);
+      submittedFormData.set("content", formDataState.content as string);
     }
 
     additionalImages.forEach((image, index) => {
@@ -96,19 +97,19 @@ const ProjectForm = ({ onSubmit, isPending, project }: Props): ReactElement => {
       if (image.preview) {
         submittedFormData.append(
           `additionalImageUrls[${index}]`,
-          image.preview
+          image.preview,
         );
       }
       if (image.caption) {
         submittedFormData.append(
           `additionalImageCaptions[${index}]`,
-          image.caption || ""
+          image.caption || "",
         );
       }
       if (image.className) {
         submittedFormData.append(
           `additionalImageClassNames[${index}]`,
-          image.className || ""
+          image.className || "",
         );
       }
     });
@@ -117,7 +118,7 @@ const ProjectForm = ({ onSubmit, isPending, project }: Props): ReactElement => {
   };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
     setFormDataState((prev) => ({ ...prev, [name]: value }));
@@ -143,7 +144,7 @@ const ProjectForm = ({ onSubmit, isPending, project }: Props): ReactElement => {
   };
 
   const handleAdditionalImageChange = (
-    e: React.ChangeEvent<HTMLInputElement>
+    e: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const files = e.target.files;
     if (!files) return;
@@ -286,8 +287,8 @@ const ProjectForm = ({ onSubmit, isPending, project }: Props): ReactElement => {
                             prev.map((img, i) =>
                               i === index
                                 ? { ...img, caption: e.target.value }
-                                : img
-                            )
+                                : img,
+                            ),
                           );
                         }}
                         className="mt-auto bg-white/80 dark:bg-black/50 text-sm"
@@ -302,8 +303,8 @@ const ProjectForm = ({ onSubmit, isPending, project }: Props): ReactElement => {
                             prev.map((img, i) =>
                               i === index
                                 ? { ...img, className: e.target.value }
-                                : img
-                            )
+                                : img,
+                            ),
                           );
                         }}
                         className="bg-white/80 dark:bg-black/50 text-sm"

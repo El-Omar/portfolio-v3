@@ -1,7 +1,7 @@
 import {
-  FileUploadResponse,
   API_ROUTES,
   ApiResponse,
+  FileUploadResponse,
 } from "@portfolio-v3/shared";
 import { BaseApiClient } from "./base-client";
 import { verifyAuth } from "@/lib/auth/verifyAuth";
@@ -46,7 +46,7 @@ export class UploadClient extends BaseApiClient {
               fileType: file.type,
               fileSize: file.size,
             },
-          }
+          },
         );
 
         if (response.status !== "success" || !response.data) {
@@ -120,7 +120,7 @@ export class UploadClient extends BaseApiClient {
         {
           method: "DELETE",
           protected: true,
-        }
+        },
       );
 
       if (!response.status || response.status !== "success") {

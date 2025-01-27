@@ -41,7 +41,7 @@ const buttonVariants = cva(
       variant: "default",
       size: "default",
     },
-  }
+  },
 );
 
 export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> &

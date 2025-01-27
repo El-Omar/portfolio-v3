@@ -1,7 +1,7 @@
-import { useTranslations } from "next-intl";
 import Image from "next/image";
-import Title from "../ui/Title";
+import { useTranslations } from "next-intl";
 import Paragraph from "../ui/Paragraph";
+import Title from "../ui/Title";
 import TitleAccent from "../ui/TitleAccent";
 
 const Design = () => {

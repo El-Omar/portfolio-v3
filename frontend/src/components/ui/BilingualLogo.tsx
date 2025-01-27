@@ -13,7 +13,7 @@ const BilingualLogo = ({ invert, className }: Props): ReactElement => {
       className={twMerge(
         "flex items-center rtl:flex-row-reverse rtl:justify-end",
         invert ? "text-neutral-200" : "text-neutral-900",
-        className
+        className,
       )}
     >
       <strong className="text-2xl font-rakkas mt-6 -mr-0.5 leading-[0]">

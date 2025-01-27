@@ -10,4 +10,4 @@ const ContactSection = (): ReactElement => {
   );
 };
 
-export default ContactSection; 
+export default ContactSection;

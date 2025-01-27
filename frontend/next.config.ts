@@ -1,6 +1,6 @@
-import { env } from "@/config/env";
 import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
+import { env } from "@/config/env";
 
 const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 

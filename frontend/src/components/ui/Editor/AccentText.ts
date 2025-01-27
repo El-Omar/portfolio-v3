@@ -1,21 +1,21 @@
-import { Mark, mergeAttributes } from '@tiptap/core';
-import type { CommandProps } from '@tiptap/core';
+import { Mark, mergeAttributes } from "@tiptap/core";
+import type { CommandProps } from "@tiptap/core";
 
-declare module '@tiptap/core' {
-  interface Commands<ReturnType> {
+declare module "@tiptap/core" {
+  type Commands<ReturnType> = {
     accent: {
       toggleAccent: () => ReturnType;
     };
-  }
+  };
 }
 
 export const AccentText = Mark.create({
-  name: 'accent',
-  
+  name: "accent",
+
   addOptions() {
     return {
       HTMLAttributes: {
-        class: 'font-baskerville text-cool-red rtl:font-rakkas',
+        class: "font-baskerville text-cool-red rtl:font-rakkas",
       },
     };
   },
@@ -23,11 +23,12 @@ export const AccentText = Mark.create({
   parseHTML() {
     return [
       {
-        tag: 'span',
+        tag: "span",
         getAttrs: (element) => {
           const el = element as HTMLElement;
-          return el.classList.contains('font-baskerville') || el.classList.contains('font-rakkas') 
-            ? {} 
+          return el.classList.contains("font-baskerville") ||
+            el.classList.contains("font-rakkas")
+            ? {}
             : false;
         },
       },
@@ -36,17 +37,19 @@ export const AccentText = Mark.create({
 
   renderHTML({ HTMLAttributes }) {
     return [
-      'span', 
+      "span",
       mergeAttributes(this.options.HTMLAttributes, HTMLAttributes),
-      0
+      0,
     ];
   },
 
   addCommands() {
     return {
-      toggleAccent: () => ({ commands }: CommandProps) => {
-        return commands.toggleMark(this.name);
-      },
+      toggleAccent:
+        () =>
+        ({ commands }: CommandProps) => {
+          return commands.toggleMark(this.name);
+        },
     };
   },
-}); 
+});

@@ -1,7 +1,7 @@
 "use client";
 
-import { Observer } from "tailwindcss-intersect";
 import { useEffect } from "react";
+import { Observer } from "tailwindcss-intersect";
 
 const IntersectObserverProvider = ({
   children,
@@ -17,8 +17,8 @@ const IntersectObserverProvider = ({
       }
     }
   }, []);
- 
+
   return <>{children}</>;
-}
+};
 
 export default IntersectObserverProvider;

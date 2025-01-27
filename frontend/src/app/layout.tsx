@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import React from "react";
-import ThemeProvider from "@/components/providers/ThemeProvider";
 import "./globals.css";
 import { Toaster } from "sonner";
+import IntersectObserverProvider from "@/components/providers/IntersectObserverProvider";
+import ThemeProvider from "@/components/providers/ThemeProvider";
 
 import {
   fontAmiri,
@@ -12,7 +13,6 @@ import {
   fontPacifico,
   fontRakkas,
 } from "@/lib/utils/fonts";
-import IntersectObserverProvider from "@/components/providers/IntersectObserverProvider";
 
 export const metadata: Metadata = {
   title: "Home - Elomar",

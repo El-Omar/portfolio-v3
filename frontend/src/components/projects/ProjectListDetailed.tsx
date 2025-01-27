@@ -1,10 +1,16 @@
-import { ReactElement } from "react";
-import { Link } from "@/i18n/routing";
+import { ProjectResponse } from "@portfolio-v3/shared";
 import Image from "next/image";
+import { ReactElement } from "react";
 import { getProjects } from "@/app/actions/projects";
 import MasonryLayout from "@/components/ui/MasonryLayout";
+import { Link } from "@/i18n/routing";
 
-const ProjectCard = ({ project, index }: { project: any; index: number }) => {
+type Props = {
+  project: ProjectResponse;
+  index: number;
+};
+
+const ProjectCard = ({ project, index }: Props) => {
   const aspectRatios = ["aspect-[4/3]", "aspect-[3/4]"];
   const aspectRatio = aspectRatios[index % aspectRatios.length];
 

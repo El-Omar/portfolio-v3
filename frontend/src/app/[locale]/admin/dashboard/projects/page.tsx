@@ -1,10 +1,10 @@
 import { Plus } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { ReactElement } from "react";
 import { getProjects } from "@/app/actions/projects";
-import { Button } from "@/components/ui/Button";
-import Image from "next/image";
 import ProjectActions from "@/components/projects/ProjectActions";
+import { Button } from "@/components/ui/Button";
 
 const ProjectsPage = async (): Promise<ReactElement> => {
   const projectsData = await getProjects();

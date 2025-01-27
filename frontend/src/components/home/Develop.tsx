@@ -1,11 +1,11 @@
-import { useTranslations } from "next-intl";
+import { ArrowRight } from "lucide-react";
 import Image from "next/image";
-import Title from "../ui/Title";
+import { useTranslations } from "next-intl";
+import { Button } from "../ui/Button";
 import Paragraph from "../ui/Paragraph";
+import Title from "../ui/Title";
 import TitleAccent from "../ui/TitleAccent";
 import { Link } from "@/i18n/routing";
-import { Button } from "../ui/Button";
-import { ArrowRight } from "lucide-react";
 
 const Develop = () => {
   const t = useTranslations("home.expertise");

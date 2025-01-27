@@ -1,8 +1,8 @@
-import { getProjects } from "@/app/actions/projects";
+import { ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 import { ReactElement } from "react";
+import { getProjects } from "@/app/actions/projects";
 import { Link } from "@/i18n/routing";
-import { ArrowUpRight } from "lucide-react";
 
 const ProjectList = async (): Promise<ReactElement> => {
   const response = await getProjects({ published: true });

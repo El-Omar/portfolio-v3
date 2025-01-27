@@ -1,8 +1,8 @@
-import SectionTransition from "@/components/home/SectionTransition";
-import ProjectsParallax from "@/components/home/ProjectParallax";
-import ParallaxTitleSection from "@/components/ui/ParallaxTitleSection";
 import { getProjects } from "../../actions/projects";
+import ProjectsParallax from "@/components/home/ProjectParallax";
+import SectionTransition from "@/components/home/SectionTransition";
 import Container from "@/components/ui/Container";
+import ParallaxTitleSection from "@/components/ui/ParallaxTitleSection";
 
 const ProjectsSection = async () => {
   const response = await getProjects({ published: true });

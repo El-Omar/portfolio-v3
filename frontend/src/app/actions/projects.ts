@@ -1,23 +1,23 @@
 "use server";
 
-import { revalidatePath, revalidateTag } from "next/cache";
 import {
   ApiResponse,
-  ProjectResponse,
   Project,
-  validateImageFile,
   ProjectImage,
+  ProjectResponse,
+  validateImageFile,
 } from "@portfolio-v3/shared";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { GetProjectsOptions, projectsClient } from "@/lib/api/projects-client";
 import { uploadClient } from "@/lib/api/upload-client";
-import { ValidateAndUploadImageResult } from "@/types/Project";
 import {
   transformAndValidateBasicProjectData,
   transformProjectImageData,
 } from "@/lib/utils/projects";
+import { ValidateAndUploadImageResult } from "@/types/Project";
 
 export const validateAndUploadImage = async (
-  file: File
+  file: File,
 ): Promise<ValidateAndUploadImageResult> => {
   try {
     const validation = validateImageFile(file);
@@ -46,7 +46,7 @@ export const validateAndUploadImage = async (
 };
 
 export const getProjects = async (
-  options: GetProjectsOptions = {}
+  options: GetProjectsOptions = {},
 ): Promise<ApiResponse<ProjectResponse[]>> => {
   try {
     return await projectsClient.getAll(options);
@@ -60,7 +60,7 @@ export const getProjects = async (
 };
 
 export const getProjectBySlug = async (
-  slug: string
+  slug: string,
 ): Promise<ApiResponse<ProjectResponse>> => {
   try {
     return await projectsClient.getBySlug(slug);
@@ -75,7 +75,7 @@ export const getProjectBySlug = async (
 
 export const createProject = async (
   _prevState: ApiResponse<ProjectResponse> | Project | null,
-  formData: FormData
+  formData: FormData,
 ): Promise<ApiResponse<ProjectResponse>> => {
   let uploadedImageUrl: string | undefined;
   const uploadedAdditionalImages: ProjectImage[] = [];
@@ -113,8 +113,8 @@ export const createProject = async (
           // Clean up any images we've already uploaded
           await Promise.all(
             uploadedAdditionalImages.map((img) =>
-              uploadClient.deleteFile(img.url)
-            )
+              uploadClient.deleteFile(img.url),
+            ),
           );
           if (uploadedImageUrl) {
             await uploadClient.deleteFile(uploadedImageUrl);
@@ -141,7 +141,7 @@ export const createProject = async (
         await uploadClient.deleteFile(uploadedImageUrl);
       }
       await Promise.all(
-        uploadedAdditionalImages.map((img) => uploadClient.deleteFile(img.url))
+        uploadedAdditionalImages.map((img) => uploadClient.deleteFile(img.url)),
       );
       return response;
     }
@@ -160,13 +160,13 @@ export const createProject = async (
       try {
         await Promise.all(
           uploadedAdditionalImages.map((img) =>
-            uploadClient.deleteFile(img.url)
-          )
+            uploadClient.deleteFile(img.url),
+          ),
         );
       } catch (deleteError) {
         console.error(
           "Failed to delete uploaded additional images:",
-          deleteError
+          deleteError,
         );
       }
     }
@@ -183,7 +183,7 @@ export const createProject = async (
 export const updateProject = async (
   _prevState: ApiResponse<ProjectResponse> | Project | null,
   formData: FormData,
-  projectToUpdate: ProjectResponse
+  projectToUpdate: ProjectResponse,
 ): Promise<ApiResponse<ProjectResponse>> => {
   let uploadedImageUrl: string | undefined;
   const uploadedAdditionalImages: ProjectImage[] = [];
@@ -225,7 +225,7 @@ export const updateProject = async (
         ?.map((existingImg) => {
           // Find if this existing image has updated metadata
           const updatedImage = additionalImages.find(
-            (newImg) => !newImg.file && newImg.preview === existingImg.url
+            (newImg) => !newImg.file && newImg.preview === existingImg.url,
           );
 
           if (updatedImage) {
@@ -247,8 +247,8 @@ export const updateProject = async (
           // Clean up any images we've already uploaded
           await Promise.all(
             uploadedAdditionalImages.map((img) =>
-              uploadClient.deleteFile(img.url)
-            )
+              uploadClient.deleteFile(img.url),
+            ),
           );
           return {
             status: "error",
@@ -276,7 +276,7 @@ export const updateProject = async (
     const response = await projectsClient.update(
       projectToUpdate.slug,
       projectToUpdate._etag,
-      projectData
+      projectData,
     );
 
     if (response.status === "error") {
@@ -285,7 +285,7 @@ export const updateProject = async (
         await uploadClient.deleteFile(uploadedImageUrl);
       }
       await Promise.all(
-        uploadedAdditionalImages.map((img) => uploadClient.deleteFile(img.url))
+        uploadedAdditionalImages.map((img) => uploadClient.deleteFile(img.url)),
       );
       return response;
     }
@@ -307,13 +307,13 @@ export const updateProject = async (
       try {
         await Promise.all(
           uploadedAdditionalImages.map((img) =>
-            uploadClient.deleteFile(img.url)
-          )
+            uploadClient.deleteFile(img.url),
+          ),
         );
       } catch (deleteError) {
         console.error(
           "Failed to delete uploaded additional images:",
-          deleteError
+          deleteError,
         );
       }
     }
@@ -329,7 +329,7 @@ export const updateProject = async (
 
 export const deleteProject = async (
   slug: string,
-  etag: string
+  etag: string,
 ): Promise<ApiResponse<void>> => {
   try {
     const response = await projectsClient.delete(slug, etag);

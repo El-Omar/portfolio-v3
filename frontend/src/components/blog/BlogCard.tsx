@@ -1,11 +1,11 @@
+import { ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 import { ReactElement } from "react";
 import { Link } from "@/i18n/routing";
-import { ArrowUpRight } from "lucide-react";
 
 const BlogCard = (): ReactElement => {
   return (
-    <Link 
+    <Link
       href="/blog/post-slug"
       className="group flex flex-col overflow-hidden"
     >
@@ -17,9 +17,10 @@ const BlogCard = (): ReactElement => {
           fill
           className="object-cover transition-transform duration-500 group-hover:scale-105"
         />
-        
+
         {/* Arrow Icon */}
-        <div className="absolute top-4 right-4 p-2 
+        <div
+          className="absolute top-4 right-4 p-2 
           bg-neutral-900/90 dark:bg-neutral-800/90 
           rounded-full opacity-0 translate-y-2 group-hover:opacity-100 
           group-hover:translate-y-0 transition-all duration-300
@@ -45,7 +46,9 @@ const BlogCard = (): ReactElement => {
         </h3>
 
         <p className="text-sm text-neutral-600 dark:text-neutral-400 line-clamp-2">
-          Learn how to create and maintain a design system that grows with your product. We'll cover component architecture, documentation, and team collaboration.
+          Learn how to create and maintain a design system that grows with your
+          product. Well cover component architecture, documentation, and team
+          collaboration.
         </p>
       </div>
     </Link>
