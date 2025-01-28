@@ -90,7 +90,9 @@ const Stats = () => {
   return (
     <div className="w-full">
       <div className="container mx-auto">
-        <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6`}>
+        <div
+          className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 no-trail`}
+        >
           {cards.map((card, index) => (
             <button
               key={index}
