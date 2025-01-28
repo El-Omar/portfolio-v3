@@ -4,6 +4,7 @@ import { useLocale } from "next-intl";
 import { ReactElement, ReactNode, useEffect, useState } from "react";
 import ClickRipples from "@/components/layout/ClickRipples";
 import Footer from "@/components/layout/Footer";
+import InteractiveCursor from "@/components/layout/InteractiveCursor";
 import LanguageAnimation from "@/components/layout/LanguageSwitcher/LanguageAnimation";
 import Navigation from "@/components/layout/Navigation";
 import BlobShape from "@/components/ui/BlobShape";
@@ -29,8 +30,9 @@ const PageWrapper = ({ children }: Props): ReactElement => {
 
   return (
     <div className="flex flex-col justify-between min-h-screen">
-      <div className="relative w-full flex flex-col items-center">
+      <div className="relative w-full flex flex-col items-center cursor-none">
         <ClickRipples />
+        <InteractiveCursor />
         {isAnimating && <LanguageAnimation />}
         <BlobShape />
         <Navigation isAnimating={isAnimating} setIsAnimating={setIsAnimating} />

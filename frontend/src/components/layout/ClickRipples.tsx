@@ -49,11 +49,11 @@ const ClickRipples = (): ReactElement => {
       {ripples.map((ripple) => (
         <div
           key={ripple.id}
-          className="absolute w-4 h-4 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary opacity-50"
+          className="absolute w-4 h-4 -translate-x-1/2 -translate-y-1/2 rounded-full bg-cool-red opacity-50"
           style={{
             left: ripple.x,
             top: ripple.y,
-            animation: "ripple 0.7s ease-out forwards",
+            animation: "ripple 0.4s ease-out forwards",
           }}
         />
       ))}

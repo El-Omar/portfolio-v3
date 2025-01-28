@@ -92,11 +92,12 @@ const Stats = () => {
       <div className="container mx-auto">
         <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6`}>
           {cards.map((card, index) => (
-            <div
+            <button
               key={index}
               className={`
                 relative cursor-pointer h-full group
                 transition-all duration-500 ease-in-out
+                text-left
                 ${expandedCard === index ? "" : ""}
               `}
               onClick={() =>
@@ -235,7 +236,7 @@ const Stats = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </button>
           ))}
         </div>
       </div>
