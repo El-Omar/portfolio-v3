@@ -13,4 +13,8 @@ export const API_ROUTES = {
     PRESIGNED_URL: '/uploads/presigned-url',
     BY_KEY: (fileKey: string) => `/uploads/${fileKey}`,
   },
+  BLOGS: {
+    BASE: '/blogs',
+    BY_SLUG: (slug: string) => `/blogs/${slug}`,
+  },
 } as const; 

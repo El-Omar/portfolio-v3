@@ -1,6 +1,8 @@
 import { Project } from "../schemas/project";
+import { Blog } from "../schemas/blog";
 import { WithEtag, WithEveFields, WithSlug } from "./helpers";
 
+// Base API Response Types
 export type ApiErrorResponse = {
   status: "error";
   message: string;
@@ -16,7 +18,7 @@ export type ApiSuccessResponse<T> = {
 
 export type ApiResponse<T = unknown> = ApiSuccessResponse<T> | ApiErrorResponse;
 
-// Consolidated pagination types
+// Pagination Types
 export type PaginationParams = {
   page?: number;
   limit?: number;
@@ -30,13 +32,7 @@ export type PaginationResponse = {
   hasPreviousPage: boolean;
 };
 
-// Common response types
-export type FileUploadResponse = {
-  fileKey: string;
-  uploadUrl: string;
-  publicUrl: string;
-};
-
+// Auth Types
 export type LoginResponse = {
   token: string;
   user: {
@@ -45,6 +41,14 @@ export type LoginResponse = {
   maxAge: number;
 };
 
+// File Upload Types
+export type FileUploadResponse = {
+  fileKey: string;
+  uploadUrl: string;
+  publicUrl: string;
+};
+
+// Project Types
 export type ProjectResponse = WithEveFields<WithSlug<WithEtag<Project>>>;
 
 export type GetProjectsQuery = PaginationParams & {
@@ -52,4 +56,29 @@ export type GetProjectsQuery = PaginationParams & {
   fields?: string;
   include?: boolean;
   published?: boolean;
+};
+
+// Blog Types
+export type BlogResponse = WithEveFields<WithSlug<WithEtag<Blog>>>;
+
+export type GetBlogsQuery = PaginationParams & {
+  featured?: boolean;
+  fields?: string;
+  status?: "draft" | "published" | "archived";
+  category?: string;
+  tag?: string;
+  author?: string;
+  search?: string;
+  startDate?: string;
+  endDate?: string;
+  orderBy?: "publishedAt" | "createdAt" | "order" | "viewCount";
+  orderDirection?: "asc" | "desc";
+};
+
+export type BlogSyncResponse = {
+  substackUrl?: string;
+  substackId?: string;
+  syncStatus: "pending" | "synced" | "failed" | "not_synced";
+  lastSyncedAt?: string;
+  message?: string;
 };

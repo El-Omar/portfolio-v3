@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import projectRoutes from "./routes/project.routes";
 import authRoutes from "./routes/auth.routes";
 import uploadRoutes from "./routes/upload.routes";
+import blogRoutes from "./routes/blog.routes";
 import { connectDatabase } from "./config/database";
 import { env } from "./config/env";
 import { errorHandler } from "./middleware/error.middleware";
@@ -39,7 +40,7 @@ app.use(
 );
 app.use(`${env.API_PREFIX}${API_ROUTES.PROJECTS.BASE}`, projectRoutes);
 app.use(`${env.API_PREFIX}${API_ROUTES.UPLOADS.BASE}`, uploadRoutes);
-
+app.use(`${env.API_PREFIX}${API_ROUTES.BLOGS.BASE}`, blogRoutes);
 // Error middleware
 app.use(errorHandler);
 
