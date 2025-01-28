@@ -14,7 +14,7 @@ const BlogSchema: Schema = new Schema<BlogDocument>(
   {
     // Basic blog post information
     title: { type: String, required: true },
-    slug: { type: String, required: true, unique: true },
+    slug: { type: String, unique: true },
     description: { type: String, required: true, maxlength: 300 },
     content: { type: String, required: true }, // Stores sanitized HTML/Markdown
     
@@ -37,7 +37,7 @@ const BlogSchema: Schema = new Schema<BlogDocument>(
     order: { type: Number },
     
     // Dates
-    publishedAt: { type: Date },
+    writtenAt: { type: String, required: true }, // Store as ISO string
     
     // SEO
     seoTitle: String,
@@ -115,11 +115,6 @@ BlogSchema.pre<BlogDocument>("save", function (next) {
     this.slug = slugify(this.title);
   }
   
-  // Set publishedAt when status changes to published
-  if (this.isModified("status") && this.status === "published" && !this.publishedAt) {
-    this.publishedAt = new Date().toISOString();
-  }
-  
   next();
 });
 
@@ -137,11 +132,6 @@ BlogSchema.pre<BlogDocument>("deleteOne", async function (next) {
   }
 
   next();
-});
-
-// Add virtual field for formatted dates
-BlogSchema.virtual('formattedPublishedDate').get(function(this: BlogDocument) {
-  return this.publishedAt ? new Date(this.publishedAt).toLocaleDateString() : null;
 });
 
 export const Blog = mongoose.model<BlogDocument>("Blog", BlogSchema);

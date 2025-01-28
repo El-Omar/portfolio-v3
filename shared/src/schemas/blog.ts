@@ -10,7 +10,7 @@ const imageMetadataSchema = z.object({
 export const blogSchema = z.object({
   // Basic blog post information
   title: z.string().min(1, "Title is required"),
-  slug: z.string().min(1, "Slug is required"),
+  slug: z.string().optional(),
   description: z.string().min(1, "Description is required").max(300, "Description must be less than 300 characters"),
   content: z.string().min(1, "Content is required"), // Markdown/HTML content
   
@@ -29,9 +29,7 @@ export const blogSchema = z.object({
   order: z.number().optional(), // For custom ordering in lists
   
   // Dates
-  createdAt: z.string().datetime(),
-  updatedAt: z.string().datetime(),
-  publishedAt: z.string().datetime().optional(),
+  writtenAt: z.string().datetime().default(new Date().toISOString()),
   
   // SEO
   seoTitle: z.string().optional(),

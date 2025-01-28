@@ -1,5 +1,6 @@
 import { ArrowRight } from "lucide-react";
 import { ReactElement } from "react";
+import { getBlogs } from "@/app/actions/blogs";
 import BlogCard from "@/components/blog/BlogCard";
 import { Button } from "@/components/ui/Button";
 import Container from "@/components/ui/Container";
@@ -8,7 +9,22 @@ import Title from "@/components/ui/Title";
 import TitleAccent from "@/components/ui/TitleAccent";
 import { Link } from "@/i18n/routing";
 
-const BlogSection = (): ReactElement => {
+const BlogSection = async (): Promise<ReactElement> => {
+  const response = await getBlogs({
+    status: "published",
+    featured: true,
+    limit: 3,
+  });
+  const blogs = response.status === "success" ? response.data : [];
+
+  if (response.status !== "success") {
+    return (
+      <Container>
+        <p>No blog posts found</p>
+      </Container>
+    );
+  }
+
   return (
     <Container>
       <article className="w-full py-32">
@@ -35,9 +51,14 @@ const BlogSection = (): ReactElement => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <BlogCard />
-            <BlogCard />
-            <BlogCard />
+            {blogs.map((blog) => (
+              <BlogCard key={blog._id} blog={blog} />
+            ))}
+            {blogs.length === 0 && (
+              <div className="col-span-3">
+                <p>No blog posts found</p>
+              </div>
+            )}
           </div>
         </div>
       </article>
