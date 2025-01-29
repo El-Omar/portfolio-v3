@@ -44,12 +44,10 @@ const BlogsPage = async (): Promise<ReactElement> => {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold">Blog Posts ({blogs.length})</h1>
-        <Link href="/admin/dashboard/blogs/new">
+        <Link href={`/admin/dashboard/blogs/new`}>
           <Button>
-            <Plus className="mr-2 h-4 w-4" />
-            <span className="hidden md:block pointer-events-none">
-              Add Blog Post
-            </span>
+            <Plus className="h-4 w-4" />
+            <span className="hidden md:block">Add Blog Post</span>
           </Button>
         </Link>
       </div>
@@ -65,7 +63,8 @@ const BlogsPage = async (): Promise<ReactElement> => {
                 <th className="px-6 py-4 text-left">Categories</th>
                 <th className="px-6 py-4 text-left">Featured</th>
                 <th className="px-6 py-4 text-left">Status</th>
-                <th className="px-6 py-4 text-left">Published</th>
+                <th className="px-6 py-4 text-left">Written</th>
+                <th className="px-6 py-4 text-left">Read Time</th>
                 <th className="px-6 py-4 text-center">Actions</th>
               </tr>
             </thead>
@@ -147,6 +146,9 @@ const BlogsPage = async (): Promise<ReactElement> => {
                         Not published
                       </span>
                     )}
+                  </td>
+                  <td className="px-6 py-4">
+                    <span className="text-sm">{blog.readingTime} min read</span>
                   </td>
                   <td className="px-6 py-4">
                     <BlogActions blog={blog} />

@@ -75,13 +75,35 @@ BlogSchema.index({
 });
 
 function calculateReadingTime(content: string): number {
-  const wordsPerMinute = 200;
-  const wordCount = content
-    .replace(/<[^>]*>/g, '') // Remove HTML tags
-    .split(/\s+/)
-    .filter(word => word.length > 0).length;
+  // Constants for reading speed
+  const WORDS_PER_MINUTE = 225; // Average adult reading speed
+  const IMAGE_SECONDS = 12; // Time to process an image
+  const CODE_BLOCK_MULTIPLIER = 1.5; // Code blocks are read more slowly
   
-  return Math.ceil(wordCount / wordsPerMinute);
+  // Clean and prepare the content
+  const cleanContent = content
+    .replace(/<pre[\s\S]*?<\/pre>/g, '') // Remove code blocks for separate counting
+    .replace(/<[^>]*>/g, ' ') // Replace HTML tags with space
+    .replace(/\s+/g, ' ') // Normalize whitespace
+    .trim();
+
+  // Count images
+  const imageCount = (content.match(/<img[^>]*>/g) || []).length;
+  
+  // Count code blocks
+  const codeBlockCount = (content.match(/<pre[\s\S]*?<\/pre>/g) || []).length;
+  
+  // Split into words and filter empty strings
+  const words = cleanContent.split(/\s+/).filter(word => word.length > 0);
+  
+  // Calculate time
+  const wordsTime = words.length / WORDS_PER_MINUTE;
+  const imageTime = (imageCount * IMAGE_SECONDS) / 60;
+  const codeTime = (codeBlockCount * CODE_BLOCK_MULTIPLIER); // Extra time for code blocks
+  
+  // Sum up and round to nearest minute, minimum 1 minute
+  const totalMinutes = wordsTime + imageTime + codeTime;
+  return Math.max(1, Math.round(totalMinutes));
 }
 
 // Sanitize HTML content and generate slug before saving
@@ -107,6 +129,18 @@ BlogSchema.pre<BlogDocument>("save", function (next) {
   
   // Calculate reading time if content is modified
   if (this.isModified("content")) {
+    const wordCount = this.content
+      .replace(/<[^>]*>/g, ' ')
+      .split(/\s+/)
+      .filter(word => word.length > 0).length;
+    
+    console.log({
+      blogId: this._id,
+      title: this.title,
+      wordCount,
+      calculatedReadingTime: calculateReadingTime(this.content)
+    });
+
     this.readingTime = calculateReadingTime(this.content);
   }
   

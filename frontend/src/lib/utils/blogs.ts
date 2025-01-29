@@ -41,6 +41,9 @@ export const transformAndValidateBasicBlogData = async (
         : undefined,
       status: String(rawData.status) as Blog["status"],
       featured: Boolean(rawData.featured),
+      writtenAt: rawData.writtenAt
+        ? new Date(String(rawData.writtenAt)).toISOString()
+        : undefined,
       order: Number(rawData.order) || undefined,
       seoTitle: rawData.seoTitle ? String(rawData.seoTitle) : undefined,
       seoDescription: rawData.seoDescription

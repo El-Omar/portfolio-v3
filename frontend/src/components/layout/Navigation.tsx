@@ -42,8 +42,8 @@ const Navigation = ({
           setIsAnimating={setIsAnimating}
         />
       )}
-      <nav className="w-full z-[100] border-22 fixed top-0 py-4 flex justify-between items-center">
-        <Link href="/">
+      <nav className="w-full z-[100] border-22 fixed top-0 py-4 flex justify-between items-center pointer-events-none">
+        <Link href="/" className="pointer-events-auto">
           <motion.figure
             className="flex items-center"
             animate={{ x: isOpen ? 25 : 0 }}
@@ -76,7 +76,7 @@ const Navigation = ({
         {!isOpen && (
           <Button
             variant="link"
-            className="group hover:no-underline flex flex-col gap-1 items-end px-6"
+            className="group hover:no-underline flex flex-col gap-1 items-end px-6 pointer-events-auto"
             onClick={toggleSidebar}
           >
             <div

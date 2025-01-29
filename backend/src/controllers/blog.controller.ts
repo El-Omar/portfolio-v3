@@ -31,7 +31,7 @@ export const getBlogs: RequestHandler<
       search,
       startDate,
       endDate,
-      orderBy = "publishedAt",
+      orderBy = "writtenAt",
       orderDirection = "desc"
     } = req.query;
 
