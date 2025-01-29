@@ -5,6 +5,7 @@ import {
   Libre_Baskerville,
   Pacifico,
   Rakkas,
+  Spectral,
 } from "next/font/google";
 
 export const fontDM_Sans = DM_Sans({
@@ -42,4 +43,11 @@ export const fontPacifico = Pacifico({
   subsets: ["latin"],
   variable: "--font-pacifico",
   weight: "400",
+});
+
+export const fontSpectral = Spectral({
+  subsets: ["latin"],
+  variable: "--font-spectral",
+  weight: ["400", "500"],
+  style: ["italic", "normal"],
 });

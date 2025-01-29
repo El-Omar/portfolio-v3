@@ -11,13 +11,15 @@ import {
   Link as LinkIcon,
   List,
   ListOrdered,
-  Quote,
+  MessageSquareQuote,
+  Quote as QuoteIcon,
   Redo,
   Sparkles,
   Strikethrough,
   Undo,
 } from "lucide-react";
 import { AccentText } from "./AccentText";
+import { PullQuote } from "./PullQuote";
 import {
   Select,
   SelectContent,
@@ -38,7 +40,13 @@ type EditorProps = {
 const Editor = ({ value, onChange, className }: EditorProps) => {
   const editor = useEditor({
     extensions: [
-      StarterKit,
+      StarterKit.configure({
+        blockquote: {
+          HTMLAttributes: {
+            class: "border-l-4 border-cool-red pl-6 font-baskerville",
+          },
+        },
+      }),
       Link.configure({
         openOnClick: false,
         HTMLAttributes: {
@@ -51,6 +59,7 @@ const Editor = ({ value, onChange, className }: EditorProps) => {
         },
       }),
       AccentText,
+      PullQuote,
     ],
     content: value,
     editorProps: {
@@ -72,7 +81,7 @@ const Editor = ({ value, onChange, className }: EditorProps) => {
 
   return (
     <div className="rounded-lg border border-input bg-background">
-      <div className="flex flex-wrap items-center gap-1 border-b border-border p-1">
+      <div className="flex flex-wrap items-center gap-1 border-b border-border p-1 sticky top-0 bg-background z-50">
         <Toggle
           size="sm"
           onPressedChange={() => editor.chain().focus().undo().run()}
@@ -141,6 +150,7 @@ const Editor = ({ value, onChange, className }: EditorProps) => {
         <Toggle
           size="sm"
           pressed={editor.isActive("accent")}
+          // @ts-expect-error false negative
           onPressedChange={() => editor.chain().focus().toggleAccent().run()}
         >
           <Sparkles className="h-4 w-4" />
@@ -180,7 +190,17 @@ const Editor = ({ value, onChange, className }: EditorProps) => {
             editor.chain().focus().toggleBlockquote().run()
           }
         >
-          <Quote className="h-4 w-4" />
+          <QuoteIcon className="h-4 w-4" />
+        </Toggle>
+        <Toggle
+          size="sm"
+          pressed={editor.isActive("pullquote")}
+          onPressedChange={() =>
+            // @ts-expect-error false negative
+            editor.chain().focus().togglePullquote("center").run()
+          }
+        >
+          <MessageSquareQuote className="h-4 w-4" />
         </Toggle>
 
         <Separator orientation="vertical" className="mx-1 h-6" />
@@ -210,7 +230,18 @@ const Editor = ({ value, onChange, className }: EditorProps) => {
         </Toggle>
       </div>
 
-      <EditorContent editor={editor} className="p-3 min-h-[200px]" />
+      <EditorContent
+        editor={editor}
+        className={cn(
+          "p-3 min-h-[200px]",
+          "prose prose-neutral dark:prose-invert prose-sm sm:prose-base max-w-none",
+          "[&>blockquote:not([data-pull-quote])]:border-l-2 [&>blockquote:not([data-pull-quote])]:border-primary",
+          "[&>blockquote:not([data-pull-quote])]:pl-6 [&>blockquote:not([data-pull-quote])]:text-neutral-600",
+          "[&>blockquote:not([data-pull-quote])]:not-italic",
+          "[&>blockquote[data-pull-quote]]:border-none",
+          className,
+        )}
+      />
     </div>
   );
 };

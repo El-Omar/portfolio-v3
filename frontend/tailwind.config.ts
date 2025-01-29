@@ -17,6 +17,7 @@ const config: Config = {
         pacifico: ["var(--font-pacifico)", "serif"],
         rakkas: ["var(--font-rakkas)", "serif"],
         amiri: ["var(--font-amiri)", "serif"],
+        spectral: ["var(--font-spectral)", "serif"],
       },
       colors: {
         ["cool-red"]: "#f0574a",

@@ -2,11 +2,10 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { ReactElement } from "react";
 
-import BilingualLogo from "../ui/BilingualLogo";
+import BilingualLogoWithPen from "../ui/BilingualLogoWithPen";
 import Paragraph from "../ui/Paragraph";
 import Title from "../ui/Title";
 import TitleAccent from "../ui/TitleAccent";
-import IconPen from "@/components/assets/pen.svg";
 import { Link } from "@/i18n/routing";
 
 const Intro = (): ReactElement => {
@@ -41,10 +40,7 @@ const IntroHeader = () => {
           })}
         </Paragraph>
       </div>
-      <div className="flex items-center gap-2">
-        <BilingualLogo />
-        <IconPen className="dark:fill-neutral-100" />
-      </div>
+      <BilingualLogoWithPen />
     </div>
   );
 };

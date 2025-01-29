@@ -1,14 +1,6 @@
 import { Mark, mergeAttributes } from "@tiptap/core";
 import type { CommandProps } from "@tiptap/core";
 
-declare module "@tiptap/core" {
-  type Commands<ReturnType> = {
-    accent: {
-      toggleAccent: () => ReturnType;
-    };
-  };
-}
-
 export const AccentText = Mark.create({
   name: "accent",
 
@@ -43,6 +35,7 @@ export const AccentText = Mark.create({
     ];
   },
 
+  // @ts-expect-error false negative
   addCommands() {
     return {
       toggleAccent:
