@@ -25,12 +25,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="overflow-x-hidden">
+    <html lang="en" className="overflow-x-clip">
       <body
         className={`${fontDM_Sans.variable} ${fontLibre_BaskervilleItalic.variable}
         ${fontInter.variable} ${fontRakkas.variable} ${fontPacifico.variable} 
         ${fontAmiri.variable}
-        overflow-x-hidden relative w-full 
+        overflow-x-clip relative w-full 
         dark:bg-neutral-700 text-gray-900 dark:text-gray-100 font-inter`}
         suppressHydrationWarning
       >
