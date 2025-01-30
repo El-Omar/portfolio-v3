@@ -6,7 +6,6 @@ import React, {
   useState,
 } from "react";
 import { useIsMobile } from "@/lib/hooks/useIsMobile";
-import throttle from "@/lib/utils/throttle";
 
 type Position = {
   x: number;
@@ -24,6 +23,7 @@ type HoverState = {
     x: number;
     y: number;
   };
+  cursorScale: number;
 };
 
 const coolRed = "rgb(240, 87, 74)";
@@ -72,27 +72,43 @@ type Props = {
 } & Partial<ConfigType>;
 
 const CursorWithTrail: React.FC<Props> = ({ className, ...userConfig }) => {
-  const config: ConfigType = useMemo(() => {
-    return { ...defaultConfig, ...userConfig };
-  }, [userConfig]);
-
-  const [position, setPosition] = useState<Position>({
-    x: -100,
-    y: -100,
-  });
-  const [cursorScale, setCursorScale] = useState(1);
-  const [hoverState, setHoverState] = useState<HoverState>({
-    isHovering: false,
-    elementType: null,
-    attraction: { x: 0, y: 0 },
-  });
-
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
   const pointsRef = useRef<Point[]>([]);
   const requestRef = useRef<number>();
   const blobRef = useRef<HTMLDivElement>(null);
-  const [ripples, setRipples] = useState<Point[]>([]);
+  const ripplesRef = useRef<Point[]>([]);
+  const lastMoveTimestamp = useRef(0);
+  const mousePositionRef = useRef<Position>({
+    x: -100,
+    y: -100,
+  });
+
+  const [hoverState, setHoverState] = useState<HoverState>({
+    isHovering: false,
+    elementType: null,
+    attraction: { x: 0, y: 0 },
+    cursorScale: 1,
+  });
+
+  const config: ConfigType = useMemo(() => {
+    return { ...defaultConfig, ...userConfig };
+  }, [userConfig]);
+
+  const gradientCache = useMemo(() => {
+    return {
+      colors: {
+        start: config.cursorColor
+          .replace("rgb", "rgba")
+          .replace(")", `, ${config.trailStartOpacity})`),
+        end: config.cursorColor
+          .replace("rgb", "rgba")
+          .replace(")", `, ${config.trailEndOpacity})`),
+      },
+      gradient: null as CanvasGradient | null,
+      lastPoints: new Float32Array(4), // Store last points used for gradient
+    };
+  }, [config]);
 
   const handleRippleClick = useCallback(
     (e: MouseEvent) => {
@@ -106,102 +122,99 @@ const CursorWithTrail: React.FC<Props> = ({ className, ...userConfig }) => {
         timestamp: Date.now(),
       };
 
-      setRipples((prev) => [...prev, newRipple]);
+      ripplesRef.current.push(newRipple);
     },
     [hoverState.isHovering],
   );
 
-  useEffect(() => {
-    window.addEventListener("click", handleRippleClick);
-
-    return () => {
-      window.removeEventListener("click", handleRippleClick);
-    };
-  }, [handleRippleClick]);
-
-  // Remove ripples
-  useEffect(() => {
-    ripples.forEach((ripple) => {
-      const timeoutId = setTimeout(() => {
-        setRipples((currentRipples) =>
-          currentRipples.filter((r) => r.timestamp !== ripple.timestamp),
-        );
-      }, 400); // Match this with CSS animation duration
-
-      return () => clearTimeout(timeoutId);
-    });
-  }, [ripples]);
-
-  useEffect(() => {
-    if (canvasRef.current) {
-      ctxRef.current = canvasRef.current.getContext("2d");
-    }
-  }, []);
-
   const handleElementInteraction = useCallback(
     (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      let interactiveElement = null;
 
-      const isTrailDisabled = target.closest(
-        config.disableTrailClasses.map((c) => `.${c}`).join(","),
-      );
+      const selector = [
+        "a",
+        "button",
+        "input",
+        ".magnetic",
+        ...config.disableTrailClasses.map((c) => `.${c}`),
+      ].join(",");
 
-      const isLink = target.closest("a");
-      const isButton = target.closest("button");
-      const isInput = target.closest("input");
-      const isMagnetic = target.closest(".magnetic");
+      const interactiveElement = target.closest(selector);
 
-      if (isLink || isButton || isInput || isMagnetic) {
-        interactiveElement = isLink || isButton || isInput || isMagnetic;
-      }
-
-      if (interactiveElement) {
-        const rect = interactiveElement.getBoundingClientRect();
-        const centerX = rect.left + rect.width / 2;
-        const centerY = rect.top + rect.height / 2;
-
-        const attraction = {
-          x: (centerX - e.clientX) * config.magneticStrength,
-          y: (centerY - e.clientY) * config.magneticStrength,
-        };
-
+      if (!interactiveElement) {
         setHoverState({
-          isHovering: true,
-          elementType: isMagnetic
-            ? "magnetic"
-            : isLink
-              ? "link"
-              : isButton
-                ? "button"
-                : "input",
-          attraction,
-        });
-        setCursorScale(config.cursorHoverScale);
-      } else {
-        setHoverState({
-          isHovering: !!isTrailDisabled,
+          isHovering: false,
           elementType: null,
           attraction: { x: 0, y: 0 },
+          cursorScale: 1,
         });
-        setCursorScale(1);
+
+        return;
       }
+
+      const isTrailDisabled = config.disableTrailClasses.some((c) =>
+        interactiveElement.classList.contains(c),
+      );
+
+      if (isTrailDisabled) {
+        setHoverState({
+          isHovering: false,
+          elementType: null,
+          attraction: { x: 0, y: 0 },
+          cursorScale: 1,
+        });
+        return;
+      }
+
+      const rect = interactiveElement.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+
+      const attraction = {
+        x: (centerX - e.clientX) * config.magneticStrength,
+        y: (centerY - e.clientY) * config.magneticStrength,
+      };
+
+      setHoverState({
+        isHovering: true,
+        elementType: interactiveElement.classList.contains("magnetic")
+          ? "magnetic"
+          : interactiveElement.tagName.toLowerCase(),
+        attraction,
+        cursorScale: config.cursorHoverScale,
+      });
     },
     [
+      config.disableTrailClasses,
       config.magneticStrength,
       config.cursorHoverScale,
-      config.disableTrailClasses,
     ],
   );
 
+  const stopAnimation = useCallback(() => {
+    cancelAnimationFrame(requestRef.current!);
+    requestRef.current = undefined;
+  }, []);
+
   const animate = useCallback(() => {
-    console.log("animate");
     const canvas = canvasRef.current;
     const ctx = ctxRef.current;
-
     if (!ctx || !canvas) {
       return;
     }
+
+    if (Date.now() - lastMoveTimestamp.current > 100) {
+      stopAnimation();
+      return;
+    }
+
+    console.log(pointsRef.current.length);
+    if (pointsRef.current.length === 0) {
+      stopAnimation();
+      return;
+    }
+
+    requestRef.current = requestAnimationFrame(animate);
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -235,30 +248,23 @@ const CursorWithTrail: React.FC<Props> = ({ className, ...userConfig }) => {
         });
       }
 
-      // Start a new path for the trail
-      ctx.beginPath();
-      ctx.moveTo(smoothPoints[0].x, smoothPoints[0].y);
-
       // Create gradient for the trail using smoothed points
-      const gradient = ctx.createLinearGradient(
+      gradientCache.gradient = ctx.createLinearGradient(
         smoothPoints[0].x,
         smoothPoints[0].y,
         smoothPoints[smoothPoints.length - 1].x,
         smoothPoints[smoothPoints.length - 1].y,
       );
 
-      gradient.addColorStop(
-        0,
-        `${config.cursorColor.replace("rgb", "rgba").replace(")", `, ${config.trailStartOpacity})`)}`,
-      );
-      gradient.addColorStop(
-        1,
-        `${config.cursorColor.replace("rgb", "rgba").replace(")", `, ${config.trailEndOpacity})`)}`,
-      );
+      gradientCache.gradient.addColorStop(0, gradientCache.colors.start);
+      gradientCache.gradient.addColorStop(1, gradientCache.colors.end);
 
-      ctx.strokeStyle = gradient;
+      ctx.beginPath();
+      ctx.strokeStyle = gradientCache.gradient!;
       ctx.lineCap = "round";
       ctx.lineJoin = "round";
+
+      ctx.moveTo(smoothPoints[0].x, smoothPoints[0].y);
 
       // Draw smooth curve through points
       for (let i = 1; i < smoothPoints.length - 2; i++) {
@@ -288,42 +294,49 @@ const CursorWithTrail: React.FC<Props> = ({ className, ...userConfig }) => {
       }
 
       ctx.stroke();
-
-      // Clean up old points
-      const now = Date.now();
-      pointsRef.current = pointsRef.current
-        .filter((point) => now - point.timestamp < config.trailLifetime)
-        .slice(0, config.trailMaxPoints);
-
-      if (pointsRef.current.length > 0) {
-        requestRef.current = requestAnimationFrame(animate);
-      }
     }
     // Continue animation if we have points and not hovering
     else if (requestRef.current) {
-      cancelAnimationFrame(requestRef.current);
-      requestRef.current = undefined;
+      stopAnimation();
     }
-  }, [config, hoverState.isHovering]);
+  }, [
+    config.trailMaxWidth,
+    config.trailMinWidth,
+    config.trailSmoothingFactor,
+    gradientCache,
+    hoverState.isHovering,
+    stopAnimation,
+  ]);
 
-  const startAnimation = useCallback(() => {
-    requestAnimationFrame(animate);
-  }, [animate]);
+  const startAnimation = useCallback(
+    () => requestAnimationFrame(animate),
+    [animate],
+  );
 
   const handleMouseMove = useCallback(
     (e: MouseEvent) => {
+      lastMoveTimestamp.current = Date.now();
+
+      startAnimation();
       handleElementInteraction(e);
 
+      const currentX = e.clientX;
+      const currentY = e.clientY;
+
       const currentPos = {
-        x: e.clientX + hoverState.attraction.x,
-        y: e.clientY + hoverState.attraction.y,
+        x: currentX + hoverState.attraction.x,
+        y: currentY + hoverState.attraction.y,
       };
+
+      mousePositionRef.current = { x: currentX, y: currentY };
+
+      // TODO: updateCursor comment do
 
       if (blobRef.current) {
         blobRef.current.animate(
           {
-            left: `${e.clientX}px`,
-            top: `${e.clientY}px`,
+            left: `${currentX}px`,
+            top: `${currentY}px`,
           },
           { duration: 3000, fill: "forwards" },
         );
@@ -336,38 +349,60 @@ const CursorWithTrail: React.FC<Props> = ({ className, ...userConfig }) => {
       };
 
       pointsRef.current.unshift(newPoint);
-      setPosition(currentPos);
-      startAnimation();
+
+      if (pointsRef.current.length > config.trailMaxPoints) {
+        pointsRef.current.pop();
+      }
     },
-    [handleElementInteraction, hoverState.attraction, startAnimation],
+    [
+      handleElementInteraction,
+      hoverState.attraction.x,
+      hoverState.attraction.y,
+      config.trailMaxPoints,
+      startAnimation,
+    ],
   );
 
-  const throttledMouseMove = useMemo(
-    () => throttle(handleMouseMove, 16),
-    [handleMouseMove],
-  );
+  // Remove ripples
+  useEffect(() => {
+    ripplesRef.current.forEach((ripple) => {
+      const timeoutId = setTimeout(() => {
+        ripplesRef.current = ripplesRef.current.filter(
+          (r) => r.timestamp !== ripple.timestamp,
+        );
+      }, 600);
+
+      return () => clearTimeout(timeoutId);
+    });
+  }, [ripplesRef]);
 
   useEffect(() => {
+    if (!canvasRef.current) {
+      return;
+    }
+
+    ctxRef.current = canvasRef.current.getContext("2d");
+
     const handleResize = () => {
-      if (canvasRef.current) {
-        canvasRef.current.width = window.innerWidth;
-        canvasRef.current.height = window.innerHeight;
-      }
+      canvasRef.current!.width = window.innerWidth;
+      canvasRef.current!.height = window.innerHeight;
     };
 
     handleResize();
-    window.addEventListener("mousemove", throttledMouseMove);
+
     window.addEventListener("resize", handleResize);
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("click", handleRippleClick);
 
     return () => {
-      window.removeEventListener("mousemove", throttledMouseMove);
       window.removeEventListener("resize", handleResize);
-
-      if (requestRef.current) {
-        cancelAnimationFrame(requestRef.current);
-      }
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("click", handleRippleClick);
+      stopAnimation();
     };
-  }, [throttledMouseMove]);
+  }, [handleMouseMove, handleRippleClick, stopAnimation]);
+
+  console.log(hoverState.isHovering);
 
   return (
     <>
@@ -412,7 +447,7 @@ const CursorWithTrail: React.FC<Props> = ({ className, ...userConfig }) => {
             opacity: 0.5;
           }
           100% {
-            transform: translate(-50%, -50%) scale(3);
+            transform: translate(-50%, -50%) scale(2);
             opacity: 0;
           }
         }
@@ -426,14 +461,14 @@ const CursorWithTrail: React.FC<Props> = ({ className, ...userConfig }) => {
         className="pointer-events-none fixed inset-0 overflow-hidden"
         style={{ zIndex: config.zIndex }}
       >
-        {ripples.map((ripple) => (
+        {ripplesRef.current.map((ripple) => (
           <div
             key={ripple.timestamp}
-            className="absolute w-4 h-4 -translate-x-1/2 -translate-y-1/2 rounded-full bg-cool-red opacity-50"
+            className="absolute w-4 h-4 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary opacity-50"
             style={{
               left: ripple.x,
               top: ripple.y,
-              animation: "ripple 0.4s ease-out forwards",
+              animation: "ripple 0.6s ease-out forwards",
               zIndex: config.zIndex,
             }}
           />
@@ -443,9 +478,9 @@ const CursorWithTrail: React.FC<Props> = ({ className, ...userConfig }) => {
         className="fixed pointer-events-none"
         style={{
           zIndex: config.zIndex,
-          left: position.x,
-          top: position.y,
-          transform: `translate(-50%, -50%) scale(${cursorScale})`,
+          left: mousePositionRef.current.x,
+          top: mousePositionRef.current.y,
+          transform: `translate(-50%, -50%) scale(${hoverState.cursorScale})`,
           transition: `transform ${config.magneticTransitionDuration}s ease`,
         }}
       >
