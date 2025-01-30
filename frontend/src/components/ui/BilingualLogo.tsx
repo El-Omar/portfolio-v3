@@ -16,19 +16,17 @@ const BilingualLogo = ({ invert, className }: Props): ReactElement => {
         className,
       )}
     >
-      <strong className="text-2xl font-rakkas mt-6 -mr-0.5 leading-[0]">
+      <strong className="text-xl font-rakkas mt-5 -mr-1 leading-[0]">
         ـمر
       </strong>
       <Image
-        src="/img/logo@2x.png"
+        src="/img/logo.svg"
         alt="Logo"
-        width={24.75}
-        height={24.245}
+        width={28}
+        height={28}
         className={`${invert ? "invert" : ""}`}
       />
-      <span className="text-2xl font-pacifico mt-0 -ml-0.5 leading-[0]">
-        omar
-      </span>
+      <span className="text-xl font-pacifico mt-0 -ml-1 leading-[0]">omar</span>
     </figure>
   );
 };

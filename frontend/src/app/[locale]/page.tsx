@@ -8,7 +8,7 @@ import StatsSection from "./_sections/StatsSection";
 
 const Home = (): ReactElement => {
   return (
-    <main className="flex flex-col items-center">
+    <main className="flex flex-col items-center w-full">
       <HeroSection />
       <StatsSection />
       <ExpertiseSection />

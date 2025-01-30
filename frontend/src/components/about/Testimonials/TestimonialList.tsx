@@ -59,8 +59,15 @@ export const testimonials: TestimonialType[] = [
     gradient: "green",
   },
   {
-    review:
-      "Elomar is an exceptional professional you can fully trust with your project. He doesn&apos;t just deliver what&apos;s asked; he becomes a true partner in the process, offering valuable insights and creative problem-solving every step of the way. With Elomar, no challenge is too great—he consistently finds innovative solutions.",
+    review: (
+      <>
+        Elomar is an exceptional professional you can fully trust with your
+        project. He doesn&apos;t just deliver what&apos;s asked; he becomes a
+        true partner in the process, offering valuable insights and creative
+        problem-solving every step of the way. With Elomar, no challenge is too
+        great—he consistently finds innovative solutions.
+      </>
+    ),
     author: "Yoshi",
     image: "yoshi.jpeg",
     role: "Digital Designer & Marketeer",

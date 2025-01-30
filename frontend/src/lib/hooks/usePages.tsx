@@ -11,8 +11,8 @@ type NavItem = {
 export const PAGES = {
   HOME: "/",
   ABOUT: "/about",
+  PROJECTS: "/projects",
   BLOG: "/blog",
-  CONTACT: "/contact",
 };
 
 /**
@@ -25,8 +25,8 @@ export const usePages = (): NavItem[] => {
   const navItems: NavItem[] = [
     { path: PAGES.HOME, label: t("home"), icon: <House size={20} /> },
     { path: PAGES.ABOUT, label: t("about"), icon: <Signature size={20} /> },
+    { path: PAGES.PROJECTS, label: t("projects"), icon: <Send size={20} /> },
     { path: PAGES.BLOG, label: t("blog"), icon: <BookText size={20} /> },
-    { path: PAGES.CONTACT, label: t("contact"), icon: <Send size={20} /> },
   ];
 
   return navItems;

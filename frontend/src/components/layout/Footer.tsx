@@ -24,7 +24,7 @@ const Footer = (): ReactElement => {
   ];
 
   return (
-    <footer className="w-full border-t border-neutral-200 dark:border-neutral-800">
+    <footer className="w-full border-t border-neutral-200 dark:border-neutral-800 z-50 relative">
       <div className="container mx-auto px-6 py-20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16">
           {/* Logo & Description */}

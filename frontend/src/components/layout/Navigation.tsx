@@ -50,22 +50,22 @@ const Navigation = ({
           >
             <AnimationConfig>
               <motion.strong
-                className="text-2xl font-rakkas mt-6 -mr-0.5"
+                className="text-2xl font-rakkas mt-6 -mr-1"
                 animate={{ x: isOpen ? 0 : 10, opacity: isOpen ? 1 : 0 }}
               >
                 ـمر
               </motion.strong>
             </AnimationConfig>
             <Image
-              src="/img/logo@2x.png"
+              src="/img/logo.svg"
               alt="Logo"
-              width={24.75}
-              height={24.245}
+              width={28}
+              height={28}
               className="dark:invert"
             />
             <AnimationConfig>
               <motion.span
-                className="text-2xl font-pacifico mt-0 -ml-0.5"
+                className="text-2xl font-pacifico mt-0 -ml-1"
                 animate={{ x: isOpen ? 0 : -10, opacity: isOpen ? 1 : 0 }}
               >
                 omar
@@ -73,23 +73,21 @@ const Navigation = ({
             </AnimationConfig>
           </motion.figure>
         </Link>
-        {!isOpen && (
-          <Button
-            variant="link"
-            className="group hover:no-underline flex flex-col gap-1 items-end px-6 pointer-events-auto"
-            onClick={toggleSidebar}
-          >
-            <div
-              className={`w-[21px] h-[3px] group-hover:w-[24px] bg-primary transition-all duration-150 ease-in-out`}
-            />
-            <div
-              className={`w-[18px] h-[3px] group-hover:w-[24px] bg-primary transition-all duration-150 ease-in-out`}
-            />
-            <div
-              className={`w-[19px] h-[3px] group-hover:w-[24px] bg-primary transition-all duration-150 ease-in-out`}
-            />
-          </Button>
-        )}
+        <Button
+          variant="link"
+          className="group hover:no-underline flex flex-col gap-1 items-end px-6 pointer-events-auto"
+          onClick={toggleSidebar}
+        >
+          <div
+            className={`w-[21px] h-[3px] group-hover:w-[24px] bg-primary transition-all duration-150 ease-in-out`}
+          />
+          <div
+            className={`w-[18px] h-[3px] group-hover:w-[24px] bg-primary transition-all duration-150 ease-in-out`}
+          />
+          <div
+            className={`w-[19px] h-[3px] group-hover:w-[24px] bg-primary transition-all duration-150 ease-in-out`}
+          />
+        </Button>
       </nav>
     </>
   );

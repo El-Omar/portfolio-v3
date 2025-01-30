@@ -5,6 +5,7 @@ import React, {
   useRef,
   useState,
 } from "react";
+import { useIsMobile } from "@/lib/hooks/useIsMobile";
 import throttle from "@/lib/utils/throttle";
 
 type Position = {
@@ -25,11 +26,13 @@ type HoverState = {
   };
 };
 
+const coolRed = "rgb(240, 87, 74)";
+
 // Default configuration values
 const defaultConfig = {
   // Cursor properties
   cursorSize: 20,
-  cursorColor: "rgb(240, 87, 74)",
+  cursorColor: "rgb(17, 24, 39)",
   cursorHoverScale: 1.5,
   cursorBaseOpacity: 0.6,
 
@@ -53,8 +56,8 @@ const defaultConfig = {
   glowOpacity: 0.2,
 
   // Ring properties
-  ringWidth: 2,
-  ringBaseOpacity: 0.5,
+  ringWidth: 1,
+  ringBaseOpacity: 0.7,
   ringHoverOpacity: 0.8,
   ringHoverScale: 1.2,
 
@@ -88,6 +91,7 @@ const CursorWithTrail: React.FC<Props> = ({ className, ...userConfig }) => {
   const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
   const pointsRef = useRef<Point[]>([]);
   const requestRef = useRef<number>();
+  const blobRef = useRef<HTMLDivElement>(null);
   const [ripples, setRipples] = useState<Point[]>([]);
 
   const handleRippleClick = useCallback(
@@ -191,6 +195,7 @@ const CursorWithTrail: React.FC<Props> = ({ className, ...userConfig }) => {
   );
 
   const animate = useCallback(() => {
+    console.log("animate");
     const canvas = canvasRef.current;
     const ctx = ctxRef.current;
 
@@ -314,6 +319,16 @@ const CursorWithTrail: React.FC<Props> = ({ className, ...userConfig }) => {
         y: e.clientY + hoverState.attraction.y,
       };
 
+      if (blobRef.current) {
+        blobRef.current.animate(
+          {
+            left: `${e.clientX}px`,
+            top: `${e.clientY}px`,
+          },
+          { duration: 3000, fill: "forwards" },
+        );
+      }
+
       const newPoint: Point = {
         x: currentPos.x,
         y: currentPos.y,
@@ -335,14 +350,8 @@ const CursorWithTrail: React.FC<Props> = ({ className, ...userConfig }) => {
   useEffect(() => {
     const handleResize = () => {
       if (canvasRef.current) {
-        const dpr = window.devicePixelRatio || 1;
-        canvasRef.current.width = window.innerWidth * dpr;
-        canvasRef.current.height = window.innerHeight * dpr;
-
-        const ctx = ctxRef.current;
-        if (ctx) {
-          ctx.scale(dpr, dpr);
-        }
+        canvasRef.current.width = window.innerWidth;
+        canvasRef.current.height = window.innerHeight;
       }
     };
 
@@ -353,6 +362,7 @@ const CursorWithTrail: React.FC<Props> = ({ className, ...userConfig }) => {
     return () => {
       window.removeEventListener("mousemove", throttledMouseMove);
       window.removeEventListener("resize", handleResize);
+
       if (requestRef.current) {
         cancelAnimationFrame(requestRef.current);
       }
@@ -361,6 +371,52 @@ const CursorWithTrail: React.FC<Props> = ({ className, ...userConfig }) => {
 
   return (
     <>
+      <style jsx global>{`
+        #blob {
+          background-color: white;
+          height: 34vmax;
+          aspect-ratio: 1;
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          translate: -50% -50%;
+          border-radius: 50%;
+          background: linear-gradient(to right, #ffc100, ${coolRed});
+          animation: rotate 20s infinite;
+          opacity: 0.1;
+        }
+        #blur {
+          height: 100%;
+          width: 100%;
+          position: absolute;
+          z-index: 2;
+          backdrop-filter: blur(12vmax);
+        }
+
+        @keyframes rotate {
+          from {
+            rotate: 0deg;
+          }
+
+          50% {
+            scale: 1 1.5;
+          }
+
+          to {
+            rotate: 360deg;
+          }
+        }
+        @keyframes ripple {
+          0% {
+            transform: translate(-50%, -50%) scale(0.1);
+            opacity: 0.5;
+          }
+          100% {
+            transform: translate(-50%, -50%) scale(3);
+            opacity: 0;
+          }
+        }
+      `}</style>
       <canvas
         ref={canvasRef}
         className={`fixed inset-0 pointer-events-none ${className || ""}`}
@@ -382,18 +438,6 @@ const CursorWithTrail: React.FC<Props> = ({ className, ...userConfig }) => {
             }}
           />
         ))}
-        <style jsx>{`
-          @keyframes ripple {
-            0% {
-              transform: translate(-50%, -50%) scale(0.1);
-              opacity: 0.5;
-            }
-            100% {
-              transform: translate(-50%, -50%) scale(3);
-              opacity: 0;
-            }
-          }
-        `}</style>
       </div>
       <div
         className="fixed pointer-events-none"
@@ -412,42 +456,47 @@ const CursorWithTrail: React.FC<Props> = ({ className, ...userConfig }) => {
             height: config.cursorSize,
           }}
         >
-          {/* Main cursor dot */}
-          <div
-            className="absolute inset-0 rounded-full"
-            style={{
-              backgroundColor: hoverState.isHovering
-                ? "transparent"
-                : config.cursorColor,
-              opacity: config.cursorBaseOpacity,
-              transition: `all ${config.magneticTransitionDuration}s ease`,
-            }}
-          />
-          {/* Outer glow */}
-          <div
-            className="absolute inset-0 rounded-full"
-            style={{
-              transform: `scale(${hoverState.isHovering ? config.glowHoverSize : config.glowSize})`,
-              background: `radial-gradient(circle, ${config.cursorColor.replace("rgb", "rgba").replace(")", `, ${config.glowOpacity})`)} 0%, transparent 70%)`,
-              transition: `all ${config.magneticTransitionDuration}s ease`,
-            }}
-          />
-          {/* Inner ring */}
-          <div
-            className="absolute inset-0 rounded-full"
-            style={{
-              border: `${config.ringWidth}px solid ${config.cursorColor}`,
-              opacity: hoverState.isHovering
-                ? config.ringHoverOpacity
-                : config.ringBaseOpacity,
-              transform: `scale(${hoverState.isHovering ? config.ringHoverScale : 1})`,
-              transition: `all ${config.magneticTransitionDuration}s ease`,
-            }}
-          />
+          {hoverState.isHovering && (
+            <>
+              {/* Main cursor dot */}
+              <div
+                className="absolute inset-0 rounded-full"
+                style={{
+                  backgroundColor: config.cursorColor,
+                  opacity: config.cursorBaseOpacity,
+                  transition: `all ${config.magneticTransitionDuration}s ease`,
+                }}
+              />
+              {/* Inner ring */}
+              <div
+                className="absolute inset-0 rounded-full"
+                style={{
+                  border: `${config.ringWidth}px solid ${config.cursorColor}`,
+                  opacity: config.ringHoverOpacity,
+                  transform: `scale(${config.ringHoverScale})`,
+                  transition: `all ${config.magneticTransitionDuration}s ease`,
+                }}
+              />
+            </>
+          )}
         </div>
+      </div>
+      <div className="fixed inset-0 h-screen w-screen">
+        <div id="blob" ref={blobRef} />
+        <div id="blur" />
       </div>
     </>
   );
 };
 
-export default CursorWithTrail;
+const Wrapper = () => {
+  const isMobile = useIsMobile();
+
+  if (isMobile) {
+    return null;
+  }
+
+  return <CursorWithTrail />;
+};
+
+export default Wrapper;
