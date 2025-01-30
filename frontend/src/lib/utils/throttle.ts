@@ -5,15 +5,14 @@ export default function throttle<T extends Func>(
   func: T,
   limit: number,
 ): (...args: Parameters<T>) => void {
-  let inThrottle = false;
+  let lastCall = 0;
 
   return function (this: ThisParameterType<T>, ...args: Parameters<T>) {
-    if (!inThrottle) {
+    const now = Date.now();
+
+    if (now - lastCall >= limit) {
+      lastCall = now;
       func.apply(this, args);
-      inThrottle = true;
-      setTimeout(() => {
-        inThrottle = false;
-      }, limit);
     }
   };
 }

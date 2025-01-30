@@ -1,11 +1,6 @@
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { ReactElement, useCallback, useEffect, useRef, useState } from "react";
 import { useIsMobile } from "@/lib/hooks/useIsMobile";
+import throttle from "@/lib/utils/throttle";
 
 type Position = {
   x: number;
@@ -26,311 +21,87 @@ type HoverState = {
   cursorScale: number;
 };
 
-const coolRed = "rgb(240, 87, 74)";
-
-// Default configuration values
-const defaultConfig = {
-  // Cursor properties
-  cursorSize: 20,
-  cursorColor: "rgb(17, 24, 39)",
-  cursorHoverScale: 1.5,
-  cursorBaseOpacity: 0.6,
-
-  // Trail properties
-  trailMaxPoints: 50,
-  trailMaxWidth: 24,
-  trailMinWidth: 6,
-  trailLifetime: 150, // milliseconds
-  trailStartOpacity: 0.8,
-  trailEndOpacity: 0,
-  trailSmoothingFactor: 4,
-  disableTrailClasses: ["no-trail", "disable-trail"],
-
-  // Magnetic properties
+const config = {
   magneticStrength: 0.3,
-  magneticTransitionDuration: 0.3, // seconds
+  cursorHoverScale: 1.5,
+};
 
-  // Glow properties
-  glowSize: 1.5,
-  glowHoverSize: 2,
-  glowOpacity: 0.2,
-
-  // Ring properties
-  ringWidth: 1,
-  ringBaseOpacity: 0.7,
-  ringHoverOpacity: 0.8,
-  ringHoverScale: 1.2,
-
-  // Z-index and general
-  zIndex: 9999,
-} as const;
-
-type ConfigType = typeof defaultConfig;
-
-type Props = {
-  className?: string;
-} & Partial<ConfigType>;
-
-const CursorWithTrail: React.FC<Props> = ({ className, ...userConfig }) => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
-  const pointsRef = useRef<Point[]>([]);
-  const requestRef = useRef<number>();
+const CursorWithDot = (): ReactElement => {
   const blobRef = useRef<HTMLDivElement>(null);
-  const ripplesRef = useRef<Point[]>([]);
-  const lastMoveTimestamp = useRef(0);
-  const mousePositionRef = useRef<Position>({
-    x: -100,
-    y: -100,
-  });
+  const cursorRef = useRef<HTMLDivElement>(null);
+  const timeoutsRef = useRef<number[]>([]);
+  const [ripples, setRipples] = useState<Point[]>([]);
 
-  const [hoverState, setHoverState] = useState<HoverState>({
+  const hoverStateRef = useRef<HoverState>({
     isHovering: false,
     elementType: null,
     attraction: { x: 0, y: 0 },
     cursorScale: 1,
   });
 
-  const config: ConfigType = useMemo(() => {
-    return { ...defaultConfig, ...userConfig };
-  }, [userConfig]);
+  const handleRippleClick = useCallback((e: MouseEvent) => {
+    if (hoverStateRef.current.isHovering) {
+      return;
+    }
 
-  const gradientCache = useMemo(() => {
-    return {
-      colors: {
-        start: config.cursorColor
-          .replace("rgb", "rgba")
-          .replace(")", `, ${config.trailStartOpacity})`),
-        end: config.cursorColor
-          .replace("rgb", "rgba")
-          .replace(")", `, ${config.trailEndOpacity})`),
-      },
-      gradient: null as CanvasGradient | null,
-      lastPoints: new Float32Array(4), // Store last points used for gradient
+    const newRipple: Point = {
+      x: e.clientX,
+      y: e.clientY,
+      timestamp: Date.now(),
     };
-  }, [config]);
 
-  const handleRippleClick = useCallback(
-    (e: MouseEvent) => {
-      if (hoverState.isHovering) {
-        return;
-      }
-
-      const newRipple: Point = {
-        x: e.clientX,
-        y: e.clientY,
-        timestamp: Date.now(),
-      };
-
-      ripplesRef.current.push(newRipple);
-    },
-    [hoverState.isHovering],
-  );
-
-  const handleElementInteraction = useCallback(
-    (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-
-      const selector = [
-        "a",
-        "button",
-        "input",
-        ".magnetic",
-        ...config.disableTrailClasses.map((c) => `.${c}`),
-      ].join(",");
-
-      const interactiveElement = target.closest(selector);
-
-      if (!interactiveElement) {
-        setHoverState({
-          isHovering: false,
-          elementType: null,
-          attraction: { x: 0, y: 0 },
-          cursorScale: 1,
-        });
-
-        return;
-      }
-
-      const isTrailDisabled = config.disableTrailClasses.some((c) =>
-        interactiveElement.classList.contains(c),
-      );
-
-      if (isTrailDisabled) {
-        setHoverState({
-          isHovering: false,
-          elementType: null,
-          attraction: { x: 0, y: 0 },
-          cursorScale: 1,
-        });
-        return;
-      }
-
-      const rect = interactiveElement.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
-
-      const attraction = {
-        x: (centerX - e.clientX) * config.magneticStrength,
-        y: (centerY - e.clientY) * config.magneticStrength,
-      };
-
-      setHoverState({
-        isHovering: true,
-        elementType: interactiveElement.classList.contains("magnetic")
-          ? "magnetic"
-          : interactiveElement.tagName.toLowerCase(),
-        attraction,
-        cursorScale: config.cursorHoverScale,
-      });
-    },
-    [
-      config.disableTrailClasses,
-      config.magneticStrength,
-      config.cursorHoverScale,
-    ],
-  );
-
-  const stopAnimation = useCallback(() => {
-    cancelAnimationFrame(requestRef.current!);
-    requestRef.current = undefined;
+    setRipples((prevRipples) => [...prevRipples, newRipple]);
   }, []);
 
-  const animate = useCallback(() => {
-    const canvas = canvasRef.current;
-    const ctx = ctxRef.current;
-    if (!ctx || !canvas) {
-      return;
-    }
+  const handleElementInteraction = useCallback((e: MouseEvent) => {
+    const target = e.target as HTMLElement;
+    const selector = ["a", "button", "input", ".magnetic"].join(",");
 
-    if (Date.now() - lastMoveTimestamp.current > 100) {
-      stopAnimation();
-      return;
-    }
+    const interactiveElement = target.closest(selector);
 
-    console.log(pointsRef.current.length);
-    if (pointsRef.current.length === 0) {
-      stopAnimation();
-      return;
-    }
-
-    requestRef.current = requestAnimationFrame(animate);
-
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    // Check if we have enough points and not hovering
-    if (pointsRef.current.length > 1 && !hoverState.isHovering) {
-      // Smooth the points using a moving average
-      const smoothPoints = [];
-      const smoothingFactor = config.trailSmoothingFactor;
-
-      for (let i = 0; i < pointsRef.current.length; i++) {
-        let avgX = 0;
-        let avgY = 0;
-        let count = 0;
-
-        // Calculate weighted average of nearby points
-        for (
-          let j = Math.max(0, i - smoothingFactor);
-          j < Math.min(pointsRef.current.length, i + smoothingFactor + 1);
-          j++
-        ) {
-          const weight = 1 - Math.abs(i - j) / (smoothingFactor + 1);
-          avgX += pointsRef.current[j].x * weight;
-          avgY += pointsRef.current[j].y * weight;
-          count += weight;
-        }
-
-        smoothPoints.push({
-          x: avgX / count,
-          y: avgY / count,
-          timestamp: pointsRef.current[i].timestamp,
-        });
+    if (!interactiveElement) {
+      if (cursorRef.current) {
+        cursorRef.current.classList.remove("hovered");
       }
 
-      // Create gradient for the trail using smoothed points
-      gradientCache.gradient = ctx.createLinearGradient(
-        smoothPoints[0].x,
-        smoothPoints[0].y,
-        smoothPoints[smoothPoints.length - 1].x,
-        smoothPoints[smoothPoints.length - 1].y,
-      );
-
-      gradientCache.gradient.addColorStop(0, gradientCache.colors.start);
-      gradientCache.gradient.addColorStop(1, gradientCache.colors.end);
-
-      ctx.beginPath();
-      ctx.strokeStyle = gradientCache.gradient!;
-      ctx.lineCap = "round";
-      ctx.lineJoin = "round";
-
-      ctx.moveTo(smoothPoints[0].x, smoothPoints[0].y);
-
-      // Draw smooth curve through points
-      for (let i = 1; i < smoothPoints.length - 2; i++) {
-        const xc = (smoothPoints[i].x + smoothPoints[i + 1].x) / 2;
-        const yc = (smoothPoints[i].y + smoothPoints[i + 1].y) / 2;
-
-        const progress = i / smoothPoints.length;
-        ctx.lineWidth = Math.max(
-          config.trailMaxWidth * (1 - progress),
-          config.trailMinWidth,
-        );
-
-        // Use quadratic curves for smoother lines
-        ctx.quadraticCurveTo(smoothPoints[i].x, smoothPoints[i].y, xc, yc);
-      }
-
-      // Handle the last two points
-      if (smoothPoints.length > 2) {
-        const last = smoothPoints.length - 1;
-        const secondLast = smoothPoints.length - 2;
-        ctx.quadraticCurveTo(
-          smoothPoints[secondLast].x,
-          smoothPoints[secondLast].y,
-          smoothPoints[last].x,
-          smoothPoints[last].y,
-        );
-      }
-
-      ctx.stroke();
-    }
-    // Continue animation if we have points and not hovering
-    else if (requestRef.current) {
-      stopAnimation();
-    }
-  }, [
-    config.trailMaxWidth,
-    config.trailMinWidth,
-    config.trailSmoothingFactor,
-    gradientCache,
-    hoverState.isHovering,
-    stopAnimation,
-  ]);
-
-  const startAnimation = useCallback(
-    () => requestAnimationFrame(animate),
-    [animate],
-  );
-
-  const handleMouseMove = useCallback(
-    (e: MouseEvent) => {
-      lastMoveTimestamp.current = Date.now();
-
-      startAnimation();
-      handleElementInteraction(e);
-
-      const currentX = e.clientX;
-      const currentY = e.clientY;
-
-      const currentPos = {
-        x: currentX + hoverState.attraction.x,
-        y: currentY + hoverState.attraction.y,
+      hoverStateRef.current = {
+        isHovering: false,
+        elementType: null,
+        attraction: { x: 0, y: 0 },
+        cursorScale: 1,
       };
 
-      mousePositionRef.current = { x: currentX, y: currentY };
+      return;
+    }
 
-      // TODO: updateCursor comment do
+    const rect = interactiveElement.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+
+    const attraction = {
+      x: (centerX - e.clientX) * config.magneticStrength,
+      y: (centerY - e.clientY) * config.magneticStrength,
+    };
+
+    if (cursorRef.current) {
+      cursorRef.current.classList.add("hovered");
+    }
+
+    hoverStateRef.current = {
+      isHovering: true,
+      elementType: interactiveElement.classList.contains("magnetic")
+        ? "magnetic"
+        : interactiveElement.tagName.toLowerCase(),
+      attraction,
+      cursorScale: config.cursorHoverScale,
+    };
+  }, []);
+
+  const throttledMouseMove = useRef(
+    throttle((e: MouseEvent) => {
+      handleElementInteraction(e);
+      const currentX = e.clientX;
+      const currentY = e.clientY;
 
       if (blobRef.current) {
         blobRef.current.animate(
@@ -342,99 +113,63 @@ const CursorWithTrail: React.FC<Props> = ({ className, ...userConfig }) => {
         );
       }
 
-      const newPoint: Point = {
-        x: currentPos.x,
-        y: currentPos.y,
-        timestamp: Date.now(),
-      };
-
-      pointsRef.current.unshift(newPoint);
-
-      if (pointsRef.current.length > config.trailMaxPoints) {
-        pointsRef.current.pop();
+      if (cursorRef.current) {
+        cursorRef.current.animate(
+          {
+            left: `${currentX}px`,
+            top: `${currentY}px`,
+            transform: `translate(-50%, -50%) scale(${hoverStateRef.current.cursorScale})`,
+          },
+          { duration: 3000, fill: "forwards" },
+        );
       }
-    },
-    [
-      handleElementInteraction,
-      hoverState.attraction.x,
-      hoverState.attraction.y,
-      config.trailMaxPoints,
-      startAnimation,
-    ],
+    }, 16),
   );
+
+  const handleMouseMove = useCallback((e: MouseEvent) => {
+    throttledMouseMove.current(e);
+  }, []);
 
   // Remove ripples
   useEffect(() => {
-    ripplesRef.current.forEach((ripple) => {
-      const timeoutId = setTimeout(() => {
-        ripplesRef.current = ripplesRef.current.filter(
-          (r) => r.timestamp !== ripple.timestamp,
+    ripples.forEach((ripple) => {
+      const timeoutId = window.setTimeout(() => {
+        setRipples((prevRipples) =>
+          prevRipples.filter((r) => r.timestamp !== ripple.timestamp),
         );
       }, 600);
-
-      return () => clearTimeout(timeoutId);
+      timeoutsRef.current.push(timeoutId);
     });
-  }, [ripplesRef]);
+
+    return () => {
+      timeoutsRef.current.forEach(clearTimeout);
+      timeoutsRef.current = [];
+    };
+  }, [ripples]);
 
   useEffect(() => {
-    if (!canvasRef.current) {
-      return;
-    }
-
-    ctxRef.current = canvasRef.current.getContext("2d");
-
-    const handleResize = () => {
-      canvasRef.current!.width = window.innerWidth;
-      canvasRef.current!.height = window.innerHeight;
-    };
-
-    handleResize();
-
-    window.addEventListener("resize", handleResize);
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("click", handleRippleClick);
 
     return () => {
-      window.removeEventListener("resize", handleResize);
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("click", handleRippleClick);
-      stopAnimation();
     };
-  }, [handleMouseMove, handleRippleClick, stopAnimation]);
-
-  console.log(hoverState.isHovering);
+  }, [handleMouseMove, handleRippleClick]);
 
   return (
     <>
-      <style jsx global>{`
-        #blob {
-          background-color: white;
-          height: 34vmax;
-          aspect-ratio: 1;
-          position: absolute;
-          left: 50%;
-          top: 50%;
-          translate: -50% -50%;
-          border-radius: 50%;
-          background: linear-gradient(to right, #ffc100, ${coolRed});
-          animation: rotate 20s infinite;
-          opacity: 0.1;
+      <style jsx>{`
+        .ripple {
+          animation: ripple 0.6s ease-out forwards;
         }
-        #blur {
-          height: 100%;
-          width: 100%;
-          position: absolute;
-          z-index: 2;
-          backdrop-filter: blur(12vmax);
-        }
-
         @keyframes rotate {
           from {
             rotate: 0deg;
           }
 
           50% {
-            scale: 1 1.5;
+            scale: 1 1.25;
           }
 
           to {
@@ -452,86 +187,80 @@ const CursorWithTrail: React.FC<Props> = ({ className, ...userConfig }) => {
           }
         }
       `}</style>
-      <canvas
-        ref={canvasRef}
-        className={`fixed inset-0 pointer-events-none ${className || ""}`}
-        style={{ zIndex: config.zIndex }}
-      />
-      <div
-        className="pointer-events-none fixed inset-0 overflow-hidden"
-        style={{ zIndex: config.zIndex }}
-      >
-        {ripplesRef.current.map((ripple) => (
+      <div className="pointer-events-none fixed inset-0 overflow-hidden z-[9999]">
+        {ripples.map((ripple) => (
           <div
             key={ripple.timestamp}
-            className="absolute w-4 h-4 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary opacity-50"
+            className={`absolute w-4 h-4 -translate-x-1/2 -translate-y-1/2 
+              rounded-full bg-primary opacity-50 ripple
+              `}
             style={{
               left: ripple.x,
               top: ripple.y,
-              animation: "ripple 0.6s ease-out forwards",
-              zIndex: config.zIndex,
             }}
           />
         ))}
       </div>
       <div
-        className="fixed pointer-events-none"
-        style={{
-          zIndex: config.zIndex,
-          left: mousePositionRef.current.x,
-          top: mousePositionRef.current.y,
-          transform: `translate(-50%, -50%) scale(${hoverState.cursorScale})`,
-          transition: `transform ${config.magneticTransitionDuration}s ease`,
-        }}
+        ref={cursorRef}
+        className={`
+          z-[9999]
+          fixed pointer-events-none group transition-all duration-300
+          opacity-80 group-[.hovered]:opacity-100
+          -translate-x-1/2 -translate-y-1/2 scale-100 group-[.hovered]:scale-125`}
       >
-        <div
-          className="relative"
-          style={{
-            width: config.cursorSize,
-            height: config.cursorSize,
-          }}
-        >
-          {hoverState.isHovering && (
-            <>
-              {/* Main cursor dot */}
-              <div
-                className="absolute inset-0 rounded-full"
-                style={{
-                  backgroundColor: config.cursorColor,
-                  opacity: config.cursorBaseOpacity,
-                  transition: `all ${config.magneticTransitionDuration}s ease`,
-                }}
-              />
-              {/* Inner ring */}
-              <div
-                className="absolute inset-0 rounded-full"
-                style={{
-                  border: `${config.ringWidth}px solid ${config.cursorColor}`,
-                  opacity: config.ringHoverOpacity,
-                  transform: `scale(${config.ringHoverScale})`,
-                  transition: `all ${config.magneticTransitionDuration}s ease`,
-                }}
-              />
-            </>
-          )}
+        <div className="relative w-5 h-5">
+          {/* Main cursor dot */}
+          <div
+            className={`
+              absolute inset-0 rounded-full
+              transition-all duration-300
+              bg-primary group-[.hovered]:bg-cool-red
+              opacity-100 group-[.hovered]:opacity-60
+              `}
+          />
+          {/* Inner ring */}
+          <div
+            className={`
+              absolute inset-0 rounded-full 
+              border border-primary group-[.hovered]:border-cool-red
+              transition-all duration-300
+              opacity-70 group-[.hovered]:opacity-100
+              transform scale-100 group-[.hovered]:scale-125`}
+          />
         </div>
       </div>
       <div className="fixed inset-0 h-screen w-screen">
-        <div id="blob" ref={blobRef} />
-        <div id="blur" />
+        <div
+          ref={blobRef}
+          className={`
+          bg-white
+          h-[34vmax]
+          aspect-square
+          absolute
+          left-1/2
+          top-1/2
+          -translate-x-1/2
+          -translate-y-1/2
+          rounded-full
+          bg-gradient-to-r from-[#ffc100] to-[rgb(240,87,74)]
+          animate-[rotate_20s_infinite]
+          opacity-10`}
+        />
+        <div className="h-full w-full absolute z-[2] backdrop-blur-[12vmax]" />
       </div>
     </>
   );
 };
 
-const Wrapper = () => {
+const InteractiveCursor = () => {
   const isMobile = useIsMobile();
 
   if (isMobile) {
     return null;
   }
 
-  return <CursorWithTrail />;
+  return <CursorWithDot />;
 };
 
-export default Wrapper;
+export default InteractiveCursor;
