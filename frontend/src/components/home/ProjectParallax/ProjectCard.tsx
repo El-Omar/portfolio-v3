@@ -1,5 +1,5 @@
 import { ProjectResponse } from "@portfolio-v3/shared";
-import { motion, MotionValue } from "framer-motion";
+import { motion, MotionValue } from "motion/react";
 import Image from "next/image";
 import { Link } from "@/i18n/routing";
 
@@ -18,8 +18,6 @@ const ProjectCard = ({ project, index, y, firstColumn = false }: Props) => {
     <motion.div
       style={{ y }}
       className="
-        opacity-0
-        intersect-half intersect-once intersect:motion-opacity-out-100
         relative w-full mb-8 sm:mb-16 lg:mb-32 last:mb-0
         first:mt-[10vh] lg:first:mt-[10vh]
       "

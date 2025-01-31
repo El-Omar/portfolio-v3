@@ -1,7 +1,7 @@
 "use client";
 
-import { motion, MotionConfig } from "framer-motion";
-import { Moon, Sun, X } from "lucide-react";
+import { Moon, Sun } from "lucide-react";
+import { motion, MotionConfig } from "motion/react";
 import { usePathname } from "next/navigation";
 import { useLocale } from "next-intl";
 import { Dispatch, ReactElement, SetStateAction } from "react";
