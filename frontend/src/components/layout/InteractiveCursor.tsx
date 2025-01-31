@@ -109,7 +109,7 @@ const CursorWithDot = (): ReactElement => {
             left: `${currentX}px`,
             top: `${currentY}px`,
           },
-          { duration: 3000, fill: "forwards" },
+          { duration: 2000, fill: "forwards" },
         );
       }
 
@@ -120,7 +120,7 @@ const CursorWithDot = (): ReactElement => {
             top: `${currentY}px`,
             transform: `translate(-50%, -50%) scale(${hoverStateRef.current.cursorScale})`,
           },
-          { duration: 3000, fill: "forwards" },
+          { duration: 2000, fill: "forwards" },
         );
       }
     }, 16),
