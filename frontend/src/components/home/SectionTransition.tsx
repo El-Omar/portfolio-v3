@@ -1,5 +1,8 @@
+"use client";
+
+import { motion, useScroll, useSpring, useTransform } from "motion/react";
+import { useRef } from "react";
 import { twMerge } from "tailwind-merge";
-import Title from "../ui/Title";
 import TitleAccent from "../ui/TitleAccent";
 
 type SectionTransitionProps = {
@@ -9,7 +12,6 @@ type SectionTransitionProps = {
   subtitleAccent?: string;
   className?: string;
   align?: "left" | "right" | "center";
-  ref?: React.RefObject<HTMLDivElement>;
 };
 
 const SectionTransition = ({
@@ -19,24 +21,90 @@ const SectionTransition = ({
   subtitleAccent,
   className = "",
   align = "left",
-  ref,
 }: SectionTransitionProps) => {
+  const titleRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: titleRef,
+    offset: ["start end", "end center"],
+  });
+
+  const smoothProgress = useSpring(scrollYProgress, {
+    damping: 50,
+    stiffness: 300,
+    mass: 1.2,
+  });
+
+  const firstLineProgress = useTransform(
+    smoothProgress,
+    [0, 0.5],
+    ["100%", "0%"],
+  );
+
+  const firstLineAnimation = useTransform(
+    firstLineProgress,
+    (value) => `inset(0 ${value} -50% 0)`,
+  );
+
+  const secondLineProgress = useTransform(
+    smoothProgress,
+    [0.5, 1],
+    ["100%", "0%"],
+  );
+
+  const secondLineAnimation = useTransform(
+    secondLineProgress,
+    (value) => `inset(0 ${value} -50% 0)`,
+  );
+
+  const dotProgress = useTransform(smoothProgress, [0.2, 0.5], [0, 1]);
+
+  const baseClassName =
+    "tracking-tight font-dm-sans md:leading-tight text-3xl md:text-4xl lg:text-5xl";
+
   return (
-    <div className={twMerge(`w-full py-16 lg:py-40 ${className}`)} ref={ref}>
+    <div className={twMerge(`w-full py-16 lg:py-40 ${className}`)}>
       <div
-        className={`space-y-2 text-center lg:text-left ${align === "right" ? "lg:text-right" : align === "center" ? "lg:text-center" : ""}`}
+        ref={titleRef}
+        className={`space-y-2 ${align === "right" ? "lg:text-right" : align === "center" ? "lg:text-center" : ""}`}
       >
-        <Title className="text-3xl md:text-4xl lg:text-5xl">
-          {title} {titleAccent && <TitleAccent>{titleAccent}</TitleAccent>}
-        </Title>
-        {subtitle && (
-          <Title className="text-3xl md:text-4xl lg:text-5xl opacity-50">
+        <div className="relative flex flex-col items-start">
+          <h2 className={`${baseClassName} text-neutral-300 relative`}>
+            <motion.div
+              style={{
+                scale: dotProgress,
+              }}
+              className="absolute -right-10 -top-10 w-36 h-36 -translate-y-1/2 bg-cool-red/80 rounded-full"
+            />
+            {title} {titleAccent && <TitleAccent>{titleAccent}</TitleAccent>}
+          </h2>
+          <motion.h2
+            className={`${baseClassName} absolute top-0 left-0 text-neutral-800`}
+            style={{
+              clipPath: firstLineAnimation,
+            }}
+          >
+            {title} {titleAccent && <TitleAccent>{titleAccent}</TitleAccent>}
+          </motion.h2>
+        </div>
+        <div className="relative">
+          <h2 className={`${baseClassName} text-neutral-300`}>
             {subtitle}{" "}
             {subtitleAccent && (
               <TitleAccent className="">{subtitleAccent}</TitleAccent>
             )}
-          </Title>
-        )}
+          </h2>
+          <motion.h2
+            className={`${baseClassName} absolute top-0 left-0 text-neutral-800`}
+            style={{
+              clipPath: secondLineAnimation,
+            }}
+          >
+            {subtitle}{" "}
+            {subtitleAccent && (
+              <TitleAccent className="">{subtitleAccent}</TitleAccent>
+            )}
+          </motion.h2>
+        </div>
       </div>
     </div>
   );

@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ReactElement } from "react";
 import { getBlogs } from "@/app/actions/blogs";
-import BlogActions from "@/components/blogs/BlogActions";
+import BlogActions from "@/components/blog/BlogActions";
 import { Button } from "@/components/ui/Button";
 import { formatDate } from "@/lib/utils/dates";
 

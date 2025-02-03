@@ -1,15 +1,17 @@
 import { useLocale } from "next-intl";
-import { ReactElement, ReactNode } from "react";
+import { CSSProperties, ReactElement, ReactNode } from "react";
 import { twMerge } from "tailwind-merge";
 
 type Props = {
   children: ReactNode;
   className?: string;
+  style?: CSSProperties;
 };
 
 const Title = ({
   children,
   className: _className = "",
+  style,
 }: Props): ReactElement => {
   const locale = useLocale();
   const isArabic = locale === "ar";
@@ -20,7 +22,11 @@ const Title = ({
     _className,
   );
 
-  return <h2 className={className}>{children}</h2>;
+  return (
+    <h2 className={className} style={style}>
+      {children}
+    </h2>
+  );
 };
 
 export default Title;

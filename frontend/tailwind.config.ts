@@ -67,10 +67,6 @@ const config: Config = {
       },
     },
   },
-  plugins: [
-    require("@tailwindcss/typography"),
-    require("tailwindcss-motion"),
-    require("tailwindcss-intersect"),
-  ],
+  plugins: [require("@tailwindcss/typography")],
 };
 export default config;
