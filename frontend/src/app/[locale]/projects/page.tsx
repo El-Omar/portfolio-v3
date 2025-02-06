@@ -1,30 +1,24 @@
 import { useTranslations } from "next-intl";
-import { ReactElement, Suspense } from "react";
-import ProjectList from "@/components/projects/ProjectList";
+import { ReactElement } from "react";
+import ProjectsListDetailed from "@/components/projects/ProjectListDetailed";
+import Container from "@/components/ui/Container";
 import Title from "@/components/ui/Title";
+import TitleAccent from "@/components/ui/TitleAccent";
 
 const ProjectsPage = (): ReactElement => {
   const t = useTranslations("projects");
 
   return (
-    <main className="flex flex-col items-center container">
-      <section className="w-full md:py-20 py-10">
-        <Title className="mb-12 text-center md:text-6xl">
-          {t.rich("title", {
-            accent: (chunk) => <>{chunk}</>,
+    <main className="flex flex-col items-center w-full">
+      <Container className="space-y-10">
+        <Title>
+          {t.rich("intro.title", {
+            br: () => <br />,
+            accent: (chunk) => <TitleAccent>{chunk}</TitleAccent>,
           })}
         </Title>
-
-        <Suspense
-          fallback={
-            <div className="text-center py-8">
-              <p>Loading projects...</p>
-            </div>
-          }
-        >
-          <ProjectList />
-        </Suspense>
-      </section>
+        <ProjectsListDetailed />
+      </Container>
     </main>
   );
 };

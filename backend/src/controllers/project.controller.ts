@@ -31,7 +31,7 @@ export const getProjects: RequestHandler<
   ReceivedProjectQuery
 > = async (req, res, next) => {
   try {
-    const { featured, fields, include = true, published } = req.query;
+    const { featured, fields, include = true, published, sort, asc = true } = req.query;
     const query: GetProjectsQuery = {};
 
     if (published !== undefined) {
@@ -49,10 +49,15 @@ export const getProjects: RequestHandler<
       limit: req.query.limit,
     });
 
+    const sortDirection = asc === true ? 1 : -1;
+    const sortField = sort || "order";
+
+    console.log(sortField, sortDirection);
+
     const [projects, total] = await Promise.all([
       Project.find(query)
         .select(projection)
-        .sort({ order: 1, createdAt: -1 })
+        .sort({ [sortField]: sortDirection })
         .limit(pagination.limit)
         .skip(pagination.offset),
       Project.countDocuments(query),

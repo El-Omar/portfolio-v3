@@ -1,81 +1,74 @@
-import { ProjectResponse } from "@portfolio-v3/shared";
 import Image from "next/image";
 import { ReactElement } from "react";
+import Paragraph from "../ui/Paragraph";
+import Title from "../ui/Title";
 import { getProjects } from "@/app/actions/projects";
-import MasonryLayout from "@/components/ui/MasonryLayout";
 import { Link } from "@/i18n/routing";
-
-type Props = {
-  project: ProjectResponse;
-  index: number;
-};
-
-const ProjectCard = ({ project, index }: Props) => {
-  const aspectRatios = ["aspect-[4/3]", "aspect-[3/4]"];
-  const aspectRatio = aspectRatios[index % aspectRatios.length];
-
-  return (
-    <Link
-      href={`/projects/${project.slug}`}
-      className="group block shadow-xl rounded-xl overflow-hidden"
-    >
-      <div className="space-y-4">
-        {project.imageUrl && (
-          <div className={`relative ${aspectRatio}`}>
-            <Image
-              src={project.imageUrl}
-              alt={project.title}
-              fill
-              className="object-cover"
-            />
-          </div>
-        )}
-        <div className="py-4 text-center">
-          <h2 className="font-medium text-lg text-neutral-900 dark:text-neutral-100">
-            {project.title}
-          </h2>
-          <p className="text-sm text-neutral-600 dark:text-neutral-400">
-            {project.description}
-          </p>
-          <div className="flex flex-wrap gap-2 justify-center">
-            {project.technologies.slice(0, 3).map((tech: string) => (
-              <span
-                key={tech}
-                className="px-2.5 py-1 text-xs rounded-full
-                    bg-neutral-100 dark:bg-neutral-800/50
-                    text-neutral-600 dark:text-neutral-400"
-              >
-                {tech}
-              </span>
-            ))}
-          </div>
-        </div>
-      </div>
-    </Link>
-  );
-};
+import { getYearMonthDay } from "@/lib/utils/dates";
 
 const ProjectsListDetailed = async (): Promise<ReactElement> => {
-  const projectsData = await getProjects({ published: true });
+  const response = await getProjects({
+    published: true,
+    sort: "startDate",
+    asc: false,
+  });
 
-  if (projectsData.status === "error") {
-    return (
-      <div className="text-center py-8">
-        <p className="text-red-500">Failed to load projects</p>
-      </div>
-    );
+  if (response.status === "error") {
+    return <div>Error loading projects</div>;
   }
 
+  const projects = response.data || [];
+
   return (
-    <MasonryLayout
-      columns={{ default: 1, md: 2, lg: 3 }}
-      gap="gap-8"
-      className="max-w-[1400px]"
-    >
-      {projectsData.data.map((project, index) => (
-        <ProjectCard key={project.slug} project={project} index={index} />
+    <div className="space-y-16 w-full pb-28">
+      {projects?.map((project, index) => (
+        <Link
+          key={project._id}
+          href={`/projects/${project.slug}`}
+          className="group block"
+        >
+          <article className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 bg-neutral-100 dark:bg-neutral-900">
+            {/* Project Image */}
+            <div
+              className={`${
+                index % 2 === 1 ? "lg:order-2" : ""
+              } relative aspect-[16/9] overflow-hidden border border-neutral-200 dark:border-neutral-800`}
+            >
+              {project.imageUrl && (
+                <Image
+                  src={project.imageUrl}
+                  alt={project.title}
+                  fill
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  priority={index === 0}
+                />
+              )}
+            </div>
+
+            {/* Project Info */}
+            <div className="flex flex-col justify-center p-12">
+              {/* Year */}
+              <span className="text-xl text-neutral-400 dark:text-neutral-400">
+                {getYearMonthDay(project.startDate)[0]}
+              </span>
+
+              {/* Title & Description */}
+
+              <Title className="md:text-3xl mt-3 mb-3">{project.title}</Title>
+              <Paragraph className="mb-4 ml-0">{project.description}</Paragraph>
+
+              {/* Read More Link */}
+              <div className="flex items-center gap-2 text-sm font-medium group/link pt-4 text-cool-red">
+                <span className="uppercase tracking-wider">Read More</span>
+                <span className="text-lg group-hover/link:translate-x-1 transition-transform">
+                  →
+                </span>
+              </div>
+            </div>
+          </article>
+        </Link>
       ))}
-    </MasonryLayout>
+    </div>
   );
 };
 

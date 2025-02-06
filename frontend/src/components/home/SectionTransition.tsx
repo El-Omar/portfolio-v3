@@ -56,7 +56,7 @@ const SectionTransition = ({
     (value) => `inset(0 ${value} -50% 0)`,
   );
 
-  const dotProgress = useTransform(smoothProgress, [0.2, 0.5], [0, 1]);
+  const dotProgress = useTransform(smoothProgress, [0.3, 0.5], [0, 1]);
 
   const baseClassName =
     "tracking-tight font-dm-sans md:leading-tight text-3xl md:text-4xl lg:text-5xl";
@@ -94,7 +94,7 @@ const SectionTransition = ({
             )}
           </h2>
           <motion.h2
-            className={`${baseClassName} absolute top-0 left-0 text-neutral-800`}
+            className={`${baseClassName} absolute top-0 left-0 text-neutral-500`}
             style={{
               clipPath: secondLineAnimation,
             }}

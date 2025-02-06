@@ -109,7 +109,7 @@ const CursorWithDot = (): ReactElement => {
             left: `${currentX}px`,
             top: `${currentY}px`,
           },
-          { duration: 2000, fill: "forwards" },
+          { duration: 1500, fill: "forwards" },
         );
       }
 
@@ -120,7 +120,7 @@ const CursorWithDot = (): ReactElement => {
             top: `${currentY}px`,
             transform: `translate(-50%, -50%) scale(${hoverStateRef.current.cursorScale})`,
           },
-          { duration: 2000, fill: "forwards" },
+          { duration: 1000, fill: "forwards" },
         );
       }
     }, 16),
@@ -205,11 +205,10 @@ const CursorWithDot = (): ReactElement => {
         ref={cursorRef}
         className={`
           z-[9999]
-          fixed pointer-events-none group transition-all duration-300
-          opacity-80 group-[.hovered]:opacity-100
+          fixed pointer-events-none group transition-all duration-300 group-[.hovered]:opacity-100
           -translate-x-1/2 -translate-y-1/2 scale-100 group-[.hovered]:scale-125`}
       >
-        <div className="relative w-5 h-5">
+        <div className="relative w-3 h-3">
           {/* Main cursor dot */}
           <div
             className={`
@@ -245,7 +244,7 @@ const CursorWithDot = (): ReactElement => {
           rounded-full
           bg-gradient-to-r from-[#ffc100] to-[rgb(240,87,74)]
           animate-[rotate_20s_infinite]
-          opacity-10`}
+          opacity-5`}
         />
         <div className="h-full w-full absolute z-[2] backdrop-blur-[12vmax]" />
       </div>

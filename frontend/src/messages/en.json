@@ -52,7 +52,7 @@
   "about": {
     "intro": {
       "title": "Behind the work: <br></br> My <accent>creative path</accent>",
-      "description": "Where pixels meet purpose: Crafting digital solutions through design, code, and creative problem-solving, driven by a photographer's eye and a developer's mind."
+      "description": "Crafting digital solutions through design, code, and creative problem-solving, driven by a photographer's eye and a developer's mind."
     },
     "photography": {
       "title": "Started with <br></br> <accent>photography</accent>",
@@ -77,13 +77,16 @@
     }
   },
   "projects": {
-    "title": "My <accent>Projects</accent>",
-    "backToProjects": "Back to Projects",
+    "intro": {
+      "title": "Portfolio"
+    },
+    "backToProjects": "Back to projects",
     "viewSource": "View Source",
     "visitSite": "Visit Site",
     "timeline": {
       "to": "to",
       "present": "Present"
-    }
+    },
+    "readMore": "Read more"
   }
 }

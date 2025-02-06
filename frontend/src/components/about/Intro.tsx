@@ -22,7 +22,12 @@ const Intro = (): ReactElement => {
         </Paragraph>
       </section>
       <figure className="w-full aspect-video relative">
-        <Image src="/img/group-photo.jpg" fill alt="Group photo" />
+        <Image
+          src="/img/group-photo.jpg"
+          fill
+          alt="Group photo"
+          className="object-cover"
+        />
       </figure>
     </>
   );

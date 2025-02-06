@@ -56,6 +56,8 @@ export type GetProjectsQuery = PaginationParams & {
   fields?: string;
   include?: boolean;
   published?: boolean;
+  sort?: "order" | "createdAt" | "startDate";
+  asc?: boolean;
 };
 
 // Blog Types

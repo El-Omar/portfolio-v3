@@ -6,12 +6,12 @@ import Container from "@/components/ui/Container";
 
 const ExpertiseSection = (): ReactElement => {
   return (
-    <Container>
+    <Container className="mt-20">
       <SectionTransition
         title="Creating an"
         titleAccent="impact"
         subtitle="requires you"
-        subtitleAccent="to"
+        subtitleAccent="some"
       />
       <div className="pb-0 lg:pb-32 flex flex-col gap-52">
         <Design />

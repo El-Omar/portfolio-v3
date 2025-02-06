@@ -28,6 +28,8 @@ export class ProjectsClient extends BaseApiClient {
     if (options.include !== undefined) params.include = String(options.include);
     if (options.page) params.page = String(options.page);
     if (options.limit) params.limit = String(options.limit);
+    if (options.sort) params.sort = options.sort;
+    if (options.asc !== undefined) params.asc = String(options.asc);
 
     return this.fetch<ProjectResponse[]>(PROJECTS.BASE, {
       method: "GET",
