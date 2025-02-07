@@ -27,7 +27,7 @@ const ProjectsListDetailed = async (): Promise<ReactElement> => {
           href={`/projects/${project.slug}`}
           className="group block"
         >
-          <article className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 bg-neutral-100 dark:bg-neutral-900">
+          <article className="grid grid-cols-1 lg:grid-cols-2 gap-0 lg:gap-20 bg-neutral-100 dark:bg-neutral-900">
             {/* Project Image */}
             <div
               className={`${
@@ -46,7 +46,7 @@ const ProjectsListDetailed = async (): Promise<ReactElement> => {
             </div>
 
             {/* Project Info */}
-            <div className="flex flex-col justify-center p-12">
+            <div className="flex flex-col justify-center p-6 lg:p-12">
               {/* Year */}
               <span className="text-xl text-neutral-400 dark:text-neutral-400">
                 {getYearMonthDay(project.startDate)[0]}
@@ -54,7 +54,9 @@ const ProjectsListDetailed = async (): Promise<ReactElement> => {
 
               {/* Title & Description */}
 
-              <Title className="md:text-3xl mt-3 mb-3">{project.title}</Title>
+              <Title className="md:text-3xl text-2xl mt-3 mb-3">
+                {project.title}
+              </Title>
               <Paragraph className="mb-4 ml-0">{project.description}</Paragraph>
 
               {/* Read More Link */}

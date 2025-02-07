@@ -27,7 +27,7 @@ const ProjectsSection = async () => {
           subtitle="I've worked"
           subtitleAccent="on"
           align="center"
-          className="py-0"
+          className="py-0 flex flex-col items-center"
         />
       }
     >

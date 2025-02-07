@@ -1,11 +1,16 @@
 import { ProjectResponse } from "@portfolio-v3/shared";
-import { ArrowLeft, Github, Globe } from "lucide-react";
+import { Github, Globe } from "lucide-react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
+import BackButton from "../layout/BackButton";
+import Container from "../ui/Container";
+import Paragraph from "../ui/Paragraph";
 import { Button } from "@/components/ui/Button";
 import Title from "@/components/ui/Title";
-import TitleAccent from "@/components/ui/TitleAccent";
 import { Link } from "@/i18n/routing";
+import { cn } from "@/lib/utils/cn";
+import { getYearMonthDay } from "@/lib/utils/dates";
+import { fontSpectral } from "@/lib/utils/fonts";
 
 type ProjectDetailProps = {
   project: ProjectResponse;
@@ -13,185 +18,185 @@ type ProjectDetailProps = {
 
 const ProjectDetail = ({ project }: ProjectDetailProps) => {
   const t = useTranslations("projects");
+  const index = 0;
 
   return (
-    <main className="flex flex-col items-center">
-      {/* Back Navigation */}
-      <div className="w-full bg-neutral-100 dark:bg-neutral-900">
-        <div className="container px-6 py-4 lg:py-6">
-          <Button variant="ghost" asChild className="group -ml-2">
-            <Link href="/projects" className="flex items-center gap-2">
-              <ArrowLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform" />
-              {t("backToProjects")}
-            </Link>
-          </Button>
-        </div>
+    <Container>
+      <div className="py-6 lg:py-12">
+        <BackButton label={t("backToProjects")} />
       </div>
+      <article
+        className={cn(
+          "w-full pb-28 mb-12 lg:mb-24 relative",
+          fontSpectral.variable,
+        )}
+      >
+        {/* Hero Section */}
+        <article className="w-full grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-20 bg-neutral-100 dark:bg-neutral-900 p-6 lg:p-10 rounded-2xl">
+          {/* Project Image */}
+          <div
+            className={`${
+              index % 2 === 1 ? "lg:order-2" : ""
+            } relative aspect-[16/9] overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-800`}
+          >
+            {project.imageUrl && (
+              <Image
+                src={project.imageUrl}
+                alt={project.title}
+                fill
+                className="object-cover"
+                priority
+              />
+            )}
+          </div>
 
-      {/* Hero Section */}
-      <div className="w-full bg-neutral-100 dark:bg-neutral-900">
-        <div className="container px-6 py-12 lg:py-32">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-20">
-            {/* Left: Project Image */}
-            <div className="relative order-2 lg:order-1 mt-8 lg:mt-0">
-              <div
-                className="
-                  relative aspect-[4/3] w-full 
-                  rounded-lg overflow-hidden
-                  border border-neutral-200 dark:border-neutral-800
-                  shadow-lg
-                "
-              >
-                {project.imageUrl && (
-                  <Image
-                    src={project.imageUrl}
-                    alt={project.title}
-                    fill
-                    className="object-cover"
-                    priority
-                  />
-                )}
+          {/* Project Info */}
+          <div className="flex flex-col justify-between">
+            <div className="space-y-4">
+              {/* Year & Title */}
+              <div className="space-y-3">
+                <span className="text-sm text-neutral-500 dark:text-neutral-400 font-medium">
+                  {getYearMonthDay(project.startDate)[0]}
+                </span>
+                <Title className="text-3xl lg:text-4xl">{project.title}</Title>
               </div>
-              {/* Project Links */}
-              <div
-                className="
-                  absolute -bottom-6 right-0 flex gap-3
-                  w-full lg:w-auto justify-end
-                  px-2 lg:px-0
-                "
-              >
+
+              {/* Description */}
+              <Paragraph className="ml-0">{project.description}</Paragraph>
+
+              {/* Technologies */}
+              <div className="space-y-2 pt-4">
+                <h3 className="text-sm font-medium text-neutral-400">
+                  {t("technologies")}
+                </h3>
+                <Paragraph className="md:text-sm flex flex-wrap gap-1">
+                  {project.technologies.map((tech, index) => (
+                    <span key={tech} className="flex items-center gap-1">
+                      <span>{tech}</span>
+                      {index < project.technologies.length - 1 && (
+                        <span className="text-xs">·</span>
+                      )}
+                    </span>
+                  ))}
+                </Paragraph>
+              </div>
+            </div>
+
+            {/* Project Links */}
+            {(project.liveUrl || project.githubUrl) && (
+              <div className="flex gap-3 mt-8">
+                {project.liveUrl && (
+                  <Button variant="default" size="default" asChild>
+                    <Link
+                      href={project.liveUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full lg:w-auto"
+                    >
+                      <span className="flex items-center gap-2">
+                        <Globe className="h-4 w-4" />
+                        {t("visitProject")}
+                      </span>
+                    </Link>
+                  </Button>
+                )}
                 {project.githubUrl && (
-                  <Button variant="fancy" size="sm" asChild>
+                  <Button variant="outline" size="default" asChild>
                     <Link
                       href={project.githubUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="whitespace-nowrap"
+                      className="w-full lg:w-auto"
                     >
-                      <Github className="h-4 w-4" />
-                      <span className="hidden sm:inline ml-2">
+                      <span className="flex items-center gap-2">
+                        <Github className="h-4 w-4" />
                         {t("viewSource")}
                       </span>
                     </Link>
                   </Button>
                 )}
-                {project.liveUrl && (
-                  <Button variant="fancy" size="sm" asChild>
-                    <Link
-                      href={project.liveUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="whitespace-nowrap"
-                    >
-                      <Globe className="h-4 w-4" />
-                      <span className="hidden sm:inline ml-2">
-                        {t("visitSite")}
-                      </span>
-                    </Link>
-                  </Button>
-                )}
               </div>
-            </div>
+            )}
+          </div>
+        </article>
 
-            {/* Right: Project Info */}
-            <div className="flex flex-col justify-center order-1 lg:order-2 lg:pl-12">
-              {/* Year & Title */}
-              <div className="space-y-6 lg:space-y-8 mb-8 lg:mb-12">
-                <div className="inline-flex items-center gap-2">
-                  <span
-                    className="
-                      text-base lg:text-lg font-medium tracking-wider
-                      px-3 py-1 rounded-full
-                      bg-neutral-200 dark:bg-neutral-800
-                      text-neutral-600 dark:text-neutral-300
-                    "
-                  >
-                    {new Date(project.startDate).getFullYear()}
-                  </span>
-                </div>
-                <Title className="text-3xl lg:text-4xl">
-                  {project.title
-                    .split(" ")
-                    .map((word, i, arr) =>
-                      i === arr.length - 1 ? (
-                        <TitleAccent key={i}>{word}</TitleAccent>
-                      ) : (
-                        <span key={i}>{word} </span>
-                      ),
-                    )}
-                </Title>
-              </div>
-
-              {/* Technologies */}
-              <div className="flex flex-wrap gap-2 -ml-1">
-                {project.technologies.map((tech) => (
-                  <span
-                    key={tech}
-                    className="
-                      px-3 py-1 text-sm
-                      text-neutral-500 dark:text-neutral-400
-                      border border-neutral-200 dark:border-neutral-700
-                      rounded-full
-                    "
-                  >
-                    {tech}
-                  </span>
-                ))}
+        {/* Content Section */}
+        {project.content && (
+          <div className="w-full">
+            <div className="container px-6 py-12">
+              <div className="prose dark:prose-invert max-w-[728px] mx-auto">
+                <div dangerouslySetInnerHTML={{ __html: project.content }} />
               </div>
             </div>
           </div>
-        </div>
-      </div>
+        )}
 
-      {/* Content Section */}
-      {project.content && (
-        <div className="w-full border-t border-neutral-200 dark:border-neutral-800">
-          <div className="container px-6 py-12 lg:py-20">
-            <div className="prose dark:prose-invert max-w-3xl mx-auto">
-              <div dangerouslySetInnerHTML={{ __html: project.content }} />
+        {/* Project Video */}
+        {project.videoUrl && (
+          <div className="w-full bg-neutral-100 dark:bg-neutral-800">
+            <div className="relative w-full aspect-video rounded-lg overflow-hidden">
+              <iframe
+                src={`${project.videoUrl}?autoplay=1&loop=1&controls=0&muted=1`}
+                allow="autoplay; fullscreen; picture-in-picture"
+                sandbox="allow-same-origin allow-scripts allow-popups allow-forms autoplay allow-presentation"
+                className="absolute top-0 left-0 w-full h-full"
+                title={`${project.title} video`}
+                loading="lazy"
+                allowFullScreen
+                referrerPolicy="no-referrer"
+              />
             </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {/* Image Gallery */}
-      {project.additionalImages && project.additionalImages.length > 0 && (
-        <div className="w-full bg-neutral-100 dark:bg-neutral-800">
-          <div className="container px-6 py-12 lg:py-20">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
-              {project.additionalImages.map((image, index) => (
-                <div
-                  key={index}
-                  className="group relative aspect-video rounded-lg overflow-hidden"
-                >
-                  <Image
-                    src={image.url}
-                    alt={
-                      image.caption ||
-                      `${project.title} screenshot ${index + 1}`
-                    }
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                  {image.caption && (
+        {/* Image Gallery */}
+        {project.additionalImages && project.additionalImages.length > 0 && (
+          <div className="w-full bg-neutral-100 dark:bg-neutral-800">
+            <div className="container px-6 py-12 lg:py-20">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-12 auto-rows-auto">
+                {project.additionalImages.map((image, index) => {
+                  // Determine if image should be full width
+                  const isFullWidth = image.className?.includes("w-full");
+
+                  return (
                     <div
-                      className="
-                        absolute inset-0 bg-gradient-to-t from-black/60 to-transparent
-                        flex items-end p-6
-                        opacity-0 group-hover:opacity-100
-                        transition-opacity duration-300
-                      "
+                      key={index}
+                      className={cn(
+                        "relative w-full",
+                        isFullWidth && "md:col-span-2",
+                      )}
                     >
-                      <p className="text-white">{image.caption}</p>
+                      <div className="relative w-full h-auto">
+                        <Image
+                          src={image.url}
+                          alt={
+                            image.caption ||
+                            `${project.title} screenshot ${index + 1}`
+                          }
+                          width={1920}
+                          height={1080}
+                          className={cn(
+                            "w-full h-auto rounded-lg",
+                            image.className,
+                          )}
+                        />
+                      </div>
+                      {image.caption && (
+                        <div className="mt-4">
+                          <p className="text-sm text-neutral-500 dark:text-neutral-400">
+                            {image.caption}
+                          </p>
+                        </div>
+                      )}
                     </div>
-                  )}
-                </div>
-              ))}
+                  );
+                })}
+              </div>
             </div>
           </div>
-        </div>
-      )}
-    </main>
+        )}
+      </article>
+    </Container>
   );
 };
 

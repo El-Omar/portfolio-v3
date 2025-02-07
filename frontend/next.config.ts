@@ -5,6 +5,7 @@ import { env } from "@/config/env";
 const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
 const nextConfig: NextConfig = {
+  // Note to self: uncomment this if you stop using turbopack
   // webpack: (config) => {
   //   config.module.rules.push({
   //     test: /\.svg$/,
@@ -14,10 +15,6 @@ const nextConfig: NextConfig = {
   // },
   images: {
     remotePatterns: [
-      {
-        hostname: "images.unsplash.com",
-        protocol: "https",
-      },
       {
         hostname: `${env.AWS_S3_BUCKET}.s3.${env.AWS_REGION}.amazonaws.com`,
         protocol: "https",

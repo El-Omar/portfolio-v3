@@ -87,6 +87,8 @@
       "to": "to",
       "present": "Present"
     },
-    "readMore": "Read more"
+    "readMore": "Read more",
+    "technologies": "Technologies",
+    "visitProject": "Visit project"
   }
 }

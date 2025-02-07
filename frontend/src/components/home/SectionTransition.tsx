@@ -65,7 +65,7 @@ const SectionTransition = ({
     <div className={twMerge(`w-full py-16 lg:py-40 ${className}`)}>
       <div
         ref={titleRef}
-        className={`space-y-2 ${align === "right" ? "lg:text-right" : align === "center" ? "lg:text-center" : ""}`}
+        className={`space-y-2 flex flex-col ${align === "right" ? "lg:text-right" : align === "center" ? "lg:text-center items-center" : ""}`}
       >
         <div className="relative flex flex-col items-start">
           <h2 className={`${baseClassName} text-neutral-300 relative`}>

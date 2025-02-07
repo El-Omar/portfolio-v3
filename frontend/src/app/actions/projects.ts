@@ -232,8 +232,8 @@ export const updateProject = async (
             // Return existing image with potentially updated metadata
             return {
               url: existingImg.url,
-              caption: updatedImage.caption ?? existingImg.caption,
-              className: updatedImage.className ?? existingImg.className,
+              caption: updatedImage.caption,
+              className: updatedImage.className,
             };
           }
           return null;

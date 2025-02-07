@@ -1,4 +1,5 @@
 import { ProjectResponse } from "@portfolio-v3/shared";
+import { useMemo } from "react";
 import ProjectColumn from "./ProjectColumn";
 import Container from "@/components/ui/Container";
 
@@ -7,11 +8,13 @@ type Props = {
 };
 
 const ProjectsParallax = ({ projects }: Props) => {
-  const columns = projects.reduce((acc, project, i) => {
-    const columnIndex = i % 2;
-    acc[columnIndex] = [...(acc[columnIndex] || []), project];
-    return acc;
-  }, [] as ProjectResponse[][]);
+  const columns = useMemo(() => {
+    return projects.reduce((acc, project, i) => {
+      const columnIndex = i % 2;
+      acc[columnIndex] = [...(acc[columnIndex] || []), project];
+      return acc;
+    }, [] as ProjectResponse[][]);
+  }, [projects]);
 
   return (
     <Container className="mx-auto">
