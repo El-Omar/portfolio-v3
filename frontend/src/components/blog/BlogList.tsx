@@ -84,49 +84,46 @@ const BlogList = ({ blogs }: Props): ReactElement => {
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}
-        className="w-full py-32"
+        className="w-full py-16 lg:py-32"
       >
-        <div className="px-6">
-          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-20 mb-16">
-            <motion.div
-              variants={animations.titleVariants}
-              className="flex-1 space-y-6"
-            >
-              <Title>
-                Writing about <br />
-                <TitleAccent>nothing & everything</TitleAccent>
-              </Title>
-              <Paragraph className="text-neutral-600 dark:text-neutral-400 max-w-xl">
-                Here&apos;s where I explore storytelling and share some
-                fragments of random thoughts; sometimes about tech, mostly about
-                life.
-              </Paragraph>
-            </motion.div>
+        <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8 lg:gap-20 mb-8 lg:mb-16">
+          <motion.div
+            variants={animations.titleVariants}
+            className="flex-1 space-y-6"
+          >
+            <Title>
+              Writing about <br />
+              <TitleAccent>nothing & everything</TitleAccent>
+            </Title>
+            <Paragraph className="text-neutral-600 dark:text-neutral-400 max-w-xl">
+              Here&apos;s where I explore storytelling and share some fragments
+              of random thoughts; sometimes about tech, mostly about life.
+            </Paragraph>
+          </motion.div>
 
-            <motion.div
-              variants={animations.buttonVariants}
-              className="flex-1 flex justify-end"
-            >
-              <Button variant="fancy" asChild>
-                <Link href="/blog">
-                  View all posts <ArrowRight />
-                </Link>
-              </Button>
-            </motion.div>
-          </div>
+          <motion.div
+            variants={animations.buttonVariants}
+            className="flex-1 flex justify-end self-end lg:self-auto"
+          >
+            <Button variant="fancy" asChild>
+              <Link href="/blog">
+                View all posts <ArrowRight />
+              </Link>
+            </Button>
+          </motion.div>
+        </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {blogs.map((blog, index) => (
-              <motion.div
-                key={blog._id}
-                variants={animations.cardVariants}
-                custom={index}
-                className="h-full"
-              >
-                <BlogCard blog={blog} />
-              </motion.div>
-            ))}
-          </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {blogs.map((blog, index) => (
+            <motion.div
+              key={blog._id}
+              variants={animations.cardVariants}
+              custom={index}
+              className="h-full"
+            >
+              <BlogCard blog={blog} />
+            </motion.div>
+          ))}
         </div>
       </motion.article>
     </Container>

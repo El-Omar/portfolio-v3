@@ -24,7 +24,7 @@ const CategoryFilter = ({ categories }: Props) => {
   };
 
   return (
-    <div className="overflow-x-auto pb-2 -mx-6 lg:mx-0">
+    <div className="overflow-x-auto pb-2">
       <ul className="flex lg:flex-col space-x-4 lg:space-x-0 lg:space-y-2 px-6 lg:px-0 min-w-max">
         <li>
           <button

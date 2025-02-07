@@ -5,19 +5,18 @@ import DownloadResume from "@/components/about/DownloadResume";
 import Intro from "@/components/about/Intro";
 import Photography from "@/components/about/Photography";
 import Testimonials from "@/components/about/Testimonials";
+import Container from "@/components/ui/Container";
 
 const About = (): ReactElement => {
   return (
-    <main className="flex flex-col items-center container">
-      <article className="flex flex-col gap-6 lg:gap-20 items-center w-full md:px-12 md:py-20 xl:p-20 px-4 py-10">
-        <Intro />
-        <Photography />
-        <Design />
-        <Development />
-        <Testimonials />
-        <DownloadResume />
-      </article>
-    </main>
+    <Container className="py-16 lg:py-32 relative flex flex-col gap-12">
+      <Intro />
+      <Photography />
+      <Design />
+      <Development />
+      <Testimonials />
+      <DownloadResume />
+    </Container>
   );
 };
 

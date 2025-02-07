@@ -4,10 +4,8 @@ import Container from "@/components/ui/Container";
 
 const HeroSection = (): ReactElement => {
   return (
-    <Container>
-      <section className="w-full md:py-8 py-10">
-        <Intro />
-      </section>
+    <Container className="py-16">
+      <Intro />
     </Container>
   );
 };

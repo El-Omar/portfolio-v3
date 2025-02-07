@@ -9,17 +9,15 @@ const ProjectsPage = (): ReactElement => {
   const t = useTranslations("projects");
 
   return (
-    <main className="flex flex-col items-center w-full">
-      <Container className="space-y-10">
-        <Title>
-          {t.rich("intro.title", {
-            br: () => <br />,
-            accent: (chunk) => <TitleAccent>{chunk}</TitleAccent>,
-          })}
-        </Title>
-        <ProjectsListDetailed />
-      </Container>
-    </main>
+    <Container className="py-16 lg:py-32 flex flex-col gap-10">
+      <Title>
+        {t.rich("intro.title", {
+          br: () => <br />,
+          accent: (chunk) => <TitleAccent>{chunk}</TitleAccent>,
+        })}
+      </Title>
+      <ProjectsListDetailed />
+    </Container>
   );
 };
 

@@ -13,7 +13,7 @@ const ExpertiseSection = (): ReactElement => {
         subtitle="requires you"
         subtitleAccent="some"
       />
-      <div className="pb-0 lg:pb-32 flex flex-col gap-52">
+      <div className="pb-0 lg:pb-32 flex flex-col lg:gap-52 gap-32">
         <Design />
         <Develop />
       </div>

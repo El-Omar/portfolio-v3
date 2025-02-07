@@ -24,37 +24,33 @@ const BlogPage = async ({
     : blogs;
 
   return (
-    <Container>
-      <article className="w-full py-32">
-        <div className="relative flex flex-col lg:flex-row gap-12">
-          {/* Left Sidebar */}
-          <div className="lg:w-1/4 lg:border-r lg:pr-6">
-            <div className="lg:sticky lg:top-24 border-neutral-200 dark:border-neutral-700">
-              <div className="space-y-8">
-                <div>
-                  <Title className="md:text-3xl mb-4">
-                    Writing about <br />
-                    <TitleAccent>nothing & everything</TitleAccent>
-                  </Title>
-                  <Paragraph className="md:text-sm">
-                    Here&apos;s where I explore storytelling and share some
-                    fragments of random thoughts; sometimes about tech, mostly
-                    about life.
-                  </Paragraph>
-                </div>
-
-                <hr className="border-neutral-200 dark:border-neutral-700 w-28" />
-                <CategoryFilter categories={categories} />
-              </div>
+    <Container className="py-16 lg:py-32 relative flex flex-col lg:flex-row gap-12">
+      {/* Left Sidebar */}
+      <div className="lg:w-1/4 lg:border-r lg:pr-6">
+        <div className="lg:sticky lg:top-24 border-neutral-200 dark:border-neutral-700">
+          <div className="space-y-8">
+            <div>
+              <Title className="md:text-3xl mb-4">
+                Writing about <br />
+                <TitleAccent>nothing & everything</TitleAccent>
+              </Title>
+              <Paragraph className="md:text-sm">
+                Here&apos;s where I explore storytelling and share some
+                fragments of random thoughts; sometimes about tech, mostly about
+                life.
+              </Paragraph>
             </div>
-          </div>
 
-          {/* Main Content */}
-          <div className="lg:w-3/4">
-            <BlogGrid blogs={filteredBlogs} />
+            <hr className="border-neutral-200 dark:border-neutral-700 w-28" />
+            <CategoryFilter categories={categories} />
           </div>
         </div>
-      </article>
+      </div>
+
+      {/* Main Content */}
+      <div className="lg:w-3/4">
+        <BlogGrid blogs={filteredBlogs} />
+      </div>
     </Container>
   );
 };
