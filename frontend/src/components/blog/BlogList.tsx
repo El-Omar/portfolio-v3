@@ -85,7 +85,7 @@ const BlogList = ({ blogs }: Props): ReactElement => {
         variants={animations.containerVariants}
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, margin: "-100px" }}
+        viewport={{ once: true }}
         className="w-full py-16 lg:py-32"
       >
         <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8 lg:gap-20 mb-8 lg:mb-16">
