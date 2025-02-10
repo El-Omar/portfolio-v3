@@ -4,6 +4,7 @@ import { BlogResponse } from "@portfolio-v3/shared";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { ReactElement, useMemo, useRef } from "react";
+import { useTranslations } from "use-intl";
 import BlogCard from "./BlogCard";
 import { Button } from "../ui/Button";
 import Container from "../ui/Container";
@@ -18,6 +19,7 @@ type Props = {
 
 const BlogList = ({ blogs }: Props): ReactElement => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const t = useTranslations("blog");
 
   const animations = useMemo(() => {
     const easing = [0.22, 1, 0.36, 1];
@@ -92,12 +94,13 @@ const BlogList = ({ blogs }: Props): ReactElement => {
             className="flex-1 space-y-6"
           >
             <Title>
-              Writing about <br />
-              <TitleAccent>nothing & everything</TitleAccent>
+              {t.rich("title", {
+                br: () => <br />,
+                accent: (chunks) => <TitleAccent>{chunks}</TitleAccent>,
+              })}
             </Title>
             <Paragraph className="text-neutral-600 dark:text-neutral-400 max-w-xl">
-              Here&apos;s where I explore storytelling and share some fragments
-              of random thoughts; sometimes about tech, mostly about life.
+              {t("description")}
             </Paragraph>
           </motion.div>
 
@@ -107,7 +110,7 @@ const BlogList = ({ blogs }: Props): ReactElement => {
           >
             <Button variant="fancy" asChild>
               <Link href="/blog">
-                View all posts <ArrowRight />
+                {t("viewAll")} <ArrowRight />
               </Link>
             </Button>
           </motion.div>

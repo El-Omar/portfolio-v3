@@ -1,6 +1,6 @@
 import { getProjects } from "../../actions/projects";
 import ProjectParallaxWrapper from "@/components/home/ProjectParallax/ProjectParallaxWrapper";
-import SectionTransition from "@/components/home/SectionTransition";
+import ProjectsHeader from "@/components/home/ProjectParallax/ProjectsHeader";
 import Container from "@/components/ui/Container";
 import ParallaxTitleSection from "@/components/ui/ParallaxTitleSection";
 
@@ -20,16 +20,7 @@ const ProjectsSection = async () => {
     <ParallaxTitleSection
       className="w-full mt-40 bg-neutral-100 overflow-clip"
       contentClassName="mt-[30vh]"
-      title={
-        <SectionTransition
-          title="Showcasing"
-          titleAccent="projects"
-          subtitle="I've worked"
-          subtitleAccent="on"
-          align="center"
-          className="py-0 flex flex-col items-center"
-        />
-      }
+      title={<ProjectsHeader />}
     >
       <ProjectParallaxWrapper projects={projects} />
     </ParallaxTitleSection>

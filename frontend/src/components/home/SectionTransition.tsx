@@ -1,15 +1,14 @@
 "use client";
 
 import { motion, useScroll, useSpring, useTransform } from "motion/react";
-import { useRef } from "react";
+import { ReactNode, useRef } from "react";
 import { twMerge } from "tailwind-merge";
-import TitleAccent from "../ui/TitleAccent";
 
 type SectionTransitionProps = {
-  title: string;
-  titleAccent?: string;
-  subtitle?: string;
-  subtitleAccent?: string;
+  title: ReactNode;
+  titleAccent?: ReactNode;
+  subtitle?: ReactNode;
+  subtitleAccent?: ReactNode;
   className?: string;
   align?: "left" | "right" | "center";
 };
@@ -75,7 +74,7 @@ const SectionTransition = ({
               }}
               className="absolute -right-10 -top-10 w-36 h-36 -translate-y-1/2 bg-cool-red/80 rounded-full"
             />
-            {title} {titleAccent && <TitleAccent>{titleAccent}</TitleAccent>}
+            {title} {titleAccent}
           </h2>
           <motion.h2
             className={`${baseClassName} absolute top-0 left-0 text-neutral-800`}
@@ -83,15 +82,12 @@ const SectionTransition = ({
               clipPath: firstLineAnimation,
             }}
           >
-            {title} {titleAccent && <TitleAccent>{titleAccent}</TitleAccent>}
+            {title} {titleAccent}
           </motion.h2>
         </div>
         <div className="relative">
           <h2 className={`${baseClassName} text-neutral-300`}>
-            {subtitle}{" "}
-            {subtitleAccent && (
-              <TitleAccent className="">{subtitleAccent}</TitleAccent>
-            )}
+            {subtitle} {subtitleAccent}
           </h2>
           <motion.h2
             className={`${baseClassName} absolute top-0 left-0 text-neutral-500`}
@@ -99,10 +95,7 @@ const SectionTransition = ({
               clipPath: secondLineAnimation,
             }}
           >
-            {subtitle}{" "}
-            {subtitleAccent && (
-              <TitleAccent className="">{subtitleAccent}</TitleAccent>
-            )}
+            {subtitle} {subtitleAccent}
           </motion.h2>
         </div>
       </div>

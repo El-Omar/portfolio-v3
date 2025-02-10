@@ -15,18 +15,18 @@ const ContactWithSpaceInvaders = (): ReactElement => {
       <div className="flex flex-col lg:flex-row items-center justify-between gap-20 mb-16">
         <div className="flex-1 space-y-6">
           <Title>
-            Let&apos;s create <br />
-            <TitleAccent>something together</TitleAccent>
+            {t.rich("title", {
+              br: () => <br />,
+              accent: (chunks) => <TitleAccent>{chunks}</TitleAccent>,
+            })}
           </Title>
           <Paragraph className="text-neutral-600 dark:text-neutral-400 max-w-xl">
-            Have a project in mind or just want to chat? I&apos;m always open to
-            new ideas and collaborations. Or you can try beating my Space
-            Invaders high score.
+            {t("description")}
           </Paragraph>
           <div className="flex gap-4 items-center">
             <Button variant="fancy" asChild>
               <a href="mailto:elomar.sami@gmail.com">
-                Get in touch <Send className="w-4 h-4" />
+                {t("getInTouch")} <Send className="w-4 h-4" />
               </a>
             </Button>
           </div>

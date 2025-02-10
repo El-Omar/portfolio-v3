@@ -30,8 +30,10 @@ const IntroHeader = () => {
     <div className="flex flex-col gap-12 w-full lg:w-1/2 items-center text-center p-0 lg:p-8 xl:p-0">
       <div className="space-y-6 flex flex-col lg:gap-3 gap-0">
         <Title>
-          Developer <br />
-          <TitleAccent>& Designer</TitleAccent>
+          {t.rich("title", {
+            br: () => <br />,
+            accent: (chunks) => <TitleAccent>{chunks}</TitleAccent>,
+          })}
         </Title>
         <Paragraph className="md:text-lg lg:w-[400px]">
           {t.rich("description", {

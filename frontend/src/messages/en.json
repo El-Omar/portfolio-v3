@@ -13,7 +13,7 @@
   "home": {
     "intro": {
       "greeting": "Hello there!",
-      "title": "Sup! I'm Elomar, and I love designing cool experiences.",
+      "title": "Developer <br></br><accent>& Designer</accent>",
       "description": "Hi, I'm Elomar, a web developer and designer who believes in the power of simplicity. I craft solutions that I can be proud of, and explore various topics through my <blog>writing</blog>. Come take a look at what I do."
     },
     "expertise": {
@@ -32,14 +32,25 @@
       "readMore": "Read more, it's interesting"
     },
     "contact": {
-      "title": "That's all <space></space><accent>folks!</accent>",
-      "description": "You've reached the bottom, thank you for visiting! For any inquiries, feel free to click the button down below. Or you can play Space Invaders.",
+      "title": "Let's create <br></br><accent>something together</accent>",
+      "description": "Have a project in mind or just want to chat? I'm always open to new ideas and collaborations. Or you can try beating my Space Invaders high score.",
       "getInTouch": "Get in touch"
     },
     "spaceInvaders": {
       "play": "Play",
       "highScore": "High score",
       "instructions": "[Space-bar] to shoot, [←] and [→] to move"
+    },
+    "sections": {
+      "expertise": {
+        "title": "Creating an <accent>impact</accent>",
+        "subtitle": "requires you <accent>some</accent>"
+      },
+      "projects": {
+        "title": "Showcasing <accent>projects</accent>",
+        "subtitle": "I've worked <accent>on</accent>",
+        "noProjects": "No projects found"
+      }
     }
   },
   "contact": {
@@ -90,5 +101,43 @@
     "readMore": "Read more",
     "technologies": "Technologies",
     "visitProject": "Visit project"
+  },
+  "blog": {
+    "title": "Writing about <br></br><accent>nothing & everything</accent>",
+    "description": "Here's where I explore storytelling and share some fragments of random thoughts; sometimes about tech, mostly about life.",
+    "viewAll": "View all posts",
+    "filter": {
+      "title": "Categories"
+    }
+  },
+  "stats": {
+    "profile": {
+      "title": "Profile",
+      "location": "Belgium",
+      "languagesLabel": "Languages",
+      "languages": ["Arabic", "Dutch", "English"],
+      "description": "I was born in Jordan, was raised between Jordan and Egypt, and have been living in Belgium since my teenage years."
+    },
+    "experience": {
+      "title": "Experience",
+      "yearsValue": "{years} Years",
+      "focusLabel": "Focus Areas",
+      "focusAreas": ["Web Apps", "UI/UX Design"],
+      "description": "Started my journey in 2018, working with startups and companies to create solutions that make a difference."
+    },
+    "design": {
+      "title": "Design",
+      "role": "UI/UX Designer",
+      "toolsLabel": "Tools",
+      "tools": ["Figma", "Photoshop", "Sketch"],
+      "description": "Expert in UX, with a strong background in graphic design & photo editing, and experience beyond the professional."
+    },
+    "development": {
+      "title": "Development",
+      "role": "Fullstack Developer",
+      "techLabel": "Technologies",
+      "technologies": ["React", "TypeScript", "Node.js"],
+      "description": "Specializing primarily in frontend development, while maintaining a strong foundation in backend technologies."
+    }
   }
 }

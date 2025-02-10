@@ -8,6 +8,7 @@ import {
   Minus,
   PencilRuler,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 
 const yearsOfExperience = Math.floor(
@@ -18,81 +19,75 @@ const yearsOfExperience = Math.floor(
 const cards = [
   {
     icon: <IdCard className="text-cool-red dark:text-neutral-400" size={26} />,
-    title: "Profile",
-    info: {
+    titleKey: "profile.title",
+    infoKeys: {
       primary: {
-        value: "Belgium",
+        valueKey: "profile.location",
       },
       secondary: {
-        label: "Languages",
-        items: ["Arabic", "Dutch", "English"],
+        labelKey: "profile.languagesLabel",
+        itemsKey: "profile.languages",
       },
     },
-    description:
-      "I was born in Jordan, was raised between Jordan and Egypt, and have been living in Belgium since my teenage years.",
+    descriptionKey: "profile.description",
   },
   {
     icon: (
       <CalendarFold className="text-cool-red dark:text-neutral-400" size={26} />
     ),
-    title: "Experience",
-    info: {
+    titleKey: "experience.title",
+    infoKeys: {
       primary: {
-        value: `${yearsOfExperience} Years`,
+        valueKey: "experience.yearsValue",
+        valueParams: { years: yearsOfExperience },
       },
       secondary: {
-        label: "Focus Areas",
-        items: ["Web Apps", "UI/UX Design"],
+        labelKey: "experience.focusLabel",
+        itemsKey: "experience.focusAreas",
       },
     },
-    description:
-      "Started my journey in 2018, working with startups and companies to create solutions that make a difference.",
+    descriptionKey: "experience.description",
   },
   {
     icon: (
       <PencilRuler className="text-cool-red dark:text-neutral-400" size={26} />
     ),
-    title: "Design",
-    info: {
+    titleKey: "design.title",
+    infoKeys: {
       primary: {
-        label: "Specialty",
-        value: "UI/UX Designer",
+        valueKey: "design.role",
       },
       secondary: {
-        label: "Tools",
-        items: ["Figma", "Photoshop", "Sketch"],
+        labelKey: "design.toolsLabel",
+        itemsKey: "design.tools",
       },
     },
-    description:
-      "Expert in UX, with a strong background in graphic design & photo editing, and experience beyond the professional.",
+    descriptionKey: "design.description",
   },
   {
     icon: <Code2 className="text-cool-red dark:text-neutral-400" size={26} />,
-    title: "Development",
-    info: {
+    titleKey: "development.title",
+    infoKeys: {
       primary: {
-        label: "Focus",
-        value: "Fullstack Developer",
+        valueKey: "development.role",
       },
       secondary: {
-        label: "Technologies",
-        items: ["React", "TypeScript", "Node.js"],
+        labelKey: "development.techLabel",
+        itemsKey: "development.technologies",
       },
     },
-    description:
-      "Specializing primarily in frontend development, while maintaining a strong foundation in backend technologies.",
+    descriptionKey: "development.description",
   },
 ];
 
 const Stats = () => {
+  const t = useTranslations("stats");
   const [expandedCard, setExpandedCard] = useState<number | null>(null);
 
   return (
     <div className="w-full">
       <div className="container mx-auto">
-        <div
-          className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 no-trail`}
-        >
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 no-trail">
           {cards.map((card, index) => (
             <button
               key={index}
@@ -165,7 +160,7 @@ const Stats = () => {
                             expandedCard === index ? "text-cool-red" : ""
                           }
                         >
-                          {card.title}
+                          {t(card.titleKey)}
                         </strong>
                       </h3>
                       <div
@@ -183,20 +178,27 @@ const Stats = () => {
                       {/* Main Value */}
                       <div className="mb-6">
                         <p className="xl:text-2xl text-lg font-medium text-neutral-900 dark:text-white">
-                          {card.info.primary.value}
+                          {card.infoKeys.primary.valueParams
+                            ? t(
+                                card.infoKeys.primary.valueKey,
+                                card.infoKeys.primary.valueParams,
+                              )
+                            : t(card.infoKeys.primary.valueKey)}
                         </p>
                       </div>
 
                       {/* Tags Section */}
                       <div className="space-y-2">
                         <span className="text-[11px] font-medium uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
-                          {card.info.secondary.label}
+                          {t(card.infoKeys.secondary.labelKey)}
                         </span>
                         <div className="flex flex-wrap gap-1.5">
-                          {card.info.secondary.items.map((item, i) => (
-                            <span
-                              key={i}
-                              className="
+                          {t
+                            .raw(card.infoKeys.secondary.itemsKey)
+                            .map((item: string, i: number) => (
+                              <span
+                                key={i}
+                                className="
                                 px-2 py-0.5 rounded-sm text-sm 
                                 bg-neutral-100 dark:bg-neutral-800 
                                 text-neutral-600 dark:text-neutral-400
@@ -204,10 +206,10 @@ const Stats = () => {
                                 transition-colors duration-200
                                 hover:border-neutral-300 dark:hover:border-neutral-600
                               "
-                            >
-                              {item}
-                            </span>
-                          ))}
+                              >
+                                {item}
+                              </span>
+                            ))}
                         </div>
                       </div>
                     </div>
@@ -231,7 +233,7 @@ const Stats = () => {
                         `}
                       >
                         <p className="text-neutral-600 dark:text-neutral-400 text-sm leading-relaxed">
-                          {card.description}
+                          {t(card.descriptionKey)}
                         </p>
                       </div>
                     </div>
