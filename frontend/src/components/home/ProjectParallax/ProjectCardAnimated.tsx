@@ -1,16 +1,25 @@
 import { ProjectResponse } from "@portfolio-v3/shared";
+import { motion, MotionValue } from "motion/react";
 import Image from "next/image";
 import { Link } from "@/i18n/routing";
 
 type Props = {
   project: ProjectResponse;
+  index: number;
+  y: MotionValue<number>;
+  firstColumn?: boolean;
 };
 
-const ProjectCard = ({ project }: Props) => {
+const ProjectCard = ({ project, index, y, firstColumn = false }: Props) => {
+  const correctIndex = firstColumn ? index * 2 + 1 : index * 2 + 2;
+  const displayNumber = correctIndex.toString().padStart(2, "0");
+
   return (
-    <article
+    <motion.div
+      style={{ y }}
       className="
-        relative w-full mb-8 sm:mb-16 lg:mb-32 last:mb-10
+        relative w-full mb-8 sm:mb-16 lg:mb-32 last:mb-0
+        first:mt-[10vh] lg:first:mt-[10vh]
       "
     >
       <Link href={`/projects/${project.slug}`}>
@@ -23,6 +32,13 @@ const ProjectCard = ({ project }: Props) => {
           "
         />
         <div className="group relative">
+          {/* Project Number */}
+          <div className="absolute -left-4 -top-12 z-10 hidden md:block">
+            <span className="text-4xl sm:text-5xl lg:text-7xl font-bold text-primary z-10">
+              {displayNumber}
+            </span>
+          </div>
+
           <div
             className="
               relative w-full aspect-[16/9]
@@ -42,7 +58,7 @@ const ProjectCard = ({ project }: Props) => {
           </div>
         </div>
       </Link>
-    </article>
+    </motion.div>
   );
 };
 

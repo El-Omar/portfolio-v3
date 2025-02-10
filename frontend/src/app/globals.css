@@ -52,6 +52,5 @@
 @layer base {
   body {
     @apply antialiased bg-background text-foreground;
-    cursor: url("/img/mouse-pointer.svg"), auto;
   }
 }

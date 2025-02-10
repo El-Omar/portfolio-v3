@@ -12,7 +12,7 @@ export const useIsMobile = () => {
 
       const isMobileViewport = window.matchMedia("(max-width: 768px)").matches;
 
-      setIsMobile(mobileRegex.test(userAgent) && isMobileViewport);
+      setIsMobile(mobileRegex.test(userAgent) || isMobileViewport);
     };
 
     checkMobile();

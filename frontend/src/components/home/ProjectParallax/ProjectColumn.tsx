@@ -3,7 +3,7 @@
 import { ProjectResponse } from "@portfolio-v3/shared";
 import { useScroll, useTransform } from "motion/react";
 import { useRef } from "react";
-import ProjectCard from "./ProjectCard";
+import ProjectCardAnimated from "./ProjectCardAnimated";
 
 type Props = {
   projects: ProjectResponse[];
@@ -23,7 +23,7 @@ const ProjectColumn = ({ projects, speed = 1, firstColumn = false }: Props) => {
   return (
     <div ref={columnRef} className="flex flex-col">
       {projects.map((project, index) => (
-        <ProjectCard
+        <ProjectCardAnimated
           key={project.slug}
           project={project}
           index={index}

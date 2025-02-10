@@ -1,5 +1,5 @@
 import { getProjects } from "../../actions/projects";
-import ProjectsParallax from "@/components/home/ProjectParallax";
+import ProjectParallaxWrapper from "@/components/home/ProjectParallax/ProjectParallaxWrapper";
 import SectionTransition from "@/components/home/SectionTransition";
 import Container from "@/components/ui/Container";
 import ParallaxTitleSection from "@/components/ui/ParallaxTitleSection";
@@ -31,7 +31,7 @@ const ProjectsSection = async () => {
         />
       }
     >
-      <ProjectsParallax projects={projects} />
+      <ProjectParallaxWrapper projects={projects} />
     </ParallaxTitleSection>
   );
 };
