@@ -34,7 +34,7 @@ const PageWrapper = ({ children }: Props): ReactElement => {
         {isAnimating && <LanguageAnimation />}
         <BlobShape />
         <Navigation isAnimating={isAnimating} setIsAnimating={setIsAnimating} />
-        <div className="z-10 relative pt-24 w-full flex flex-col items-center">
+        <div className="z-10 relative pt-24 w-full flex flex-col items-center shadow-md rounded-b-2xl">
           {children}
         </div>
       </div>

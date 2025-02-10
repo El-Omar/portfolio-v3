@@ -1,14 +1,25 @@
 {
   "navigation": {
     "home": "Home",
+    "homeWithAccent": "Home <accent>page</accent>",
     "projects": "Projects",
+    "projectsWithAccent": "Projects <accent>work</accent>",
     "blog": "Blog",
-    "about": "About"
+    "blogWithAccent": "Blog <accent>posts</accent>",
+    "about": "About",
+    "aboutWithAccent": "About <accent>me</accent>"
   },
   "footer": {
-    "copyright": "© { year } Elomar. All rights reserved.",
+    "copyright": "© Copyright { year } Elomar. <space></space> All rights reserved.",
     "acknowledgments": "Attributions",
-    "credits": "Icons by <lucideLink>Lucide</lucideLink> and illustrations by <illustrationLink>Storyset</illustrationLink>."
+    "credits": "Icons by <lucideLink>Lucide</lucideLink> and illustrations by <illustrationLink>Storyset</illustrationLink>.",
+    "description": "Developer, designer, and occasional writer. Building digital experiences with purpose.",
+    "backToTop": "Back to top",
+    "socials": {
+      "github": "GitHub",
+      "linkedin": "LinkedIn",
+      "email": "Email"
+    }
   },
   "home": {
     "intro": {
