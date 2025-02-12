@@ -151,7 +151,7 @@ const CursorWithDot = (): ReactElement => {
             rounded-full
             bg-gradient-to-r from-[#ffc100] to-[rgb(240,87,74)]
             animate-[rotate_5s_infinite]
-            opacity-[0.075]`}
+            opacity-[0.05]`}
         />
         <div className="h-full w-full absolute z-[2] backdrop-blur-[12vmax]" />
       </div>
