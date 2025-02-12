@@ -36,10 +36,7 @@ const SpaceInvaders = (): ReactElement | null => {
           ))}
         </div>
         <div className="flex justify-between items-center mt-4">
-          <Button
-            className="btn-play bg-cool-red hover:bg-red-600 text-white border-none"
-            variant="outline"
-          >
+          <Button className="btn-play" variant="outline">
             <span className="play">{t("play")}</span>
             <span className="result hidden"></span>
           </Button>

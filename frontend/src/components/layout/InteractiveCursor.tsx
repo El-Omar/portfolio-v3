@@ -1,10 +1,5 @@
-import {
-  motion,
-  MotionValue,
-  transform,
-  useMotionValue,
-  useSpring,
-} from "motion/react";
+import { MousePointer } from "lucide-react";
+import { motion, MotionValue, useMotionValue, useSpring } from "motion/react";
 import { ReactElement, useCallback, useEffect, useRef } from "react";
 import { useIsMobile } from "@/lib/hooks/useIsMobile";
 import throttle from "@/lib/utils/throttle";
@@ -16,16 +11,13 @@ type FramerPoint = {
 
 type CursorRef = {
   element: HTMLDivElement | null;
-  scale: FramerPoint;
   position: FramerPoint;
   rotation: MotionValue<number>;
 };
 
 const CursorWithDot = (): ReactElement => {
-  // const blobRef = useRef<HTMLDivElement>(null);
   const cursorRef = useRef<CursorRef>({
     element: null,
-    scale: { x: useMotionValue(1), y: useMotionValue(1) },
     position: { x: useMotionValue(0), y: useMotionValue(0) },
     rotation: useMotionValue(0),
   });
@@ -38,17 +30,15 @@ const CursorWithDot = (): ReactElement => {
   };
 
   const handleElementInteraction = useCallback((e: MouseEvent) => {
-    let cursorSize = 16;
     const target = e.target as HTMLElement;
     const selector = ["a", "button", "input", ".magnetic"].join(",");
+    const interactiveElement = target.closest(selector);
 
     const cursor = cursorRef.current;
-    const interactiveElement = target.closest(selector);
+    let cursorSize = 16;
 
     if (!interactiveElement) {
       cursor.element?.classList.remove("hovered");
-      cursor.scale.x.set(1);
-      cursor.scale.y.set(1);
       cursor.position.x.set(e.clientX - cursorSize / 2);
       cursor.position.y.set(e.clientY - cursorSize / 2);
       return;
@@ -67,48 +57,20 @@ const CursorWithDot = (): ReactElement => {
       y: e.clientY - interactiveElementCenter.y,
     };
 
-    const angle = Math.atan2(distance.y, distance.x) * (180 / Math.PI);
-    const absDistance = Math.max(Math.abs(distance.x), Math.abs(distance.y));
+    // So for future me that will be confused, the -45 is
+    // to offset the svg pointer icon's default rotation
+    const angle = Math.atan2(distance.y, distance.x) * (180 / Math.PI) - 45;
 
-    const stretchPercentage = 0.06;
-    const scaleX = transform(absDistance, [0, 100], [1, 1 + stretchPercentage]);
-    const scaleY = transform(absDistance, [0, 100], [1, 1 - stretchPercentage]);
-
-    cursorSize = 48;
+    cursorSize = 36;
     cursor.element?.classList.add("hovered");
-    cursor.scale.x.set(scaleX);
-    cursor.scale.y.set(scaleY);
     cursor.rotation.set(angle);
-
-    cursor.position.x.set(interactiveElementCenter.x - cursorSize / 2);
-    cursor.position.y.set(interactiveElementCenter.y - cursorSize / 2);
+    cursor.position.x.set(e.clientX - cursorSize / 2);
+    cursor.position.y.set(e.clientY - cursorSize / 2);
   }, []);
 
   const throttledMouseMove = useRef(
     throttle((e: MouseEvent) => {
       handleElementInteraction(e);
-      // const cursor = cursorRef.current;
-      // const currentX = e.clientX;
-      // const currentY = e.clientY;
-
-      // blobRef.current?.animate(
-      //   {
-      //     left: `${currentX}px`,
-      //     top: `${currentY}px`,
-      //   },
-      //   { duration: 1000, fill: "forwards" }
-      // );
-
-      // if (cursor.element) {
-      //   cursor.element.animate(
-      //     {
-      //       left: `${currentX}px`,
-      //       top: `${currentY}px`,
-      //       transform: `translate(-50%, -50%) scale(${cursor.scale.x}, ${cursor.scale.y})`,
-      //     },
-      //     { duration: 1000, fill: "forwards" },
-      //   );
-      // }
     }, 16),
   );
 
@@ -127,7 +89,7 @@ const CursorWithDot = (): ReactElement => {
     <>
       <style jsx>{`
         @keyframes rotate {
-          /* from {
+          from {
             scale: 1 1;
             rotate: 0deg;
           }
@@ -140,39 +102,10 @@ const CursorWithDot = (): ReactElement => {
           to {
             scale: 1 1;
             rotate: 0deg;
-          } */
+          }
         }
       `}</style>
       {/* Cursor */}
-      {/* <div
-        ref={(ref) => {
-          cursorRef.current.element = ref;
-        }}
-        className={`
-          z-[9999]
-          fixed pointer-events-none group transition-all duration-300 group-[.hovered]:opacity-100
-          -translate-x-1/2 -translate-y-1/2 scale-100 group-[.hovered]:scale-125`}
-      >
-        <div className="relative w-3 h-3">
-          <div
-            className={`
-              absolute inset-0 rounded-full
-              transition-all duration-300
-              bg-primary group-[.hovered]:bg-cool-red
-              opacity-100 group-[.hovered]:opacity-60
-              `}
-          />
-          <div
-            className={`
-              absolute inset-0 rounded-full 
-              border border-primary group-[.hovered]:border-cool-red
-              transition-all duration-300
-              opacity-70 group-[.hovered]:opacity-100
-              transform scale-100 group-[.hovered]:scale-125`}
-          />
-        </div>
-      </div> */}
-      {/* Experimental */}
       <div className="fixed inset-0 h-screen w-screen z-[9999] pointer-events-none">
         <motion.div
           ref={(el) => {
@@ -183,33 +116,27 @@ const CursorWithDot = (): ReactElement => {
             top: animatedMouse.y,
             rotate: cursorRef.current.rotation,
           }}
-          className="absolute w-6 h-6 group
+          className="absolute
+            group w-4 aspect-square [&.hovered]:w-9
             origin-center bg-transparent flex items-center justify-center"
         >
-          <motion.div
-            style={{
-              scaleX: cursorRef.current.scale.x,
-              scaleY: cursorRef.current.scale.y,
-            }}
-            animate={
-              {
-                // width: cursorRef.current.size,
-                // height: cursorRef.current.size,
-                // backgroundColor: cursorRef.current.hovering ? "#e98d37" : "#000",
-              }
-            }
+          <div
             className={`
-              pointer-events-none absolute rounded-full w-4 aspect-square
-              bg-primary transition-all duration-300	
-              group-[.hovered]:bg-gradient-to-r from-[#ffc100] to-[rgb(240,87,74)] 
-              group-[.hovered]:opacity-50 group-[.hovered]:w-12`}
-          />
+              flex items-center justify-center
+              pointer-events-none absolute rounded-full bg-primary
+              w-4 aspect-square transition-all duration-200	ease-[cubic-bezier(0.25,0.1,0.25,1)]
+              group-[.hovered]:opacity-70 group-[.hovered]:w-9`}
+          >
+            <MousePointer
+              size={16}
+              className="hidden group-[.hovered]:block stroke-gold fill-gold"
+            />
+          </div>
         </motion.div>
       </div>
       {/* Blob */}
-      {/* <div className="fixed inset-0 h-screen w-screen">
+      <div className="fixed inset-0 h-screen w-screen">
         <motion.div
-          ref={blobRef}
           style={{
             left: animatedMouse.x,
             top: animatedMouse.y,
@@ -224,11 +151,10 @@ const CursorWithDot = (): ReactElement => {
             rounded-full
             bg-gradient-to-r from-[#ffc100] to-[rgb(240,87,74)]
             animate-[rotate_5s_infinite]
-            opacity-50`}
+            opacity-[0.075]`}
         />
-
         <div className="h-full w-full absolute z-[2] backdrop-blur-[12vmax]" />
-      </div> */}
+      </div>
     </>
   );
 };
