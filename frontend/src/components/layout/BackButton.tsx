@@ -1,16 +1,19 @@
 "use client";
 
 import { ArrowLeft } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { ReactElement } from "react";
 import { Button } from "../ui/Button";
 import { useRouter } from "@/i18n/routing";
 
 type Props = {
-  label: string;
+  label?: string;
 };
 
-const BackButton = ({ label }: Props): ReactElement => {
+const BackButton = ({ label: _label }: Props): ReactElement => {
   const { back } = useRouter();
+  const t = useTranslations("navigation");
+  const label = _label || t("goBack");
 
   return (
     <Button

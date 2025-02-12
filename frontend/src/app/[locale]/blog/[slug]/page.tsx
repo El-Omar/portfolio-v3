@@ -32,7 +32,7 @@ const BlogDetailPage = async ({ params }: Props): Promise<ReactElement> => {
   return (
     <Container>
       <div className="py-6 lg:py-12">
-        <BackButton label="Back to articles" />
+        <BackButton />
       </div>
       <article
         className={cn(

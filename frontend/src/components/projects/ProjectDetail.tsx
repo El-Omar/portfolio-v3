@@ -23,7 +23,7 @@ const ProjectDetail = ({ project }: ProjectDetailProps) => {
   return (
     <Container>
       <div className="py-6 lg:py-12">
-        <BackButton label={t("backToProjects")} />
+        <BackButton />
       </div>
       <article
         className={cn(
