@@ -1,215 +1,159 @@
-import { ReactElement, useCallback, useEffect, useRef, useState } from "react";
+import {
+  motion,
+  MotionValue,
+  transform,
+  useMotionValue,
+  useSpring,
+} from "motion/react";
+import { ReactElement, useCallback, useEffect, useRef } from "react";
 import { useIsMobile } from "@/lib/hooks/useIsMobile";
 import throttle from "@/lib/utils/throttle";
 
-type Position = {
-  x: number;
-  y: number;
+type FramerPoint = {
+  x: MotionValue<number>;
+  y: MotionValue<number>;
 };
 
-type Point = Position & {
-  timestamp: number;
-};
-
-type HoverState = {
-  isHovering: boolean;
-  elementType: string | null;
-  attraction: {
-    x: number;
-    y: number;
-  };
-  cursorScale: number;
-};
-
-const config = {
-  magneticStrength: 0.3,
-  cursorHoverScale: 1.5,
+type CursorRef = {
+  element: HTMLDivElement | null;
+  scale: FramerPoint;
+  position: FramerPoint;
+  rotation: MotionValue<number>;
 };
 
 const CursorWithDot = (): ReactElement => {
-  const blobRef = useRef<HTMLDivElement>(null);
-  const cursorRef = useRef<HTMLDivElement>(null);
-  const timeoutsRef = useRef<number[]>([]);
-  const [ripples, setRipples] = useState<Point[]>([]);
-
-  const hoverStateRef = useRef<HoverState>({
-    isHovering: false,
-    elementType: null,
-    attraction: { x: 0, y: 0 },
-    cursorScale: 1,
+  // const blobRef = useRef<HTMLDivElement>(null);
+  const cursorRef = useRef<CursorRef>({
+    element: null,
+    scale: { x: useMotionValue(1), y: useMotionValue(1) },
+    position: { x: useMotionValue(0), y: useMotionValue(0) },
+    rotation: useMotionValue(0),
   });
 
-  const handleRippleClick = useCallback((e: MouseEvent) => {
-    if (hoverStateRef.current.isHovering) {
-      return;
-    }
+  const smoothOptions = { damping: 20, stiffness: 300, mass: 0.5 };
 
-    const newRipple: Point = {
-      x: e.clientX,
-      y: e.clientY,
-      timestamp: Date.now(),
-    };
-
-    setRipples((prevRipples) => [...prevRipples, newRipple]);
-  }, []);
+  const animatedMouse = {
+    x: useSpring(cursorRef.current.position.x, smoothOptions),
+    y: useSpring(cursorRef.current.position.y, smoothOptions),
+  };
 
   const handleElementInteraction = useCallback((e: MouseEvent) => {
+    let cursorSize = 16;
     const target = e.target as HTMLElement;
     const selector = ["a", "button", "input", ".magnetic"].join(",");
 
+    const cursor = cursorRef.current;
     const interactiveElement = target.closest(selector);
 
     if (!interactiveElement) {
-      if (cursorRef.current) {
-        cursorRef.current.classList.remove("hovered");
-      }
-
-      hoverStateRef.current = {
-        isHovering: false,
-        elementType: null,
-        attraction: { x: 0, y: 0 },
-        cursorScale: 1,
-      };
-
+      cursor.element?.classList.remove("hovered");
+      cursor.scale.x.set(1);
+      cursor.scale.y.set(1);
+      cursor.position.x.set(e.clientX - cursorSize / 2);
+      cursor.position.y.set(e.clientY - cursorSize / 2);
       return;
     }
 
-    const rect = interactiveElement.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
+    const { width, height, left, top } =
+      interactiveElement.getBoundingClientRect();
 
-    const attraction = {
-      x: (centerX - e.clientX) * config.magneticStrength,
-      y: (centerY - e.clientY) * config.magneticStrength,
+    const interactiveElementCenter = {
+      x: left + width / 2,
+      y: top + height / 2,
     };
 
-    if (cursorRef.current) {
-      cursorRef.current.classList.add("hovered");
-    }
-
-    hoverStateRef.current = {
-      isHovering: true,
-      elementType: interactiveElement.classList.contains("magnetic")
-        ? "magnetic"
-        : interactiveElement.tagName.toLowerCase(),
-      attraction,
-      cursorScale: config.cursorHoverScale,
+    const distance = {
+      x: e.clientX - interactiveElementCenter.x,
+      y: e.clientY - interactiveElementCenter.y,
     };
+
+    const angle = Math.atan2(distance.y, distance.x) * (180 / Math.PI);
+    const absDistance = Math.max(Math.abs(distance.x), Math.abs(distance.y));
+
+    const stretchPercentage = 0.06;
+    const scaleX = transform(absDistance, [0, 100], [1, 1 + stretchPercentage]);
+    const scaleY = transform(absDistance, [0, 100], [1, 1 - stretchPercentage]);
+
+    cursorSize = 48;
+    cursor.element?.classList.add("hovered");
+    cursor.scale.x.set(scaleX);
+    cursor.scale.y.set(scaleY);
+    cursor.rotation.set(angle);
+
+    cursor.position.x.set(interactiveElementCenter.x - cursorSize / 2);
+    cursor.position.y.set(interactiveElementCenter.y - cursorSize / 2);
   }, []);
 
   const throttledMouseMove = useRef(
     throttle((e: MouseEvent) => {
       handleElementInteraction(e);
-      const currentX = e.clientX;
-      const currentY = e.clientY;
+      // const cursor = cursorRef.current;
+      // const currentX = e.clientX;
+      // const currentY = e.clientY;
 
-      if (blobRef.current) {
-        blobRef.current.animate(
-          {
-            left: `${currentX}px`,
-            top: `${currentY}px`,
-          },
-          { duration: 1500, fill: "forwards" },
-        );
-      }
+      // blobRef.current?.animate(
+      //   {
+      //     left: `${currentX}px`,
+      //     top: `${currentY}px`,
+      //   },
+      //   { duration: 1000, fill: "forwards" }
+      // );
 
-      if (cursorRef.current) {
-        cursorRef.current.animate(
-          {
-            left: `${currentX}px`,
-            top: `${currentY}px`,
-            transform: `translate(-50%, -50%) scale(${hoverStateRef.current.cursorScale})`,
-          },
-          { duration: 1000, fill: "forwards" },
-        );
-      }
+      // if (cursor.element) {
+      //   cursor.element.animate(
+      //     {
+      //       left: `${currentX}px`,
+      //       top: `${currentY}px`,
+      //       transform: `translate(-50%, -50%) scale(${cursor.scale.x}, ${cursor.scale.y})`,
+      //     },
+      //     { duration: 1000, fill: "forwards" },
+      //   );
+      // }
     }, 16),
   );
 
   const handleMouseMove = useCallback((e: MouseEvent) => {
     throttledMouseMove.current(e);
   }, []);
-
-  // Remove ripples
-  useEffect(() => {
-    ripples.forEach((ripple) => {
-      const timeoutId = window.setTimeout(() => {
-        setRipples((prevRipples) =>
-          prevRipples.filter((r) => r.timestamp !== ripple.timestamp),
-        );
-      }, 600);
-      timeoutsRef.current.push(timeoutId);
-    });
-
-    return () => {
-      timeoutsRef.current.forEach(clearTimeout);
-      timeoutsRef.current = [];
-    };
-  }, [ripples]);
-
   useEffect(() => {
     window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("click", handleRippleClick);
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("click", handleRippleClick);
     };
-  }, [handleMouseMove, handleRippleClick]);
+  }, [handleMouseMove]);
 
   return (
     <>
       <style jsx>{`
-        .ripple {
-          animation: ripple 0.6s ease-out forwards;
-        }
         @keyframes rotate {
-          from {
+          /* from {
+            scale: 1 1;
             rotate: 0deg;
           }
 
           50% {
-            scale: 1 1.25;
+            scale: 1 1.05;
+            rotate: 360deg;
           }
 
           to {
-            rotate: 360deg;
-          }
-        }
-        @keyframes ripple {
-          0% {
-            transform: translate(-50%, -50%) scale(0.1);
-            opacity: 0.5;
-          }
-          100% {
-            transform: translate(-50%, -50%) scale(2);
-            opacity: 0;
-          }
+            scale: 1 1;
+            rotate: 0deg;
+          } */
         }
       `}</style>
-      <div className="pointer-events-none fixed inset-0 overflow-hidden z-[9999]">
-        {ripples.map((ripple) => (
-          <div
-            key={ripple.timestamp}
-            className={`absolute w-4 h-4 -translate-x-1/2 -translate-y-1/2 
-              rounded-full bg-primary opacity-50 ripple
-              `}
-            style={{
-              left: ripple.x,
-              top: ripple.y,
-            }}
-          />
-        ))}
-      </div>
-      <div
-        ref={cursorRef}
+      {/* Cursor */}
+      {/* <div
+        ref={(ref) => {
+          cursorRef.current.element = ref;
+        }}
         className={`
           z-[9999]
           fixed pointer-events-none group transition-all duration-300 group-[.hovered]:opacity-100
           -translate-x-1/2 -translate-y-1/2 scale-100 group-[.hovered]:scale-125`}
       >
         <div className="relative w-3 h-3">
-          {/* Main cursor dot */}
           <div
             className={`
               absolute inset-0 rounded-full
@@ -218,7 +162,6 @@ const CursorWithDot = (): ReactElement => {
               opacity-100 group-[.hovered]:opacity-60
               `}
           />
-          {/* Inner ring */}
           <div
             className={`
               absolute inset-0 rounded-full 
@@ -228,26 +171,64 @@ const CursorWithDot = (): ReactElement => {
               transform scale-100 group-[.hovered]:scale-125`}
           />
         </div>
+      </div> */}
+      {/* Experimental */}
+      <div className="fixed inset-0 h-screen w-screen z-[9999] pointer-events-none">
+        <motion.div
+          ref={(el) => {
+            cursorRef.current.element = el;
+          }}
+          style={{
+            left: animatedMouse.x,
+            top: animatedMouse.y,
+            rotate: cursorRef.current.rotation,
+          }}
+          className="absolute w-6 h-6 group
+            origin-center bg-transparent flex items-center justify-center"
+        >
+          <motion.div
+            style={{
+              scaleX: cursorRef.current.scale.x,
+              scaleY: cursorRef.current.scale.y,
+            }}
+            animate={
+              {
+                // width: cursorRef.current.size,
+                // height: cursorRef.current.size,
+                // backgroundColor: cursorRef.current.hovering ? "#e98d37" : "#000",
+              }
+            }
+            className={`
+              pointer-events-none absolute rounded-full w-4 aspect-square
+              bg-primary transition-all duration-300	
+              group-[.hovered]:bg-gradient-to-r from-[#ffc100] to-[rgb(240,87,74)] 
+              group-[.hovered]:opacity-50 group-[.hovered]:w-12`}
+          />
+        </motion.div>
       </div>
-      <div className="fixed inset-0 h-screen w-screen">
-        <div
+      {/* Blob */}
+      {/* <div className="fixed inset-0 h-screen w-screen">
+        <motion.div
           ref={blobRef}
+          style={{
+            left: animatedMouse.x,
+            top: animatedMouse.y,
+          }}
           className={`
-          bg-white
-          h-[34vmax]
-          aspect-square
-          absolute
-          left-1/2
-          top-1/2
-          -translate-x-1/2
-          -translate-y-1/2
-          rounded-full
-          bg-gradient-to-r from-[#ffc100] to-[rgb(240,87,74)]
-          animate-[rotate_20s_infinite]
-          opacity-5`}
+            h-[34vmax]
+            aspect-square
+            absolute
+            -translate-x-1/2
+            -translate-y-1/2
+            origin-top-left
+            rounded-full
+            bg-gradient-to-r from-[#ffc100] to-[rgb(240,87,74)]
+            animate-[rotate_5s_infinite]
+            opacity-50`}
         />
+
         <div className="h-full w-full absolute z-[2] backdrop-blur-[12vmax]" />
-      </div>
+      </div> */}
     </>
   );
 };
