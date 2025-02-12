@@ -9,7 +9,7 @@ import Container from "@/components/ui/Container";
 
 const About = (): ReactElement => {
   return (
-    <Container className="py-16 lg:py-32 relative flex flex-col gap-12">
+    <Container className="py-16 lg:py-32 relative flex flex-col gap-12 lg:gap-20">
       <Intro />
       <Photography />
       <Design />

@@ -86,7 +86,7 @@
       "description": "Design wasn't a sudden revelation but an organic progression. The challenge of solving user problems through design thinking quickly became addictive—from mapping user journeys to crafting intuitive workflows. Every project felt like a puzzle, where aesthetics seamlessly met functionality."
     },
     "development": {
-      "title": "Landed on <accent>development</accent>",
+      "title": "Landed on <br></br><accent>development</accent>",
       "description": "Majoring in MCT - Devine transformed my relationship with code. What started as a part of my coursework quickly evolved into an obsession. Starting with simple HTML and CSS tweaks, I soon found myself building 2D games, interactive interfaces, and full-fledged applications. <br></br><br></br> Unlike design's iterative process, coding offered immediate validation—it either worked or it didn't. The joy of bringing designs to life through code, along with endless learning opportunities, keeps me hooked to this day."
     },
     "resume": {
@@ -96,7 +96,7 @@
       "download": "Download resume"
     },
     "testimonials": {
-      "title": "Superstars I've <accent>worked with</accent>"
+      "title": "Superstars I've <br></br><accent>worked with</accent>"
     }
   },
   "projects": {

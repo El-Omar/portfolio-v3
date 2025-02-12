@@ -1,32 +1,109 @@
+"use client";
+
+import { motion } from "framer-motion";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-import { ReactElement } from "react";
+import { ReactElement, useMemo, useRef } from "react";
 import Paragraph from "../ui/Paragraph";
 import Title from "../ui/Title";
 import TitleAccent from "../ui/TitleAccent";
 
 const Photography = (): ReactElement => {
   const t = useTranslations("about.photography");
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const animations = useMemo(() => {
+    const easing = [0.22, 1, 0.36, 1];
+
+    return {
+      containerVariants: {
+        hidden: { opacity: 0 },
+        visible: {
+          opacity: 1,
+          transition: {
+            when: "beforeChildren",
+            staggerChildren: 0.2,
+            duration: 0.8,
+            ease: easing,
+          },
+        },
+      },
+
+      textVariants: {
+        hidden: { opacity: 0, y: 40 },
+        visible: {
+          opacity: 1,
+          y: 0,
+          transition: {
+            duration: 0.8,
+            ease: easing,
+          },
+        },
+      },
+
+      imageContainerVariants: {
+        hidden: {
+          opacity: 0,
+          x: 20,
+        },
+        visible: {
+          opacity: 1,
+          x: 0,
+          transition: {
+            delay: 0.2,
+            duration: 1.2,
+            ease: easing,
+          },
+        },
+      },
+    };
+  }, []);
 
   return (
-    <section className="w-full pt-14 lg:pt-20 relative">
-      <div className="relative flex flex-col lg:flex-row gap-10 items-center justify-between">
-        <div>
-          <Title className="md:leading-tight">
+    <motion.div
+      ref={containerRef}
+      variants={animations.containerVariants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-200px" }}
+      className="relative w-full flex flex-col lg:flex-row justify-between items-start lg:items-center lg:gap-20 gap-10"
+    >
+      {/* Background dot */}
+      <div className="absolute bottom-[calc(50%_-_8rem)] rounded-full left-0 w-64 h-64 bg-neutral-200 dark:bg-neutral-800 z-0" />
+
+      {/* Left content */}
+      <div className="space-y-6 relative z-50">
+        <motion.div variants={animations.textVariants}>
+          <Title>
             {t.rich("title", {
               br: () => <br />,
               accent: (chunk) => <TitleAccent>{chunk}</TitleAccent>,
             })}
           </Title>
-          <Paragraph className="md:text-lg mt-6 md:leading-relaxed">
+        </motion.div>
+
+        <motion.div variants={animations.textVariants}>
+          <Paragraph className="md:text-lg md:leading-relaxed">
             {t("description")}
           </Paragraph>
-        </div>
-        <figure className="relative">
-          <Image alt="Forest" src="/img/dslr.jpg" width={1000} height={1000} />
-        </figure>
+        </motion.div>
       </div>
-    </section>
+
+      {/* Right image */}
+      <motion.div
+        variants={animations.imageContainerVariants}
+        className="relative w-full lg:w-1/2 flex flex-col items-center justify-center"
+      >
+        <div className="relative w-[100%] aspect-[4/3] bg-neutral-100 dark:bg-neutral-800 rounded-xl overflow-hidden">
+          <Image
+            src="/img/dslr.jpg"
+            alt="Photography"
+            fill
+            className="object-cover"
+          />
+        </div>
+      </motion.div>
+    </motion.div>
   );
 };
 

@@ -9,7 +9,7 @@ const Intro = (): ReactElement => {
   const t = useTranslations("about.intro");
 
   return (
-    <>
+    <article className="flex flex-col lg:gap-10 gap-6">
       <section className="w-full flex flex-col lg:flex-row items-start lg:items-start lg:justify-between gap-4 lg:gap-0">
         <Title className="md:leading-tight self-start">
           {t.rich("title", {
@@ -29,7 +29,7 @@ const Intro = (): ReactElement => {
           className="object-cover"
         />
       </figure>
-    </>
+    </article>
   );
 };
 
