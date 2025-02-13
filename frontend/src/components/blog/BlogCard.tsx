@@ -16,12 +16,20 @@ const BlogCard = ({ blog }: Props): ReactElement => {
       {/* Image Container */}
       <div className="relative aspect-[16/9] w-full overflow-hidden rounded-md border border-neutral-200 dark:border-neutral-700">
         {blog.coverImage ? (
-          <Image
-            src={blog.coverImage.url}
-            alt={blog.title}
-            fill
-            className="object-cover transition-transform duration-500 group-hover:scale-105"
-          />
+          <>
+            <Image
+              src={blog.coverImage.url}
+              alt={blog.title}
+              fill
+              className="object-cover"
+            />
+            {/* Colored Overlay */}
+            <div
+              className="absolute inset-0 backdrop-grayscale-[0.5]
+              transition-opacity duration-500 ease-out
+              group-hover:opacity-0"
+            />
+          </>
         ) : (
           <div className="h-full w-full bg-neutral-100 dark:bg-neutral-800" />
         )}
@@ -32,7 +40,7 @@ const BlogCard = ({ blog }: Props): ReactElement => {
           bg-white/90 dark:bg-neutral-900/90 
           rounded-full opacity-0 translate-y-2 group-hover:opacity-100 
           group-hover:translate-y-0 transition-all duration-300
-          shadow-sm"
+          shadow-sm z-10"
         >
           <ArrowUpRight className="w-4 h-4" />
         </div>

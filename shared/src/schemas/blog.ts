@@ -17,24 +17,24 @@ export const blogSchema = z.object({
   // Meta information
   author: z.string().min(1, "Author is required"),
   categories: z.array(z.string()).min(1, "At least one category is required"),
-  tags: z.array(z.string()).optional(),
+  tags: z.array(z.string()).optional().nullable(),
   readingTime: z.number().int().min(1).default(1), // Added default and validation
   
   // Media
-  coverImage: imageMetadataSchema.optional(),
+  coverImage: imageMetadataSchema.optional().nullable(),
   
   // Publication status and display
   status: z.enum(["draft", "published", "archived"]).default("draft"),
   featured: z.boolean().default(false),
-  order: z.number().optional(), // For custom ordering in lists
+  order: z.number().optional().nullable(), // For custom ordering in lists
   
   // Dates
   writtenAt: z.string().datetime().default(new Date().toISOString()),
   
   // SEO
-  seoTitle: z.string().optional(),
-  seoDescription: z.string().optional(),
-  canonicalUrl: z.string().url().optional(),
+  seoTitle: z.string().optional().nullable(),
+  seoDescription: z.string().optional().nullable(),
+  canonicalUrl: z.string().url().optional().nullable(),
   
   // External platform sync fields
   substackUrl: z.string().url().optional(),

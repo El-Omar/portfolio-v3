@@ -191,12 +191,15 @@ export const updateBlog: RequestHandler<
       }
     }
 
-    const updatedBlog = await currentBlog
-      .set({
-        ...currentBlog.toObject(),
-        ...req.body,
-      })
-      .save();
+    Object.entries(req.body).forEach(([key, value]) => {
+      if (value === null) {
+        (currentBlog as any)[key] = undefined;
+      } else {
+        currentBlog.set(key, value);
+      }
+    });
+
+    const updatedBlog = await currentBlog.save();
 
     res.json({
       status: "success",

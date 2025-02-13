@@ -52,8 +52,6 @@ export const getProjects: RequestHandler<
     const sortDirection = asc === true ? 1 : -1;
     const sortField = sort || "order";
 
-    console.log(sortField, sortDirection);
-
     const [projects, total] = await Promise.all([
       Project.find(query)
         .select(projection)
@@ -204,12 +202,15 @@ export const updateProject: RequestHandler<
       }
     }
 
-    const updatedProject = await currentProject
-      .set({
-        ...currentProject.toObject(),
-        ...req.body,
-      })
-      .save();
+    Object.entries(req.body).forEach(([key, value]) => {
+      if (value === null) {
+          (currentProject as any)[key] = undefined;
+        } else {
+        currentProject.set(key, value);
+      }
+    });
+
+    const updatedProject = await currentProject.save();
 
     res.json({
       status: "success",

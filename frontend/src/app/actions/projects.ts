@@ -272,11 +272,17 @@ export const updateProject = async (
       projectData.additionalImages = [];
     }
 
-    // 4. Update project
+    const cleanedProjectData = Object.fromEntries(
+      Object.entries(projectData).map(([key, value]) => [
+        key,
+        value === undefined ? null : value,
+      ]),
+    );
+
     const response = await projectsClient.update(
       projectToUpdate.slug,
       projectToUpdate._etag,
-      projectData,
+      cleanedProjectData,
     );
 
     if (response.status === "error") {

@@ -16,11 +16,11 @@ const ProjectSchema: Schema = new Schema<ProjectDocument>(
     slug: { type: String, unique: true },
     title: { type: String, required: true },
     description: { type: String, required: true, maxlength: 500 },
-    content: { type: String }, // Stores sanitized HTML
+    content: { type: String },
     technologies: { type: [String], required: true },
-    imageUrl: { type: String }, // Main preview image in S3
+    imageUrl: { type: String },
     additionalImages: [imageMetadataSchema],
-    videoUrl: { type: String }, // External video URL
+    videoUrl: { type: String },
     githubUrl: { type: String },
     liveUrl: { type: String },
     featured: { type: Boolean, default: false },
@@ -32,7 +32,6 @@ const ProjectSchema: Schema = new Schema<ProjectDocument>(
   { timestamps: true, versionKey: false }
 );
 
-// Sanitize HTML content before saving
 ProjectSchema.pre<ProjectDocument>("save", function (next) {
   if (this.isModified("content") && this.content) {
     this.content = sanitizeHtml(this.content, {
