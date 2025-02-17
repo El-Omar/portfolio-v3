@@ -3,7 +3,7 @@ import { useTranslations } from "next-intl";
 import { ReactNode } from "react";
 import TitleAccent from "@/components/ui/TitleAccent";
 
-type NavItem = {
+export type NavItem = {
   path: string;
   label: ReactNode;
   icon: ReactNode;

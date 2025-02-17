@@ -125,7 +125,7 @@ const CursorWithDot = (): ReactElement => {
               flex items-center justify-center
               pointer-events-none absolute rounded-full bg-primary
               w-4 aspect-square transition-all duration-200	ease-[cubic-bezier(0.25,0.1,0.25,1)]
-              group-[.hovered]:opacity-70 group-[.hovered]:w-9`}
+              group-[.hovered]:opacity-50 group-[.hovered]:w-9`}
           >
             <MousePointer
               size={16}

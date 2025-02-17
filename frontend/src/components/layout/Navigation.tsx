@@ -1,95 +1,81 @@
 "use client";
 
-import { motion, MotionConfig } from "motion/react";
-import Image from "next/image";
-import {
-  Dispatch,
-  ReactElement,
-  ReactNode,
-  SetStateAction,
-  useState,
-} from "react";
+import { ReactElement, useMemo } from "react";
+import ThemeLanguageToggles from "./ThemeLanguageToggles";
+import Container from "../ui/Container";
+import Logo from "../ui/Logo";
+import { Link, usePathname } from "@/i18n/routing";
+import { useIsMobile } from "@/lib/hooks/useIsMobile";
+import { NavItem, usePages, usePagesWithAccent } from "@/lib/hooks/usePages";
 
-import Sidebar from "./Sidebar";
-import { Button } from "../ui/Button";
-import { Link } from "@/i18n/routing";
+const Navigation = (): ReactElement => {
+  const pathname = usePathname();
+  const allPages = usePages();
+  const pagesWithAccent = usePagesWithAccent();
+  const isMobile = useIsMobile();
 
-const AnimationConfig = ({ children }: { children: ReactNode }) => (
-  <MotionConfig transition={{ ease: "circInOut", duration: 0.38 }}>
-    {children}
-  </MotionConfig>
-);
+  const pagesLookout = useMemo(() => {
+    return pagesWithAccent.reduce<Record<string, NavItem>>((acc, page) => {
+      acc[page.path] = page;
+      return acc;
+    }, {});
+  }, [pagesWithAccent]);
 
-type NavigationProps = {
-  isAnimating: boolean;
-  setIsAnimating: Dispatch<SetStateAction<boolean>>;
-};
+  // Hide home page on mobile
+  const pages = !isMobile ? allPages : allPages.slice(1);
 
-const Navigation = ({
-  isAnimating,
-  setIsAnimating,
-}: NavigationProps): ReactElement => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-
-  const toggleSidebar = () => setIsOpen((toggle) => !toggle);
+  const pageWithAccent = pagesLookout[pathname];
 
   return (
-    <>
-      {isOpen && (
-        <Sidebar
-          toggleSidebar={toggleSidebar}
-          isAnimating={isAnimating}
-          setIsAnimating={setIsAnimating}
-        />
-      )}
-      <nav className="w-full z-[100] border-22 fixed top-0 py-4 flex justify-between items-center pointer-events-none">
-        <Link href="/" className="pointer-events-auto">
-          <motion.figure
-            className="flex items-center"
-            animate={{ x: isOpen ? 25 : 0 }}
-          >
-            <AnimationConfig>
-              <motion.strong
-                className="text-2xl font-rakkas mt-6 -mr-1"
-                animate={{ x: isOpen ? 0 : 10, opacity: isOpen ? 1 : 0 }}
-              >
-                ـمر
-              </motion.strong>
-            </AnimationConfig>
-            <Image
-              src="/img/logo.svg"
-              alt="Logo"
-              width={28}
-              height={28}
-              className="dark:invert"
-            />
-            <AnimationConfig>
-              <motion.span
-                className="text-2xl font-pacifico mt-0 -ml-1"
-                animate={{ x: isOpen ? 0 : -10, opacity: isOpen ? 1 : 0 }}
-              >
-                omar
-              </motion.span>
-            </AnimationConfig>
-          </motion.figure>
+    <nav
+      className="
+        fixed z-[100] w-full backdrop-blur-sm shadow-sm py-2
+        bg-white/70 dark:bg-neutral-900"
+    >
+      <Container className="flex justify-between items-center">
+        <Link href="/" className="p-2 -ml-2">
+          <Logo />
         </Link>
-        <Button
-          variant="link"
-          className="group hover:no-underline flex flex-col gap-1 items-end px-6 pointer-events-auto"
-          onClick={toggleSidebar}
-        >
-          <div
-            className={`w-[21px] h-[3px] group-hover:w-[24px] bg-primary transition-all duration-150 ease-in-out`}
-          />
-          <div
-            className={`w-[18px] h-[3px] group-hover:w-[24px] bg-primary transition-all duration-150 ease-in-out`}
-          />
-          <div
-            className={`w-[19px] h-[3px] group-hover:w-[24px] bg-primary transition-all duration-150 ease-in-out`}
-          />
-        </Button>
-      </nav>
-    </>
+
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1">
+            {pages.map((page) => {
+              if (page.path === pageWithAccent?.path) {
+                if (isMobile && page.path === "/") {
+                  return null;
+                }
+
+                return (
+                  <Link
+                    key={page.path}
+                    href={page.path}
+                    className="lg:px-4 px-3 py-2 text-xs lg:text-sm font-medium
+                      underline underline-offset-2
+                      text-primary transition-colors"
+                  >
+                    {isMobile ? page.label : pageWithAccent.label}
+                  </Link>
+                );
+              }
+
+              return (
+                <Link
+                  key={page.path}
+                  href={page.path}
+                  className="lg:px-4 px-3 py-2 text-xs lg:text-sm font-medium 
+                    rounded-xl text-neutral-600
+                    hover:text-cool-red
+                    transition-colors duration-300"
+                >
+                  {page.label}
+                </Link>
+              );
+            })}
+          </div>
+          <ThemeLanguageToggles />
+        </div>
+      </Container>
+    </nav>
   );
 };
 
