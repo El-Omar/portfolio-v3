@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { ReactElement, ReactNode } from "react";
-import { verifyAuth } from "@/lib/auth/verifyAuth";
 import DashboardSidebar from "./DashboardSidebar";
+import { verifyAuth } from "@/lib/auth/verifyAuth";
 
 type Props = {
   children: ReactNode;

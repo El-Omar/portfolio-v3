@@ -5,20 +5,21 @@ import BlogHeader from "@/components/blog/BlogHeader";
 import CategoryFilter from "@/components/blog/CategoryFilter";
 import Container from "@/components/ui/Container";
 
-const BlogPage = async ({
-  searchParams,
-}: {
-  searchParams: { category?: string };
-}): Promise<ReactElement> => {
+type Props = {
+  searchParams: Promise<{ category?: string }>;
+};
+
+const BlogPage = async ({ searchParams }: Props): Promise<ReactElement> => {
   const response = await getBlogs({ status: "published" });
   const blogs = response.status === "success" ? response.data : [];
+  const params = await searchParams;
 
   const categories = Array.from(
     new Set(blogs.flatMap((blog) => blog.categories)),
   ).sort();
 
-  const filteredBlogs = searchParams.category
-    ? blogs.filter((blog) => blog.categories.includes(searchParams.category!))
+  const filteredBlogs = params.category
+    ? blogs.filter((blog) => blog.categories.includes(params.category!))
     : blogs;
 
   return (

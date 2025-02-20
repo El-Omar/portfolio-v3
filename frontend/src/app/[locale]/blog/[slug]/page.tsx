@@ -40,7 +40,7 @@ const BlogDetailPage = async ({ params }: Props): Promise<ReactElement> => {
           fontSpectral.variable,
         )}
       >
-        <PageScrollProgress className="sticky top-0" />
+        <PageScrollProgress />
         <div className="max-w-[728px] mx-auto pt-12 lg:pt-28 px-8 lg:px-0">
           {/* Header */}
           <header className="space-y-8 mb-6">

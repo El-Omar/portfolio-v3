@@ -43,6 +43,7 @@ const Content = () => {
   const pages = usePagesWithAccent();
   const t = useTranslations("footer");
   const pathname = usePathname();
+  const cleanPathname = pathname.split("/")[1];
 
   const socialLinks = [
     {
@@ -96,7 +97,8 @@ const Content = () => {
                   <Link
                     href={path}
                     className={`hover:text-cool-red transition-colors duration-300 text-3xl font-dm-sans ${
-                      pathname === path && "underline underline-offset-4"
+                      path === `/${cleanPathname}` &&
+                      "underline underline-offset-4"
                     }`}
                   >
                     {label}

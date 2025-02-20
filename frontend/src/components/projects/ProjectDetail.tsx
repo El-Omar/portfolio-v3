@@ -18,7 +18,6 @@ type ProjectDetailProps = {
 
 const ProjectDetail = ({ project }: ProjectDetailProps) => {
   const t = useTranslations("projects");
-  const index = 0;
 
   return (
     <Container>
@@ -35,9 +34,7 @@ const ProjectDetail = ({ project }: ProjectDetailProps) => {
         <article className="w-full grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-20 bg-neutral-100 dark:bg-neutral-900 p-6 lg:p-10 rounded-2xl">
           {/* Project Image */}
           <div
-            className={`${
-              index % 2 === 1 ? "lg:order-2" : ""
-            } relative aspect-[16/9] overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-800`}
+            className={`relative aspect-[16/9] overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-800`}
           >
             {project.imageUrl && (
               <Image

@@ -1,44 +1,66 @@
 {
   "navigation": {
     "home": "الرئيسية",
+    "homeWithAccent": "<accent>الرئيسية</accent> الصفحة",
+    "projects": "المشاريع",
+    "projectsWithAccent": "المشاريع <accent>أعمالي</accent>",
     "blog": "المدونة",
+    "blogWithAccent": "المدونة <accent>مقالاتي</accent>",
     "about": "عني",
+    "aboutWithAccent": "عني <accent>المزيد</accent>",
+    "goBack": "العودة",
     "contact": "تواصل"
   },
   "footer": {
-    "copyright": "© { year } العمر. جميع الحقوق محفوظة.",
-    "acknowledgments": "إشادات",
-    "credits": "الأيقونات من <lucideLink>Lucide</lucideLink> والرسوم التوضيحية من <illustrationLink>Storyset</illustrationLink>."
+    "copyright": "© حقوق النشر { year } العمر. <space></space> جميع الحقوق محفوظة.",
+    "acknowledgments": "شكر وتقدير",
+    "credits": "الأيقونات من <lucideLink>Lucide</lucideLink> والرسوم التوضيحية من <illustrationLink>Storyset</illustrationLink>.",
+    "description": "مطور، مصمم، وكاتب أحياناً. أبني تجارب رقمية هادفة.",
+    "backToTop": "العودة للأعلى",
+    "socials": {
+      "github": "GitHub",
+      "linkedin": "LinkedIn",
+      "email": "البريد الإلكتروني"
+    }
   },
   "home": {
     "intro": {
-      "title": "أهلاً! أنا اسمي العمر، وأحب <br></br> تصميم <accent>تجارب مميزة</accent>",
-      "description": "أنا مطور ويب ومصمم واجهات، ذو خبرة بالتصوير والتصاميم الفعالة. بعيدا عن ذلك، أمارس وقتي <blog>بالكتابة</blog>،  والتقاط الصور، وممارسة بعض الرياضة. ابقَ هنا وألقِ نظرة على أعمالي!"
+      "greeting": "مرحباً!",
+      "title": "مطور <br></br><accent>ومصمم</accent>",
+      "description": "مرحباً، أنا العمر، مطور ويب ومصمم أؤمن بقوة البساطة. أصمم حلولاً أفتخر بها، وأستكشف مواضيع مختلفة من خلال <blog>كتاباتي</blog>. تفضل بإلقاء نظرة على أعمالي."
     },
-    "expertise": {
-      "title": "خبرات <accent>وتجارب</accent>",
-      "designTitle": "تصميم هادف",
-      "designDescription": "تصاميمي تهدف <strong>لشيء اساسي</strong>: حل المشكلات وتبسيط التجارب. من خلال التركيز على احتياجات المستخدم الأساسية، أصمم حلولاً واضحة وفعالة وذات تأثير دائم.",
-      "developTitle": "تطوير متقن",
-      "developDescription": "الموازنة بين <strong>الجودة</strong> و<strong>كفاءة الوقت</strong> ليست سهلة، لكن إيجاد الحل الأمثل هو ما أتفوق فيه. في كل مشاريعي أتبع طريقة منهجية ومفصلة بشكل مدقق، مما يضمن التميز والتسليم في الوقت المحدد. (ولا مكتب عملي ليس بهذا الشكل مثل الصورة)",
-      "readMore": "اقرأ المزيد عني"
-    },
-    "work": {
-      "title": "بعض <accent>أعمالي</accent>"
+    "sections": {
+      "expertise": {
+        "title": "صناعة <accent>التأثير</accent>",
+        "subtitle": "يتطلب منك <accent>بعض</accent>"
+      },
+      "projects": {
+        "title": "عرض <accent>المشاريع</accent>",
+        "subtitle": "التي عملت <accent>عليها</accent>",
+        "noProjects": "لم يتم العثور على مشاريع"
+      }
     },
     "blog": {
-      "title": "مقالات ومدونات",
-      "readMore": "اقرأ المزيد"
+      "title": "مقالات المدونة",
+      "readMore": "اقرأ المزيد، الأمر مثير للاهتمام"
     },
     "contact": {
-      "title": "هذا كل <space></space><accent>شيء!</accent>",
-      "description": "لقد وصلت إلى النهاية، شكراً لزيارتك! لأي استفسارات، لا تتردد في النقر على الزر أدناه. أو يمكنك لعب غزاة الفضاء.",
+      "title": "لنصنع <br></br><accent>شيئاً معاً</accent>",
+      "description": "هل لديك مشروع في ذهنك أو تريد فقط الدردشة؟ أنا دائماً منفتح للأفكار والتعاون الجديد. أو يمكنك محاولة تحطيم رقمي القياسي في لعبة غزاة الفضاء.",
       "getInTouch": "تواصل معي"
     },
     "spaceInvaders": {
       "play": "العب",
       "highScore": "أعلى نتيجة",
       "instructions": "[مسطرة المسافة] للتصويب، [→] و[←] للتحرك"
+    },
+    "expertise": {
+      "title": "خبرات <accent>وتجارب</accent>",
+      "designTitle": "تصميم مع <br></br> <accent>هدف</accent>",
+      "designDescription": "أصمم بـ<strong>هدف</strong>—لحل المشكلات وتبسيط التجارب. من خلال التركيز على احتياجات المستخدم الأساسية، أصنع حلولاً واضحة وفعالة وذات تأثير دائم.",
+      "developTitle": "تطوير مع <br></br> <accent>دقة</accent>",
+      "developDescription": "الموازنة بين <strong>الجودة</strong> و<strong>كفاءة الوقت</strong> ليست سهلة، لكن إيجاد الحل الأمثل هو ما أتفوق فيه. أتبع نهجاً منهجياً في كل مشروع، مما يضمن التميز والتسليم في الوقت المحدد.",
+      "readMore": "تعرف علي أكثر"
     }
   },
   "contact": {
@@ -72,16 +94,59 @@
       "download": "تحميل السيرة الذاتية"
     },
     "testimonials": {
-      "title": "أشخاص <accent>عملت معهم</accent>"
+      "title": "نجوم رائعون <br></br><accent>عملت معهم</accent>"
     }
   },
   "projects": {
-    "backToProjects": "العودة الى المشاريع",
+    "intro": {
+      "title": "معرض الأعمال"
+    },
+    "backToProjects": "العودة للمشاريع",
     "viewSource": "عرض المصدر",
-    "visitSite": "زيارة الموقع",
+    "readMore": "اقرأ المزيد",
+    "technologies": "التقنيات",
+    "visitProject": "زيارة المشروع",
     "timeline": {
       "to": "إلى",
       "present": "الحاضر"
+    }
+  },
+  "stats": {
+    "profile": {
+      "title": "الملف الشخصي",
+      "location": "بلجيكا",
+      "languagesLabel": "اللغات",
+      "languages": ["العربية", "الهولندية", "الإنجليزية"],
+      "description": "ولدت في الأردن، ونشأت بين الأردن ومصر، وأعيش في بلجيكا منذ مراهقتي."
+    },
+    "experience": {
+      "title": "الخبرة",
+      "yearsValue": "{years} سنوات",
+      "focusLabel": "مجالات التركيز",
+      "focusAreas": ["تطبيقات الويب", "تصميم واجهات المستخدم"],
+      "description": "بدأت رحلتي في 2018، أعمل مع الشركات الناشئة والشركات لإنشاء حلول تحدث فرقاً."
+    },
+    "design": {
+      "title": "التصميم",
+      "role": "مصمم واجهات المستخدم",
+      "toolsLabel": "الأدوات",
+      "tools": ["Figma", "Photoshop", "Sketch"],
+      "description": "خبير في تجربة المستخدم، مع خلفية قوية في التصميم الجرافيكي وتحرير الصور، وخبرة تتجاوز المهنية."
+    },
+    "development": {
+      "title": "التطوير",
+      "role": "مطور شامل",
+      "techLabel": "التقنيات",
+      "technologies": ["React", "TypeScript", "Node.js"],
+      "description": "متخصص بشكل أساسي في تطوير الواجهة الأمامية، مع الحفاظ على أساس قوي في تقنيات الخلفية."
+    }
+  },
+  "blog": {
+    "title": "أكتب عن <br></br><accent>كل شيء ولا شيء</accent>",
+    "description": "هنا حيث أستكشف السرد وأشارك بعض شذرات الأفكار العشوائية؛ أحياناً عن التقنية، وغالباً عن الحياة.",
+    "viewAll": "عرض جميع المقالات",
+    "filter": {
+      "title": "التصنيفات"
     }
   }
 }

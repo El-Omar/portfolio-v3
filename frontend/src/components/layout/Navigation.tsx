@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { ReactElement, useMemo } from "react";
 import ThemeLanguageToggles from "./ThemeLanguageToggles";
 import Container from "../ui/Container";
@@ -14,6 +15,9 @@ const Navigation = (): ReactElement => {
   const pagesWithAccent = usePagesWithAccent();
   const isMobile = useIsMobile();
 
+  // Hide home page on mobile
+  const pages = !isMobile ? allPages : allPages.slice(1);
+
   const pagesLookout = useMemo(() => {
     return pagesWithAccent.reduce<Record<string, NavItem>>((acc, page) => {
       acc[page.path] = page;
@@ -21,59 +25,61 @@ const Navigation = (): ReactElement => {
     }, {});
   }, [pagesWithAccent]);
 
-  // Hide home page on mobile
-  const pages = !isMobile ? allPages : allPages.slice(1);
-
-  const pageWithAccent = pagesLookout[pathname];
+  // To get the page and detail pages as well
+  const cleanPathname = pathname.split("/")[1];
+  const pageWithAccent = pagesLookout[`/${cleanPathname}`];
+  const isHomePage = cleanPathname === "";
 
   return (
     <nav
       className="
-        fixed z-[100] w-full backdrop-blur-sm shadow-sm py-2
+        fixed z-[100] w-full backdrop-blur-sm shadow-sm py-1
         bg-white/70 dark:bg-neutral-900"
     >
       <Container className="flex justify-between items-center">
         <Link href="/" className="p-2 -ml-2">
           <Logo />
         </Link>
-
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-1">
-            {pages.map((page) => {
-              if (page.path === pageWithAccent?.path) {
-                if (isMobile && page.path === "/") {
-                  return null;
-                }
-
-                return (
-                  <Link
-                    key={page.path}
-                    href={page.path}
-                    className="lg:px-4 px-3 py-2 text-xs lg:text-sm font-medium
-                      underline underline-offset-2
-                      text-primary transition-colors"
-                  >
-                    {isMobile ? page.label : pageWithAccent.label}
-                  </Link>
-                );
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 10 }}
+          className="flex items-center gap-1"
+        >
+          {pages.map((page) => {
+            if (page.path === pageWithAccent?.path) {
+              if (isMobile && isHomePage) {
+                return null;
               }
 
               return (
                 <Link
                   key={page.path}
                   href={page.path}
-                  className="lg:px-4 px-3 py-2 text-xs lg:text-sm font-medium 
-                    rounded-xl text-neutral-600
-                    hover:text-cool-red
-                    transition-colors duration-300"
+                  className="lg:px-4 px-3 py-2 text-xs lg:text-sm font-medium
+                    underline underline-offset-2
+                    text-primary transition-colors"
                 >
-                  {page.label}
+                  {isMobile ? page.label : pageWithAccent.label}
                 </Link>
               );
-            })}
-          </div>
-          <ThemeLanguageToggles />
-        </div>
+            }
+
+            return (
+              <Link
+                key={page.path}
+                href={page.path}
+                className="lg:px-4 px-3 py-2 text-xs lg:text-sm font-medium 
+                  rounded-xl text-neutral-600
+                  hover:text-cool-red
+                  transition-colors duration-300"
+              >
+                {page.label}
+              </Link>
+            );
+          })}
+        </motion.div>
+        <ThemeLanguageToggles />
       </Container>
     </nav>
   );

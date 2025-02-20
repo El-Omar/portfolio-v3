@@ -18,7 +18,7 @@ const PageScrollProgress = ({ className }: Props) => {
   return (
     <motion.div
       className={twMerge(
-        "h-1 bg-cool-red w-full z-[9999] origin-left rtl:origin-right",
+        "h-1 bg-cool-red w-full z-[9999] origin-left rtl:origin-right sticky top-12",
         className,
       )}
       style={{ scaleX: smoothScroll }}

@@ -4,7 +4,7 @@ import Container from "@/components/ui/Container";
 
 const HeroSection = (): ReactElement => {
   return (
-    <Container className="pt-0 pb-16 lg:pb-16 lg:pt-20">
+    <Container className="pt-6 pb-12 lg:pb-16 lg:pt-20">
       <Intro />
     </Container>
   );
