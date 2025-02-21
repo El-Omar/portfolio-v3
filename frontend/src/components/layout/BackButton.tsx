@@ -22,7 +22,7 @@ const BackButton = ({ label: _label }: Props): ReactElement => {
       className="group inline-flex items-center gap-3 p-0"
     >
       <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-      <span className="text-sm text-neutral-600 hover:text-primary">
+      <span className="text-sm text-neutral-600 dark:text-neutral-200 hover:text-primary">
         {label}
       </span>
     </Button>

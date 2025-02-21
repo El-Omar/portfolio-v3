@@ -18,7 +18,7 @@ const ProjectsSection = async () => {
 
   return (
     <ParallaxTitleSection
-      className="w-full mt-40 bg-neutral-100 overflow-clip"
+      className="w-full mt-40 bg-neutral-100 dark:bg-neutral-900"
       contentClassName="mt-[30vh]"
       title={<ProjectsHeader />}
     >

@@ -77,7 +77,7 @@ const SectionTransition = ({
             {title} {titleAccent}
           </h2>
           <motion.h2
-            className={`${baseClassName} absolute top-0 left-0 text-neutral-800`}
+            className={`${baseClassName} absolute top-0 left-0 text-neutral-800 dark:text-neutral-50`}
             style={{
               clipPath: firstLineAnimation,
             }}
@@ -86,11 +86,13 @@ const SectionTransition = ({
           </motion.h2>
         </div>
         <div className="relative">
-          <h2 className={`${baseClassName} text-neutral-300`}>
+          <h2
+            className={`${baseClassName} text-neutral-300 dark:text-neutral-400`}
+          >
             {subtitle} {subtitleAccent}
           </h2>
           <motion.h2
-            className={`${baseClassName} absolute top-0 left-0 text-neutral-500`}
+            className={`${baseClassName} absolute top-0 left-0 text-neutral-500 dark:text-neutral-200`}
             style={{
               clipPath: secondLineAnimation,
             }}

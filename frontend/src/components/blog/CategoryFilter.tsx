@@ -30,10 +30,14 @@ const CategoryFilter = ({ categories }: Props) => {
         <li>
           <button
             onClick={() => handleCategoryClick(null)}
-            className={cn(
-              "hover:text-primary transition-colors whitespace-nowrap",
-              !currentCategory ? "text-primary font-bold" : "text-neutral-600",
-            )}
+            className={`
+              hover:text-primary transition-colors whitespace-nowrap",
+              ${
+                !currentCategory
+                  ? "text-primary dark:text-primary font-bold"
+                  : "text-neutral-600 dark:text-neutral-300"
+              }
+            `}
           >
             Latest
           </button>
@@ -46,7 +50,7 @@ const CategoryFilter = ({ categories }: Props) => {
                 "hover:text-primary transition-colors whitespace-nowrap",
                 currentCategory === category
                   ? "text-primary font-bold"
-                  : "text-neutral-600",
+                  : "text-neutral-600 dark:text-neutral-300",
               )}
             >
               {category}

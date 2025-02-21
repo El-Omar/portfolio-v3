@@ -9,7 +9,6 @@ import Container from "@/components/ui/Container";
 import Markup from "@/components/ui/Markup";
 import Title from "@/components/ui/Title";
 import { Link } from "@/i18n/routing";
-import { cn } from "@/lib/utils/cn";
 import { formatDate } from "@/lib/utils/dates";
 import { fontSpectral } from "@/lib/utils/fonts";
 
@@ -35,10 +34,7 @@ const BlogDetailPage = async ({ params }: Props): Promise<ReactElement> => {
         <BackButton />
       </div>
       <article
-        className={cn(
-          "w-full pb-28 bg-neutral-50 mb-12 lg:mb-24 relative",
-          fontSpectral.variable,
-        )}
+        className={`w-full pb-28 bg-neutral-50 dark:bg-neutral-900 mb-12 lg:mb-24 relative ${fontSpectral.variable}`}
       >
         <PageScrollProgress />
         <div className="max-w-[728px] mx-auto pt-12 lg:pt-28 px-8 lg:px-0">
@@ -48,7 +44,9 @@ const BlogDetailPage = async ({ params }: Props): Promise<ReactElement> => {
               {/* Title */}
               <Title className="text-2xl md:text-3xl">{blog.title}</Title>
 
-              <p className="text-lg text-neutral-600">{blog.description}</p>
+              <p className="text-lg text-neutral-600 dark:text-neutral-400">
+                {blog.description}
+              </p>
 
               {/* Meta */}
               <div className="flex items-center gap-3 text-sm text-neutral-500">
@@ -94,7 +92,7 @@ const BlogDetailPage = async ({ params }: Props): Promise<ReactElement> => {
               </div>
               <Link
                 href="/blog"
-                className="text-sm text-neutral-600 hover:text-primary"
+                className="text-sm text-neutral-600 dark:text-neutral-400 hover:text-primary"
               >
                 Back to blog
               </Link>

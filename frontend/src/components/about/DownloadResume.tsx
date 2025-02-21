@@ -63,7 +63,8 @@ const DownloadResume = (): ReactElement => {
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: "-100px" }}
-      className="relative w-full py-20 px-8 lg:p-20 bg-gradient-to-r from-cool-red/5 via-cool-red/5 to-neutral-100 dark:from-red-950 dark:via-red-950/50 dark:to-transparent rounded-2xl"
+      className="relative w-full py-20 px-8 lg:p-20 rounded-2xl bg-gradient-to-r 
+        from-cool-red/5 via-cool-red/5 to-neutral-100 dark:from-neutral-950 dark:via-neutral-950/50 dark:to-transparent"
     >
       <div className="relative flex flex-col lg:flex-row gap-10 items-center justify-between">
         <motion.div
@@ -86,7 +87,7 @@ const DownloadResume = (): ReactElement => {
         <motion.div variants={animations.buttonVariants}>
           <a
             href="/Web_Resume-Elomar_Sami-Dec_2024.pdf"
-            className="group px-8 py-4 bg-primary text-white rounded-xl hover:bg-cool-red/90 transition-colors flex items-center gap-2 text-sm"
+            className="group px-8 py-4 bg-primary text-white dark:text-neutral-800 rounded-xl hover:bg-cool-red/90 dark:hover:text-white transition-colors flex items-center gap-2 text-sm"
             download
           >
             {t("download")}

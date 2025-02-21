@@ -69,7 +69,7 @@ const Design = (): ReactElement => {
       className="relative w-full flex flex-col lg:flex-row justify-between items-start lg:items-center gap-10 lg:gap-20"
     >
       {/* Background dot */}
-      <div className="absolute bottom-[calc(50%_-_8rem)] rounded-full right-0 w-64 h-64 bg-neutral-200 dark:bg-neutral-800 z-0" />
+      <div className="absolute bottom-[calc(50%_-_8rem)] rounded-full right-0 w-64 h-64 bg-neutral-200 dark:bg-neutral-900 z-0" />
 
       {/* Left image */}
       <motion.div

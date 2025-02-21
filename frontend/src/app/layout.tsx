@@ -29,8 +29,8 @@ export default function RootLayout({
         className={`${fontDM_Sans.variable} ${fontLibre_BaskervilleItalic.variable}
         ${fontInter.variable} ${fontRakkas.variable} ${fontPacifico.variable} 
         ${fontAmiri.variable}
-        overflow-x-clip relative w-full 
-        dark:bg-neutral-700 text-gray-900 dark:text-gray-100 font-inter`}
+        overflow-x-clip relative w-full
+        dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 font-inter`}
         suppressHydrationWarning
       >
         <ThemeProvider>

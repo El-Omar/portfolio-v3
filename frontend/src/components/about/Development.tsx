@@ -69,7 +69,7 @@ const Development = (): ReactElement => {
       className="relative w-full py-10 lg:py-20"
     >
       {/* Background section */}
-      <div className="absolute h-[120%] w-[200vw] -left-[50vh] bg-gradient-to-b from-neutral-100 via-neutral-100 to-transparent dark:from-neutral-800 dark:via-neutral-800 top-0 -z-10" />
+      <div className="absolute h-[120%] w-[200vw] -left-[50vh] bg-gradient-to-b from-neutral-100 via-neutral-100 to-transparent dark:from-neutral-900 dark:via-neutral-900 top-0 -z-10" />
 
       {/* Content */}
       <div className="relative max-w-5xl mx-auto">

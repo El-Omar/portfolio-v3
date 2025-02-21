@@ -108,13 +108,13 @@ const Stats = () => {
                   w-7 h-7 -top-3 -left-3 md:scale-75 
                   group-hover:scale-100
                   ${expandedCard === index ? "scale-100" : "group-hover:bg-cool-red"}
-                  md:bg-neutral-800 bg-cool-red
+                  md:bg-neutral-800 bg-cool-red dark:bg-cool-red
                   transition-all duration-200 ease-in-out
                 `}
               >
                 <ArrowDownRight
                   className={`
-                    absolute text-white top-1 left-1
+                    absolute top-1 left-1 text-neutral-100
                     md:opacity-0 opacity-100 group-hover:opacity-100 transition-all duration-300
                     motion-translate-x-loop-[15%] motion-translate-y-loop-[15%]
                     ${expandedCard === index ? "translate-x-4 translate-y-4 opacity-100" : ""}
@@ -123,7 +123,7 @@ const Stats = () => {
                 />
                 <Minus
                   className={`
-                    absolute text-white top-1.5 left-1.5
+                    absolute  top-1.5 left-1.5 text-neutral-100 dark:text-neutral-900
                     opacity-0 transition-all duration-200
                     ${expandedCard === index ? "opacity-100 delay-100 translate-x-0" : "-translate-x-1"}
                   `}
@@ -135,7 +135,7 @@ const Stats = () => {
                 {/* Expanding Circle Background */}
                 <div
                   className={`
-                  absolute bg-gold-light rounded-full z-10
+                  absolute bg-gold-light dark:bg-gold/10 rounded-full z-10
                   -top-3 -left-3
                   transition-all duration-500 ease-in-out delay-100
                   ${
@@ -147,11 +147,11 @@ const Stats = () => {
                 />
 
                 {/* Card Content */}
-                <div className="relative h-full p-8 bg-gradient-to-tr from-neutral-50 to-neutral-100 dark:bg-neutral-800">
+                <div className="relative h-full p-8 bg-neutral-100 dark:bg-neutral-900">
                   <div className="space-y-6">
                     {/* Header */}
                     <div className="relative z-20">
-                      <h3 className="text-sm md:text-xs uppercase tracking-wider text-neutral-500 dark:text-neutral-400 group-hover:text-cool-red transition-all duration-300">
+                      <h3 className="text-sm md:text-xs uppercase tracking-wider text-neutral-500 dark:text-neutral-200 group-hover:text-cool-red transition-all duration-300">
                         <div className="absolute -top-[5px] right-0">
                           {card.icon}
                         </div>
@@ -177,7 +177,7 @@ const Stats = () => {
                     <div className="relative z-20">
                       {/* Main Value */}
                       <div className="mb-6">
-                        <p className="xl:text-2xl text-lg font-medium text-neutral-900 dark:text-white">
+                        <p className="xl:text-2xl text-lg font-medium">
                           {card.infoKeys.primary.valueParams
                             ? t(
                                 card.infoKeys.primary.valueKey,
@@ -224,7 +224,7 @@ const Stats = () => {
                       {/* Description Content with Fade/Slide Animation */}
                       <div
                         className={`
-                          pt-4 mt-2 border-t border-neutral-400 dark:border-neutral-800
+                          pt-4 mt-2 border-t border-neutral-400 dark:border-neutral-500
                           ${
                             expandedCard === index
                               ? "motion-fade-in motion-translate-y-in-25 motion-duration-500 motion-ease-spring-smooth"

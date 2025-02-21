@@ -15,7 +15,7 @@ const Intro = (): ReactElement => {
       flex flex-col lg:flex-row justify-center items-center
       p-8 lg:p-0 gap-6 lg:gap-12
       bg-gradient-to-b lg:bg-gradient-to-l
-      from-neutral-100 to-cool-red/5 dark:to-neutral-900"
+      from-neutral-100 dark:from-neutral-800 to-cool-red/5 dark:to-neutral-900"
     >
       <IntroHeader />
       <IntroFigure />

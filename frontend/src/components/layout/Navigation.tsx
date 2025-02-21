@@ -33,8 +33,8 @@ const Navigation = (): ReactElement => {
   return (
     <nav
       className="
-        fixed z-[100] w-full backdrop-blur-sm shadow-sm py-1
-        bg-white/70 dark:bg-neutral-900"
+        fixed z-[100] w-full backdrop-blur-sm shadow-sm dark:shadow-neutral-950 py-1
+        bg-white/70 dark:bg-neutral-900/70"
     >
       <Container className="flex justify-between items-center">
         <Link href="/" className="p-2 -ml-2">
@@ -70,7 +70,7 @@ const Navigation = (): ReactElement => {
                 key={page.path}
                 href={page.path}
                 className="lg:px-4 px-3 py-2 text-xs lg:text-sm font-medium 
-                  rounded-xl text-neutral-600
+                  rounded-xl
                   hover:text-cool-red
                   transition-colors duration-300"
               >

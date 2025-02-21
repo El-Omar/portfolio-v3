@@ -88,7 +88,7 @@ const Develop = () => {
       className="relative w-full flex flex-col lg:flex-row justify-start items-start lg:items-center gap-20"
     >
       {/* Background dot */}
-      <div className="absolute bottom-[calc(50%_-_8rem)] rounded-full left-0 w-64 h-64 bg-neutral-200 z-0" />
+      <div className="absolute bottom-[calc(50%_-_8rem)] rounded-full left-0 w-64 h-64 bg-neutral-200 dark:bg-neutral-900 z-0" />
 
       {/* Left content */}
       <div className="space-y-6 relative z-50">

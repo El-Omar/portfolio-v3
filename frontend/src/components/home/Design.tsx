@@ -97,7 +97,7 @@ const Design = () => {
           {/* Main image container */}
           <motion.div
             variants={animations.imageContainerVariants}
-            className="relative w-[80%] aspect-[4/3] bg-neutral-200 z-20 mx-auto"
+            className="relative w-[80%] aspect-[4/3] bg-neutral-200 dark:bg-neutral-900 z-20 mx-auto"
           >
             {/* Main image */}
             <Image
@@ -150,7 +150,7 @@ const Design = () => {
       </div>
 
       {/* Background dot */}
-      <div className="absolute bottom-[calc(50%_-_8rem)] rounded-full right-0 w-64 h-64 bg-neutral-200 z-0" />
+      <div className="absolute bottom-[calc(50%_-_8rem)] rounded-full right-0 w-64 h-64 bg-neutral-200 dark:bg-neutral-900 z-0" />
       <div className="space-y-6 relative z-50">
         <motion.div variants={animations.textVariants}>
           <Title>

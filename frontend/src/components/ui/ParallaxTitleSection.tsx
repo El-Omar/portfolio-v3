@@ -46,7 +46,10 @@ const ParallaxTitleSection = ({
   return (
     <section
       ref={containerRef}
-      className={twMerge(`relative min-h-screen w-full`, className)}
+      className={twMerge(
+        `relative min-h-screen w-full overflow-clip `,
+        className,
+      )}
     >
       <div
         className={twMerge(

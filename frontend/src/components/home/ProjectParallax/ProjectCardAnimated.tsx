@@ -27,14 +27,14 @@ const ProjectCard = ({ project, index, y, firstColumn = false }: Props) => {
           className="
             absolute -left-5 -top-10 opacity-50
             hidden md:block md:w-24 md:h-24 
-            rounded-full bg-gold-dark
+            rounded-full bg-gold-dark dark:bg-neutral-700
             mb-3
           "
         />
         <div className="group relative">
           {/* Project Number */}
           <div className="absolute -left-4 -top-12 z-10 hidden md:block">
-            <span className="text-4xl sm:text-5xl lg:text-7xl font-bold text-primary z-10">
+            <span className="text-4xl sm:text-5xl lg:text-7xl font-bold text-primary z-10 dark:text-gold">
               {displayNumber}
             </span>
           </div>

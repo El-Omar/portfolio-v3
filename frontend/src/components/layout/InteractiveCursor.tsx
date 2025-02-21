@@ -125,11 +125,11 @@ const CursorWithDot = (): ReactElement => {
               flex items-center justify-center
               pointer-events-none absolute rounded-full bg-primary
               w-4 aspect-square transition-all duration-200	ease-[cubic-bezier(0.25,0.1,0.25,1)]
-              group-[.hovered]:opacity-50 group-[.hovered]:w-9`}
+              group-[.hovered]:opacity-60 group-[.hovered]:w-9`}
           >
             <MousePointer
               size={16}
-              className="hidden group-[.hovered]:block stroke-gold fill-gold"
+              className="hidden group-[.hovered]:block stroke-gold fill-gold dark:stroke-cool-red dark:fill-cool-red"
             />
           </div>
         </motion.div>

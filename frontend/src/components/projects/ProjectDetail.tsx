@@ -148,48 +148,46 @@ const ProjectDetail = ({ project }: ProjectDetailProps) => {
 
         {/* Image Gallery */}
         {project.additionalImages && project.additionalImages.length > 0 && (
-          <div className="w-full bg-neutral-100 dark:bg-neutral-800">
-            <div className="container px-6 py-12 lg:py-20">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-12 auto-rows-auto">
-                {project.additionalImages.map((image, index) => {
-                  // Determine if image should be full width
-                  const isFullWidth = image.className?.includes("w-full");
+          <div className="w-full bg-neutral-100 dark:bg-neutral-900">
+            <Container className="py-10 grid grid-cols-1 md:grid-cols-2 gap-10 auto-rows-auto">
+              {project.additionalImages.map((image, index) => {
+                // Determine if image should be full width
+                const isFullWidth = image.className?.includes("w-full");
 
-                  return (
-                    <div
-                      key={index}
-                      className={cn(
-                        "relative w-full",
-                        isFullWidth && "md:col-span-2",
-                      )}
-                    >
-                      <div className="relative w-full h-auto">
-                        <Image
-                          src={image.url}
-                          alt={
-                            image.caption ||
-                            `${project.title} screenshot ${index + 1}`
-                          }
-                          width={1920}
-                          height={1080}
-                          className={cn(
-                            "w-full h-auto rounded-lg",
-                            image.className,
-                          )}
-                        />
-                      </div>
-                      {image.caption && (
-                        <div className="mt-4">
-                          <p className="text-sm text-neutral-500 dark:text-neutral-400">
-                            {image.caption}
-                          </p>
-                        </div>
-                      )}
+                return (
+                  <div
+                    key={index}
+                    className={cn(
+                      "relative w-full",
+                      isFullWidth && "md:col-span-2",
+                    )}
+                  >
+                    <div className="relative w-full h-auto">
+                      <Image
+                        src={image.url}
+                        alt={
+                          image.caption ||
+                          `${project.title} screenshot ${index + 1}`
+                        }
+                        width={1920}
+                        height={1080}
+                        className={cn(
+                          "w-full h-auto rounded-lg",
+                          image.className,
+                        )}
+                      />
                     </div>
-                  );
-                })}
-              </div>
-            </div>
+                    {image.caption && (
+                      <div className="mt-4">
+                        <p className="text-sm text-neutral-500 dark:text-neutral-400">
+                          {image.caption}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </Container>
           </div>
         )}
       </article>

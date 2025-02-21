@@ -49,7 +49,7 @@ const BlogCard = ({ blog }: Props): ReactElement => {
       {/* Content */}
       <div className="flex-1 py-3">
         {/* Meta info */}
-        <div className="flex items-center justify-between text-xs text-neutral-500 mb-2">
+        <div className="flex items-center justify-between text-xs text-neutral-500 dark:text-neutral-400 mb-2">
           <time className="tracking-wider">{formatDate(blog.writtenAt)}</time>
           <span>{blog.readingTime} min read</span>
         </div>
@@ -59,7 +59,7 @@ const BlogCard = ({ blog }: Props): ReactElement => {
           <h3 className="text-xl font-bold group-hover:text-primary transition-colors mb-1">
             {blog.title}
           </h3>
-          <p className="text-sm text-neutral-600 dark:text-neutral-400 line-clamp-2">
+          <p className="text-sm text-neutral-600 dark:text-neutral-300 line-clamp-2">
             {blog.description}
           </p>
         </div>

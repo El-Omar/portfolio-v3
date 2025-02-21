@@ -16,7 +16,7 @@ const Footer = (): ReactElement => {
         <div
           className="h-[100vh] lg:h-[600px] sticky top-[calc(100vh-100vh)] lg:top-[calc(100vh-600px)]
             bg-gradient-to-b lg:bg-gradient-to-l
-          from-neutral-100 to-cool-red/5 dark:from-neutral-900 dark:to-neutral-800"
+          from-neutral-100 to-cool-red/5 dark:from-neutral-800 dark:to-neutral-950"
         >
           <Content />
         </div>
@@ -31,7 +31,13 @@ const BigLogo = () => {
       <strong className="text-3xl font-rakkas -mr-1.5 mb-2 leading-[0]">
         ـمر
       </strong>
-      <Image src="/img/logo.svg" alt="Logo" width={40} height={40} />
+      <Image
+        src="/img/logo.svg"
+        alt="Logo"
+        width={40}
+        height={40}
+        className="dark:invert"
+      />
       <span className="text-3xl font-pacifico mt-0 -ml-1.5 leading-[0] self-center">
         omar
       </span>
@@ -110,7 +116,7 @@ const Content = () => {
         </div>
       </div>
 
-      <hr className="border-neutral-200 dark:border-neutral-800" />
+      <hr className="border-neutral-200 dark:border-neutral-700" />
 
       <div className="flex justify-between lg:items-center items-start text-sm text-neutral-600 dark:text-neutral-400">
         <p className="w-">

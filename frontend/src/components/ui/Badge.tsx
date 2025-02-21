@@ -15,9 +15,9 @@ const Badge = ({
       className={cn(
         "inline-flex items-center text-xs font-medium px-2 py-0.5 rounded",
         variant === "default" &&
-          "bg-neutral-100 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-400",
+          "bg-neutral-100 text-neutral-600 dark:bg-neutral-500 dark:text-neutral-400",
         variant === "outline" &&
-          "border border-neutral-200 dark:border-neutral-800",
+          "border border-neutral-200 dark:border-neutral-500",
         className,
       )}
       {...props}

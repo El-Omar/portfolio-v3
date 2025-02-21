@@ -1,4 +1,5 @@
 import { ReactElement } from "react";
+import PageTransition from "../PageTransition";
 import { getBlogs } from "@/app/actions/blogs";
 import BlogGrid from "@/components/blog/BlogGrid";
 import BlogHeader from "@/components/blog/BlogHeader";
@@ -23,23 +24,25 @@ const BlogPage = async ({ searchParams }: Props): Promise<ReactElement> => {
     : blogs;
 
   return (
-    <Container className="py-16 lg:py-32 relative flex flex-col lg:flex-row gap-12">
-      {/* Left Sidebar */}
-      <div className="lg:w-1/4 lg:border-r lg:pr-6">
-        <div className="lg:sticky lg:top-24 border-neutral-200 dark:border-neutral-700">
-          <div className="space-y-8">
-            <BlogHeader />
-            <hr className="border-neutral-200 dark:border-neutral-700 w-28" />
-            <CategoryFilter categories={categories} />
+    <PageTransition>
+      <Container className="py-16 lg:py-32 relative flex flex-col lg:flex-row gap-12">
+        {/* Left Sidebar */}
+        <div className="lg:w-1/4 lg:border-r lg:border-neutral-200 dark:border-neutral-700 lg:pr-6">
+          <div className="lg:sticky lg:top-24 border-neutral-200 dark:border-neutral-700">
+            <div className="space-y-8">
+              <BlogHeader />
+              <hr className="border-neutral-200 dark:border-neutral-600 w-28" />
+              <CategoryFilter categories={categories} />
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Main Content */}
-      <div className="lg:w-3/4">
-        <BlogGrid blogs={filteredBlogs} />
-      </div>
-    </Container>
+        {/* Main Content */}
+        <div className="lg:w-3/4">
+          <BlogGrid blogs={filteredBlogs} />
+        </div>
+      </Container>
+    </PageTransition>
   );
 };
 

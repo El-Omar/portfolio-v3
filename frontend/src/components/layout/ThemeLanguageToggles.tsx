@@ -42,7 +42,7 @@ const ThemeLanguageToggles = (): ReactElement => {
     setIsAnimating(false);
   }, [pathname, router, switchToArabic]);
 
-  const className = `border bg-white min-w-auto min-h-auto w-7 h-7
+  const className = `min-w-auto min-h-auto w-7 h-7 !bg-neutral-100 text-neutral-900 dark:text-neutral-800
     hover:bg-neutral-50 transition-colors rounded-full`;
 
   const arabicLetters = "ـمر".split("");
@@ -185,12 +185,7 @@ const ThemeLanguageToggles = (): ReactElement => {
         </>
       )}
       <div className="flex items-center gap-2 pl-4 lg:pl-0 border-l lg:border-l-0 border-neutral-200">
-        <Toggle
-          onPressedChange={toggleTheme}
-          pressed={isDarkMode}
-          size="sm"
-          className={className}
-        >
+        <Toggle onPressedChange={toggleTheme} size="sm" className={className}>
           <span className="sr-only">Theme</span>
           <span className="w-3 h-3 [&_svg]:w-3 [&_svg]:h-3">
             {isDarkMode ? <Moon size={12} /> : <Sun size={12} />}
@@ -198,9 +193,9 @@ const ThemeLanguageToggles = (): ReactElement => {
         </Toggle>
 
         <Toggle
+          className={className}
           onPressedChange={switchLanguage}
           size="sm"
-          className={className}
         >
           <span className="sr-only">Language</span>
           <span className="text-xs font-bold">
