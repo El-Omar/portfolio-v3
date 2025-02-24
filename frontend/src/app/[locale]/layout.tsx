@@ -1,14 +1,18 @@
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { NextIntlClientProvider } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 
 import PageWrapper from "./PageWrapper";
+import { getMetadata } from "@/config/metadata";
 import { Locale, routing } from "@/i18n/routing";
 
 // Generate static params for all supported locales
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
+
+export const metadata: Metadata = getMetadata();
 
 export default async function LocaleLayout({
   children,

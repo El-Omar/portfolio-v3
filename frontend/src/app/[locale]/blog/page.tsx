@@ -1,3 +1,4 @@
+import { Metadata } from "next";
 import { ReactElement } from "react";
 import PageTransition from "../PageTransition";
 import { getBlogs } from "@/app/actions/blogs";
@@ -5,6 +6,13 @@ import BlogGrid from "@/components/blog/BlogGrid";
 import BlogHeader from "@/components/blog/BlogHeader";
 import CategoryFilter from "@/components/blog/CategoryFilter";
 import Container from "@/components/ui/Container";
+import { getMetadata } from "@/config/metadata";
+
+export const metadata: Metadata = getMetadata({
+  title: "Blog",
+  description:
+    "Read my thoughts and insights on web development, design, and technology.",
+});
 
 type Props = {
   searchParams: Promise<{ category?: string }>;

@@ -185,7 +185,11 @@ const ThemeLanguageToggles = (): ReactElement => {
           </motion.div>
         </>
       )}
-      <div className="flex items-center gap-2 pl-4 lg:pl-0 border-l lg:border-l-0 border-neutral-200">
+      <div
+        className="flex items-center gap-2 
+          pl-4 lg:pl-0 border-l rtl:border-r rtl:pl-0 rtl:border-l-0 rtl:lg:border-r-0 rtl:pr-4 rtl:lg:pr-0 lg:border-l-0 
+          border-neutral-200"
+      >
         <Toggle onPressedChange={toggleTheme} size="sm" className={className}>
           <span className="sr-only">Theme</span>
           <span className="w-3 h-3 [&_svg]:w-3 [&_svg]:h-3">

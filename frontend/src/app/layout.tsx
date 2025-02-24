@@ -3,6 +3,7 @@ import React from "react";
 import "./globals.css";
 import { Toaster } from "sonner";
 import ThemeProvider from "@/components/providers/ThemeProvider";
+import { getMetadata } from "@/config/metadata";
 
 import {
   fontAmiri,
@@ -13,10 +14,7 @@ import {
   fontRakkas,
 } from "@/lib/utils/fonts";
 
-export const metadata: Metadata = {
-  title: "Home - Elomar",
-  description: "Personal portfolio website of Elomar",
-};
+export const metadata: Metadata = getMetadata();
 
 export default function RootLayout({
   children,

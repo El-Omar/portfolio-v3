@@ -1,3 +1,4 @@
+import { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { ReactElement } from "react";
@@ -8,6 +9,7 @@ import BilingualLogoWithPen from "@/components/ui/BilingualLogoWithPen";
 import Container from "@/components/ui/Container";
 import Markup from "@/components/ui/Markup";
 import Title from "@/components/ui/Title";
+import { getMetadata } from "@/config/metadata";
 import { Link } from "@/i18n/routing";
 import { formatDate } from "@/lib/utils/dates";
 import { fontSpectral } from "@/lib/utils/fonts";
@@ -17,6 +19,12 @@ type Props = {
     slug: string;
   }>;
 };
+
+export const metadata: Metadata = getMetadata({
+  title: "Blog",
+  description:
+    "Read my thoughts and insights on web development, design, and technology.",
+});
 
 const BlogDetailPage = async ({ params }: Props): Promise<ReactElement> => {
   const pars = await params;

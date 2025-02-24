@@ -1,3 +1,4 @@
+import { Metadata } from "next";
 import { ReactElement } from "react";
 import PageTransition from "../PageTransition";
 import Design from "@/components/about/Design";
@@ -7,6 +8,13 @@ import Intro from "@/components/about/Intro";
 import Photography from "@/components/about/Photography";
 import Testimonials from "@/components/about/Testimonials";
 import Container from "@/components/ui/Container";
+import { getMetadata } from "@/config/metadata";
+
+export const metadata: Metadata = getMetadata({
+  title: "About",
+  description:
+    "Learn more about my journey, skills, and experience in web development and design.",
+});
 
 const About = (): ReactElement => {
   return (
