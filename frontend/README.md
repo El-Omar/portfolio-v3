@@ -82,7 +82,7 @@ graph LR
 - **UI Library**: React 19
 - **Component Library**: shadcn/ui
 - **Styling**: TailwindCSS
-- **Animations**: Motion (Previously Framer Motion)
+- **Animations**: Motion & Lenis
 - **State Management**: Zustand
 - **Form Handling**: React Hook Form
 - **Validation**: Zod
