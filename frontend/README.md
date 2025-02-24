@@ -80,8 +80,9 @@ graph LR
 
 - **Framework**: Next.js 15
 - **UI Library**: React 19
+- **Component Library**: shadcn/ui
 - **Styling**: TailwindCSS
-- **Animations**: Motion One
+- **Animations**: Motion (Previously Framer Motion)
 - **State Management**: Zustand
 - **Form Handling**: React Hook Form
 - **Validation**: Zod
@@ -144,9 +145,8 @@ yarn start
 ## 🧪 Testing
 
 [To be implemented]
-- Unit tests with Jest
-- Component tests with React Testing Library
-- E2E tests with Cypress
+- Unit tests and integration tests
+- E2E tests
 
 ## 📦 Dependencies
 
@@ -170,8 +170,10 @@ yarn start
 
 ## 🤝 Contributing
 
-[Your contribution guidelines]
+- Icons: [Lucide](https://lucide.dev/)
+- Images: [Pexels](https://www.pexels.com/)
 
 ## 📝 License
 
 MIT © [2025] [El-Omar]
+
