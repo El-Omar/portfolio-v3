@@ -5,9 +5,14 @@ A modern, performant portfolio website built with a microservices architecture u
 ## 🏗 Architecture
 
 ```mermaid
-graph TB
+graph LR
     subgraph Infrastructure
         Docker[Docker Compose]
+    end
+
+    subgraph Shared["Shared Layer"]
+        Types[Types & Schemas]
+        Utils[Constants & Utils]
     end
 
     subgraph Frontend["Frontend Layer (Next.js)"]
@@ -24,11 +29,6 @@ graph TB
     subgraph Data["Data Layer"]
         MongoDB[(MongoDB)]
         S3[(AWS S3)]
-    end
-
-    subgraph Shared["Shared Layer"]
-        Types[Types & Schemas]
-        Utils[Constants & Utils]
     end
 
     Docker --> Frontend
