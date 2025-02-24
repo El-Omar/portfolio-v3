@@ -5,28 +5,41 @@ Express.js backend service providing RESTful APIs for the portfolio website. Fea
 ## 🏗 Architecture
 
 ```mermaid
-graph TB
+graph LR
+    subgraph Security["Security Layer"]
+        Rate[Rate Limiter]
+        JWT[JWT Auth]
+        Valid[Validation]
+    end
+
     subgraph API["API Layer"]
-        Routes[Route Handlers]
+        Routes[Routes]
         Controllers[Controllers]
         Middleware[Middleware]
     end
 
     subgraph Services["Service Layer"]
-        Auth[Authentication]
+        Auth[Auth Service]
         Storage[S3 Service]
-        DB[Database Service]
+        DB[DB Service]
     end
 
     subgraph Data["Data Layer"]
         Models[MongoDB Models]
-        Schemas[Validation Schemas]
+        S3[(AWS S3)]
     end
 
-    Routes --> |Validates| Middleware
-    Middleware --> |Processes| Controllers
-    Controllers --> |Uses| Services
-    Services --> |Interacts| Data
+    Client[Client] --> Security
+    Security --> API
+    
+    Routes --> Controllers
+    Controllers --> Services
+    
+    Services --> Data
+    
+    Rate --> Routes
+    JWT --> Routes
+    Valid --> Controllers
 ```
 
 ## 📚 Key Features
@@ -135,7 +148,7 @@ backend/
 GET     /api/projects          # List all projects
 GET     /api/projects/:slug    # Get project by slug
 POST    /api/projects          # Create new project
-PUT     /api/projects/:slug    # Update project
+PATCH     /api/projects/:slug    # Update project
 DELETE  /api/projects/:slug    # Delete project
 ```
 
@@ -144,7 +157,7 @@ DELETE  /api/projects/:slug    # Delete project
 GET     /api/blogs            # List all blog posts
 GET     /api/blogs/:slug      # Get blog post by slug
 POST    /api/blogs            # Create new blog post
-PUT     /api/blogs/:slug      # Update blog post
+PATCH     /api/blogs/:slug      # Update blog post
 DELETE  /api/blogs/:slug      # Delete blog post
 ```
 
@@ -166,7 +179,7 @@ DELETE  /api/uploads/:key     # Delete file from S3
 - Node.js 18+
 - MongoDB
 - AWS Account (for S3)
-- Yarn package manager
+- Yarn
 
 ### Environment Setup
 Create a `.env.development` file:
