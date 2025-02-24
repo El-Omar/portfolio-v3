@@ -69,7 +69,7 @@ const DownloadResume = (): ReactElement => {
       <div className="relative flex flex-col lg:flex-row gap-10 items-center justify-between">
         <motion.div
           variants={animations.textVariants}
-          className="text-center lg:text-left"
+          className="text-center lg:text-left rtl:lg:text-right"
         >
           <Title className="md:leading-tight">
             {t.rich("title", {

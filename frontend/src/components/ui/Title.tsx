@@ -18,7 +18,7 @@ const Title = ({
 
   const className = twMerge(
     "text-4xl md:text-5xl md:leading-tight",
-    !isArabic ? "tracking-tight font-dm-sans" : "font-amiri",
+    !isArabic ? "tracking-tight font-dm-sans" : "font-amiri md:text-6xl",
     _className,
   );
 

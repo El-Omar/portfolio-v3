@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, useScroll, useSpring, useTransform } from "motion/react";
+import { useLocale } from "next-intl";
 import { ReactNode, useRef } from "react";
 import { twMerge } from "tailwind-merge";
 
@@ -21,6 +22,8 @@ const SectionTransition = ({
   className = "",
   align = "left",
 }: SectionTransitionProps) => {
+  const locale = useLocale();
+  const isRTL = locale === "ar";
   const titleRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: titleRef,
@@ -39,9 +42,8 @@ const SectionTransition = ({
     ["100%", "0%"],
   );
 
-  const firstLineAnimation = useTransform(
-    firstLineProgress,
-    (value) => `inset(0 ${value} -50% 0)`,
+  const firstLineAnimation = useTransform(firstLineProgress, (value) =>
+    !isRTL ? `inset(0 ${value} -50% 0)` : `inset(0 0 -50% ${value})`,
   );
 
   const secondLineProgress = useTransform(
@@ -50,9 +52,8 @@ const SectionTransition = ({
     ["100%", "0%"],
   );
 
-  const secondLineAnimation = useTransform(
-    secondLineProgress,
-    (value) => `inset(0 ${value} -50% 0)`,
+  const secondLineAnimation = useTransform(secondLineProgress, (value) =>
+    !isRTL ? `inset(0 ${value} -50% 0)` : `inset(0 0 -50% ${value})`,
   );
 
   const dotProgress = useTransform(smoothProgress, [0.3, 0.5], [0, 1]);
@@ -64,7 +65,9 @@ const SectionTransition = ({
     <div className={twMerge(`w-full py-16 lg:py-40 ${className}`)}>
       <div
         ref={titleRef}
-        className={`space-y-2 flex flex-col ${align === "right" ? "lg:text-right" : align === "center" ? "lg:text-center items-center" : ""}`}
+        className={`space-y-2 flex flex-col 
+          ${align === "right" ? "lg:text-right" : align === "center" ? "lg:text-center items-center" : ""}
+          rtl:items-start`}
       >
         <div className="relative flex flex-col items-start">
           <h2 className={`${baseClassName} text-neutral-300 relative`}>

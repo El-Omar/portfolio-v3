@@ -79,7 +79,8 @@ const ThemeLanguageToggles = (): ReactElement => {
               ease: slideEase,
             }}
             className="fixed inset-0 h-screen w-screen text-white
-              bg-[#161616] z-[9999] flex items-center justify-center"
+              bg-[#161616] z-[9999] flex items-center justify-center
+              rtl:flex-row-reverse ltr:flex-row"
           >
             {/* Gradient background */}
             <motion.div

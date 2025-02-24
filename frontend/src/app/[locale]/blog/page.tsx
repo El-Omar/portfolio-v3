@@ -27,7 +27,7 @@ const BlogPage = async ({ searchParams }: Props): Promise<ReactElement> => {
     <PageTransition>
       <Container className="py-16 lg:py-32 relative flex flex-col lg:flex-row gap-12">
         {/* Left Sidebar */}
-        <div className="lg:w-1/4 lg:border-r lg:border-neutral-200 dark:border-neutral-700 lg:pr-6">
+        <div className="lg:w-1/4 lg:border-r rtl:lg:border-l rtl:lg:border-r-0 lg:border-neutral-200 dark:border-neutral-700 lg:pr-6 rtl:lg:pr-0 rtl:lg:pl-6">
           <div className="lg:sticky lg:top-24 border-neutral-200 dark:border-neutral-700">
             <div className="space-y-8">
               <BlogHeader />

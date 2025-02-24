@@ -94,7 +94,7 @@ const Stats = () => {
               className={`
                 relative cursor-pointer h-full group
                 transition-all duration-500 ease-in-out
-                text-left
+                text-left rtl:text-right
                 ${expandedCard === index ? "" : ""}
               `}
               onClick={() =>
@@ -151,10 +151,11 @@ const Stats = () => {
                   <div className="space-y-6">
                     {/* Header */}
                     <div className="relative z-20">
-                      <h3 className="text-sm md:text-xs uppercase tracking-wider text-neutral-500 dark:text-neutral-200 group-hover:text-cool-red transition-all duration-300">
-                        <div className="absolute -top-[5px] right-0">
-                          {card.icon}
-                        </div>
+                      <h3
+                        className="text-sm md:text-xs uppercase tracking-wider text-neutral-500 flex
+                        justify-between items-center
+                        dark:text-neutral-200 group-hover:text-cool-red transition-all duration-300"
+                      >
                         <strong
                           className={
                             expandedCard === index ? "text-cool-red" : ""
@@ -162,6 +163,7 @@ const Stats = () => {
                         >
                           {t(card.titleKey)}
                         </strong>
+                        <div className="">{card.icon}</div>
                       </h3>
                       <div
                         className={`

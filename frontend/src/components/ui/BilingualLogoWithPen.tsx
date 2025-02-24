@@ -5,7 +5,7 @@ const BilingualLogoWithPen = () => {
   return (
     <div className="flex items-center gap-2">
       <BilingualLogo />
-      <IconPen className="dark:fill-neutral-100" />
+      <IconPen className="dark:fill-neutral-100 rtl:scale-x-[-1]" />
     </div>
   );
 };
