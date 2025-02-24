@@ -29,7 +29,6 @@ graph LR
         S3[(AWS S3)]
     end
 
-    Client[Client] --> Security
     Security --> API
     
     Routes --> Controllers
