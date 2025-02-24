@@ -5,28 +5,42 @@ A modern, performant portfolio website built with a microservices architecture u
 ## 🏗 Architecture
 
 ```mermaid
-graph TD
-    subgraph "Frontend Layer"
-        N[Next.js App] --> |Server Actions| B
-        N --> |Static Pages| U[User Interface]
-        N --> |Dynamic Routes| CMS[Admin CMS]
+graph TB
+    subgraph Infrastructure
+        Docker[Docker Compose]
     end
+
+    subgraph Frontend["Frontend Layer (Next.js)"]
+        UI[User Interface]
+        CMS[Admin CMS]
+        Router[Dynamic Routes]
+    end
+
+    subgraph Backend["Backend Layer (Express)"]
+        API[REST API]
+        Storage[File Handler]
+    end
+
+    subgraph Data["Data Layer"]
+        MongoDB[(MongoDB)]
+        S3[(AWS S3)]
+    end
+
+    subgraph Shared["Shared Layer"]
+        Types[Types & Schemas]
+        Utils[Constants & Utils]
+    end
+
+    Docker --> Frontend
+    Docker --> Backend
+    Docker --> MongoDB
+
+    Frontend --> |API Calls| Backend
+    Backend --> |Queries| MongoDB
+    Backend --> |File Storage| S3
     
-    subgraph "Backend Layer"
-        B[Express API] --> |Queries| DB[(MongoDB)]
-        B --> |File Storage| S3[AWS S3]
-    end
-
-    subgraph "Shared Layer"
-        SH[Shared Package] --> |Types & Constants| N
-        SH --> |Schemas & Utils| B
-    end
-
-    subgraph "Infrastructure"
-        D[Docker] --> |Orchestrates| N
-        D --> |Orchestrates| B
-        D --> |Orchestrates| DB
-    end
+    Shared --> |Types & Utils| Frontend
+    Shared --> |Types & Utils| Backend
 ```
 
 ## 🚀 Key Features
@@ -88,7 +102,16 @@ portfolio-v3/
    - Node.js 18+
    - Yarn
 
-2. **Installation**
+2. **Environment Setup**
+
+    The project requires several environment variables for proper functionality. Create the following files:
+
+    - `frontend/.env.development`
+    - `backend/.env.development`
+
+    [Environment variable templates available in documentation]
+
+3. **Installation**
    ```bash
    # Clone the repository
    git clone https://github.com/El-Omar/portfolio-v3.git
@@ -100,7 +123,7 @@ portfolio-v3/
    yarn docker:up
    ```
 
-3. **Development**
+4. **Development**
    ```bash
    # Watch shared package changes
    yarn dev:shared
@@ -112,15 +135,6 @@ portfolio-v3/
    yarn dev:backend
    ```
 
-## 📦 Environment Setup
-
-The project requires several environment variables for proper functionality. Create the following files:
-
-- `frontend/.env.development`
-- `backend/.env.development`
-
-[Environment variable templates available in documentation]
-
 ## 🎯 Future Improvements
 
 - [ ] Add end-to-end testing
@@ -131,5 +145,3 @@ The project requires several environment variables for proper functionality. Cre
 ## 📄 License
 
 MIT © [2025] [El-Omar]
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
