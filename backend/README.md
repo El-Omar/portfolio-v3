@@ -2,6 +2,12 @@
 
 Express.js backend service providing RESTful APIs for the portfolio website. Features MongoDB integration, AWS S3 storage, and secure authentication.
 
+## 📑 Related Documentation
+- [Main Project Documentation](../README.md)
+- [Frontend Application](../frontend/README.md)
+- [Shared Types & Utils](../shared/README.md)
+- [Infrastructure Setup](../infrastructure/README.md)
+
 ## 🏗 Architecture
 
 ```mermaid

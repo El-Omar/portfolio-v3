@@ -2,6 +2,15 @@
 
 A modern, performant portfolio website built with a microservices architecture using Next.js, Express, and MongoDB. Features a custom CMS, blog platform, and interactive UI components.
 
+## 📑 Package Documentation
+
+This monorepo consists of several packages, each with its own detailed documentation:
+
+- [**Frontend**](frontend/README.md): Next.js application with SSR and interactive UI
+- [**Backend**](backend/README.md): Express.js API with MongoDB and AWS integration
+- [**Shared**](shared/README.md): Common TypeScript types and utilities
+- [**Infrastructure**](infrastructure/README.md): Docker and deployment configuration
+
 ## 🏗 Architecture
 
 ```mermaid

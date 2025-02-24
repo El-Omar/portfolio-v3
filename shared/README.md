@@ -2,6 +2,12 @@
 
 Core shared library containing common types, schemas, constants, and utilities used across the portfolio frontend and backend services.
 
+## 📑 Related Documentation
+- [Main Project Documentation](../README.md)
+- [Frontend Usage](../frontend/README.md)
+- [Backend Usage](../backend/README.md)
+- [Infrastructure Setup](../infrastructure/README.md)
+
 ## 🏗 Architecture
 
 ```mermaid

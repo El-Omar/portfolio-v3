@@ -2,6 +2,12 @@
 
 Docker-based infrastructure setup for the portfolio project, managing development and production environments.
 
+## 📑 Related Documentation
+- [Main Project Documentation](../README.md)
+- [Frontend Configuration](../frontend/README.md)
+- [Backend Configuration](../backend/README.md)
+- [Shared Package](../shared/README.md)
+
 ## 🏗 Architecture
 
 ```mermaid

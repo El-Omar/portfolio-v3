@@ -2,6 +2,12 @@
 
 Modern, responsive portfolio frontend built with Next.js 15 and React 19. Features server-side rendering, dynamic routing, and interactive UI components.
 
+## 📑 Related Documentation
+- [Main Project Documentation](../README.md)
+- [Backend API Documentation](../backend/README.md)
+- [Shared Types & Utils](../shared/README.md)
+- [Infrastructure Setup](../infrastructure/README.md)
+
 ## 🏗 Architecture
 
 ```mermaid
