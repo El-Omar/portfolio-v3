@@ -1,36 +1,177 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Portfolio Frontend
 
-## Getting Started
+Modern, responsive portfolio frontend built with Next.js 15 and React 19. Features server-side rendering, dynamic routing, and interactive UI components.
 
-First, run the development server:
+## 🏗 Architecture
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```mermaid
+graph LR
+    subgraph Core["Core Application"]
+        Router[Next.js Router]
+        Pages[Page Components]
+        Layouts[Layouts]
+    end
+
+    subgraph Features["Feature Modules"]
+        Projects[Projects]
+        Blog[Blog System]
+        Admin[Admin CMS]
+        I18n[Internationalization]
+    end
+
+    subgraph UI["UI Layer"]
+        Components[UI Components]
+        Animations[Animations]
+        Theme[Theme System]
+    end
+
+    subgraph State["State Management"]
+        Store[Zustand Store]
+        Actions[Server Actions]
+    end
+
+    Router --> Pages
+    Pages --> Components
+    Pages --> Layouts
+    Features --> Components
+    Components --> Theme
+    Components --> Animations
+    Pages --> Actions
+    Actions --> Store
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 📚 Key Features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Pages & Routing
+- Dynamic routes for projects and blog posts
+- Internationalized routing (EN/AR)
+- Protected admin routes
+- Custom 404 and error pages
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Components
+- **Layout Components**
+  - Responsive navigation
+  - Theme switcher
+  - Language switcher
+  - Interactive cursor
+  - Page transitions
 
-## Learn More
+- **UI Components**
+  - Rich text editor
+  - Image upload with preview
+  - Form components
+  - Loading states
+  - Toast notifications
 
-To learn more about Next.js, take a look at the following resources:
+### Animations & Interactions
+- Custom cursor effects
+- Smooth page transitions
+- Parallax scrolling
+- Interactive project cards
+- Space Invaders mini-game
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Admin Dashboard
+- Content management system
+- Project creation/editing
+- Blog post management
+- Media upload system
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🛠 Tech Stack
 
-## Deploy on Vercel
+- **Framework**: Next.js 15
+- **UI Library**: React 19
+- **Styling**: TailwindCSS
+- **Animations**: Motion One
+- **State Management**: Zustand
+- **Form Handling**: React Hook Form
+- **Validation**: Zod
+- **Editor**: TipTap
+- **Internationalization**: next-intl
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📁 Project Structure
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+frontend/
+├── src/
+│   ├── app/                 # Next.js app router
+│   │   ├── [locale]/       # Internationalized routes
+│   │   └── admin/          # Admin dashboard
+│   ├── components/
+│   │   ├── ui/             # Reusable UI components
+│   │   ├── layout/         # Layout components
+│   │   ├── blog/           # Blog-specific components
+│   │   └── projects/       # Project components
+│   ├── lib/
+│   │   ├── api/           # API client functions
+│   │   ├── hooks/         # Custom React hooks
+│   │   └── utils/         # Utility functions
+│   ├── stores/            # Zustand stores
+│   └── types/             # TypeScript definitions
+```
+
+## 🚀 Development
+
+### Prerequisites
+- Node.js 18+
+- Yarn
+- Docker (for full-stack development)
+
+### Environment Setup
+Create a `.env.development` file:
+```env
+NEXT_PUBLIC_API_URL=http://localhost:5000/api
+NEXT_PUBLIC_CMS_PATH=admin
+```
+
+### Starting Development
+```bash
+# Install dependencies
+yarn install
+
+# Start development server
+yarn dev
+```
+
+### Building for Production
+```bash
+# Create production build
+yarn build
+
+# Start production server
+yarn start
+```
+
+## 🧪 Testing
+
+[To be implemented]
+- Unit tests with Jest
+- Component tests with React Testing Library
+- E2E tests with Cypress
+
+## 📦 Dependencies
+
+### Core
+- `next`: ^15.1.0
+- `react`: ^19.0.0
+- `@portfolio-v3/shared`: Shared package
+
+### UI & Styling
+- `tailwindcss`: ^3.4.1
+- `@headlessui/react`: ^2.2.0
+- `@radix-ui/react-*`: Various UI primitives
+
+### Forms & Validation
+- `@hookform/resolvers`: ^3.9.1
+- `zod`: ^3.24.1
+
+### Editor
+- `@tiptap/react`: ^2.11.2
+- `@tiptap/starter-kit`: ^2.11.2
+
+## 🤝 Contributing
+
+[Your contribution guidelines]
+
+## 📝 License
+
+MIT © [2025] [El-Omar]
