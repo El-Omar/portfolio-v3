@@ -12,5 +12,5 @@ db.createCollection("blogs");
 
 // Create indexes
 db.projects.createIndex({ slug: 1 }, { unique: true });
-
 db.projects.createIndex({ featured: 1, order: 1 });
+db.blogs.createIndex({ slug: 1 }, { unique: true });

@@ -6,7 +6,6 @@ import ParallaxTitleSection from "@/components/ui/ParallaxTitleSection";
 
 const ProjectsSection = async () => {
   const response = await getProjects({ published: true });
-  const projects = response.status === "success" ? response.data : [];
 
   if (response.status !== "success") {
     return (
@@ -15,6 +14,8 @@ const ProjectsSection = async () => {
       </Container>
     );
   }
+
+  const projects = response.data ?? [];
 
   return (
     <ParallaxTitleSection

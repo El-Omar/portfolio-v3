@@ -14,7 +14,7 @@ type Props = {
 const ProjectParallaxWrapper = ({ projects }: Props): ReactElement => {
   const isMobile = useIsMobile();
 
-  if (!isMobile) {
+  if (!isMobile && projects.length > 1) {
     return <ProjectsParallax projects={projects} />;
   }
 

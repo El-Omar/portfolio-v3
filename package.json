@@ -7,10 +7,10 @@
   "author": "El-Omar <elomar.sami@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "docker:up": "cd infrastructure/docker && docker-compose up -d",
-    "docker:down": "cd infrastructure/docker && docker-compose down",
-    "docker:logs": "cd infrastructure/docker && docker-compose logs -f",
-    "docker:rebuild": "cd infrastructure/docker && docker-compose up -d --build",
+    "docker:up": "docker-compose -f infrastructure/docker/development/docker-compose.yml up -d",
+    "docker:down": "docker-compose -f infrastructure/docker/development/docker-compose.yml down",
+    "docker:logs": "docker-compose -f infrastructure/docker/development/docker-compose.yml logs -f",
+    "docker:rebuild": "docker-compose -f infrastructure/docker/development/docker-compose.yml up -d --build",
 
     "build:shared": "yarn workspace @portfolio-v3/shared build",
     "dev:shared": "yarn workspace @portfolio-v3/shared watch",
