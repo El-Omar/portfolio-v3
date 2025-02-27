@@ -38,8 +38,6 @@ const ThemeLanguageToggles = (): ReactElement => {
     await wait(2500);
 
     router.push(newPath);
-
-    setIsAnimating(false);
   }, [pathname, router, switchToArabic]);
 
   const className = `min-w-auto min-h-auto w-7 h-7 !bg-neutral-100 text-neutral-900 dark:text-neutral-800

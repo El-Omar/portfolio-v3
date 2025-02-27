@@ -1,53 +1,15 @@
 import {
   API_ROUTES,
   ApiResponse,
-  GetProjectsQuery,
   Project,
   ProjectResponse,
 } from "@portfolio-v3/shared";
-import { BaseApiClient } from "./base-client";
+import { GetProjectsClient } from "./projects-client-get";
 import { verifyAuth } from "@/lib/auth/verifyAuth";
 
 const { PROJECTS } = API_ROUTES;
 
-export type GetProjectsOptions = GetProjectsQuery & {
-  fields?: string[];
-};
-
-export class ProjectsClient extends BaseApiClient {
-  async getAll(
-    options: GetProjectsOptions = {},
-  ): Promise<ApiResponse<ProjectResponse[]>> {
-    const params: Record<string, string> = {};
-
-    if (options.featured !== undefined)
-      params.featured = String(options.featured);
-    if (options.published !== undefined)
-      params.published = String(options.published);
-    if (options.fields?.length) params.fields = options.fields.join(",");
-    if (options.include !== undefined) params.include = String(options.include);
-    if (options.page) params.page = String(options.page);
-    if (options.limit) params.limit = String(options.limit);
-    if (options.sort) params.sort = options.sort;
-    if (options.asc !== undefined) params.asc = String(options.asc);
-
-    return this.fetch<ProjectResponse[]>(PROJECTS.BASE, {
-      method: "GET",
-      params,
-      next: { tags: ["projects"] },
-    });
-  }
-
-  async getBySlug(slug: string): Promise<ApiResponse<ProjectResponse>> {
-    return this.fetch<ProjectResponse>(PROJECTS.BY_SLUG(slug), {
-      method: "GET",
-      next: { tags: ["projects"] },
-      // TODO: Uncomment this when we have caching working
-      // cache: true,
-      // etag,
-    });
-  }
-
+export class ProjectsClient extends GetProjectsClient {
   async create(data: Project): Promise<ApiResponse<ProjectResponse>> {
     const auth = await verifyAuth();
     if (!auth.success) {
@@ -57,10 +19,14 @@ export class ProjectsClient extends BaseApiClient {
       };
     }
 
+    const headers = {
+      Authorization: `Bearer ${auth.token}`,
+    };
+
     return this.fetch<ProjectResponse>(PROJECTS.BASE, {
       method: "POST",
       body: data,
-      protected: true,
+      headers,
     });
   }
 
@@ -77,10 +43,14 @@ export class ProjectsClient extends BaseApiClient {
       };
     }
 
+    const headers = {
+      Authorization: `Bearer ${auth.token}`,
+    };
+
     return this.fetch<ProjectResponse>(PROJECTS.BY_SLUG(slug), {
       method: "PATCH",
       body: data,
-      protected: true,
+      headers,
       etag: _etag,
     });
   }
@@ -94,9 +64,13 @@ export class ProjectsClient extends BaseApiClient {
       };
     }
 
+    const headers = {
+      Authorization: `Bearer ${auth.token}`,
+    };
+
     return this.fetch<void>(PROJECTS.BY_SLUG(slug), {
       method: "DELETE",
-      protected: true,
+      headers,
       etag,
     });
   }

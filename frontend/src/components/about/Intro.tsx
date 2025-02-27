@@ -27,6 +27,7 @@ const Intro = (): ReactElement => {
           fill
           alt="Group photo"
           className="object-cover"
+          priority
         />
       </figure>
     </article>

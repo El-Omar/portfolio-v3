@@ -23,7 +23,7 @@ export const fontLibre_BaskervilleItalic = Libre_Baskerville({
 
 export const fontInter = Inter({
   subsets: ["latin"],
-  weight: ["300", "600", "700"],
+  weight: ["400", "600", "700"],
   variable: "--font-inter",
 });
 

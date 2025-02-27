@@ -7,6 +7,7 @@ type AuthResult =
   | {
       success: true;
       payload: JWTVerifyResult["payload"];
+      token: string;
     }
   | {
       success: false;
@@ -30,7 +31,7 @@ export const verifyAuth = async (): Promise<AuthResult> => {
       new TextEncoder().encode(env.JWT_SECRET),
     );
 
-    return { success: true, payload: verified.payload };
+    return { success: true, payload: verified.payload, token: token.value };
   } catch (error) {
     return { success: false, error };
   }

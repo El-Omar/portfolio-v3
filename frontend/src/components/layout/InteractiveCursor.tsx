@@ -18,7 +18,7 @@ type CursorRef = {
 const CursorWithDot = (): ReactElement => {
   const cursorRef = useRef<CursorRef>({
     element: null,
-    position: { x: useMotionValue(0), y: useMotionValue(0) },
+    position: { x: useMotionValue(-200), y: useMotionValue(-200) },
     rotation: useMotionValue(0),
   });
 

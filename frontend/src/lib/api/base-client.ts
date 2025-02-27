@@ -1,5 +1,4 @@
-import { ApiResponse, AUTH } from "@portfolio-v3/shared";
-import { cookies } from "next/headers";
+import { ApiResponse } from "@portfolio-v3/shared";
 import { env } from "@/config/env";
 
 export type RequestOptions = {
@@ -7,7 +6,6 @@ export type RequestOptions = {
   headers?: Record<string, string>;
   body?: Record<string, unknown>;
   next?: { tags: string[] };
-  protected?: boolean;
   etag?: string;
   cache?: boolean;
   params?: Record<string, string>;
@@ -44,13 +42,6 @@ export abstract class BaseApiClient {
       "Content-Type": "application/json",
       ...options.headers,
     };
-
-    const cookie = await cookies();
-    const authToken = cookie.get(AUTH.KEY)?.value;
-
-    if (options.protected && authToken) {
-      headers.Authorization = `Bearer ${authToken}`;
-    }
 
     if (options.etag) {
       if (options.method === "GET" && options.cache) {

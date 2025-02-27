@@ -8,7 +8,11 @@ import {
   validateImageFile,
 } from "@portfolio-v3/shared";
 import { revalidatePath, revalidateTag } from "next/cache";
-import { GetProjectsOptions, projectsClient } from "@/lib/api/projects-client";
+import { projectsClient } from "@/lib/api/projects-client";
+import {
+  getProjectsClient,
+  GetProjectsOptions,
+} from "@/lib/api/projects-client-get";
 import { uploadClient } from "@/lib/api/upload-client";
 import {
   transformAndValidateBasicProjectData,
@@ -49,7 +53,7 @@ export const getProjects = async (
   options: GetProjectsOptions = {},
 ): Promise<ApiResponse<ProjectResponse[]>> => {
   try {
-    return await projectsClient.getAll(options);
+    return await getProjectsClient.getAll(options);
   } catch (error) {
     console.error("Error:", error);
     return {
@@ -63,7 +67,7 @@ export const getProjectBySlug = async (
   slug: string,
 ): Promise<ApiResponse<ProjectResponse>> => {
   try {
-    return await projectsClient.getBySlug(slug);
+    return await getProjectsClient.getBySlug(slug);
   } catch (error) {
     console.error("Error:", error);
     return {

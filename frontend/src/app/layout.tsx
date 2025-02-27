@@ -28,7 +28,7 @@ export default function RootLayout({
         ${fontInter.variable} ${fontRakkas.variable} ${fontPacifico.variable} 
         ${fontAmiri.variable}
         overflow-x-clip relative w-full
-        dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 font-inter`}
+        dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 font-inter font-normal`}
         suppressHydrationWarning
       >
         <ThemeProvider>

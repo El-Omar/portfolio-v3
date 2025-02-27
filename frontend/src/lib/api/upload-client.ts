@@ -33,6 +33,10 @@ export class UploadClient extends BaseApiClient {
         };
       }
 
+      const headers = {
+        Authorization: `Bearer ${auth.token}`,
+      };
+
       // Get presigned URL from server
       let presignedUrlResponse;
       try {
@@ -40,7 +44,7 @@ export class UploadClient extends BaseApiClient {
           UPLOADS.PRESIGNED_URL,
           {
             method: "POST",
-            protected: true,
+            headers,
             body: {
               fileName: file.name,
               fileType: file.type,
@@ -100,6 +104,13 @@ export class UploadClient extends BaseApiClient {
 
   async deleteFile(fileKey: string): Promise<ApiResponse> {
     try {
+      if (!fileKey) {
+        return {
+          status: "error",
+          message: "No file key provided",
+        };
+      }
+
       const auth = await verifyAuth();
       if (!auth.success) {
         return {
@@ -108,18 +119,15 @@ export class UploadClient extends BaseApiClient {
         };
       }
 
-      if (!fileKey) {
-        return {
-          status: "error",
-          message: "No file key provided",
-        };
-      }
+      const headers = {
+        Authorization: `Bearer ${auth.token}`,
+      };
 
       const response = await this.fetch<{ status: string }>(
         UPLOADS.BY_KEY(fileKey),
         {
           method: "DELETE",
-          protected: true,
+          headers,
         },
       );
 

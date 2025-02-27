@@ -7,7 +7,8 @@ import {
   validateImageFile,
 } from "@portfolio-v3/shared";
 import { revalidatePath, revalidateTag } from "next/cache";
-import { blogsClient, GetBlogsOptions } from "@/lib/api/blog-client";
+import { blogsClient } from "@/lib/api/blog-client";
+import { getBlogsClient, GetBlogsOptions } from "@/lib/api/blog-client-get";
 import { uploadClient } from "@/lib/api/upload-client";
 import {
   transformAndValidateBasicBlogData,
@@ -48,7 +49,7 @@ export const getBlogs = async (
   options: GetBlogsOptions = {},
 ): Promise<ApiResponse<BlogResponse[]>> => {
   try {
-    return await blogsClient.getAll(options);
+    return await getBlogsClient.getAll(options);
   } catch (error) {
     console.error("Error:", error);
     return {
@@ -62,7 +63,7 @@ export const getBlogBySlug = async (
   slug: string,
 ): Promise<ApiResponse<BlogResponse>> => {
   try {
-    return await blogsClient.getBySlug(slug);
+    return await getBlogsClient.getBySlug(slug);
   } catch (error) {
     console.error("Error:", error);
     return {
