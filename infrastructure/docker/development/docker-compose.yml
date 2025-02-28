@@ -10,6 +10,7 @@ services:
     command: mongod --bind_ip_all
     volumes:
       - mongodb_data:/data/db
+      - ../mongodb/init.js:/docker-entrypoint-initdb.d/init.sh:ro
     env_file:
       - ../../../backend/.env.development
     healthcheck:

@@ -21,6 +21,7 @@ services:
     command: mongod --auth --bind_ip_all
     volumes:
       - mongodb_data:/data/db
+      - ../mongodb/init.js:/docker-entrypoint-initdb.d/init.sh:ro
     environment:
       - MONGO_INITDB_ROOT_USERNAME=${MONGODB_USERNAME}
       - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_PASSWORD}
