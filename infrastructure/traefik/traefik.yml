@@ -1,0 +1,42 @@
+## Traefik Static Configuration
+entryPoints:
+  web:
+    address: ":80"
+    http:
+      redirections:
+        entryPoint:
+          to: websecure
+          scheme: https
+  
+  websecure:
+    address: ":443"
+
+# API and dashboard
+api:
+  insecure: false # Set to true if you want to enable dashboard access
+  dashboard: true
+
+# Docker provider configuration
+providers:
+  docker:
+    endpoint: "unix:///var/run/docker.sock"
+    exposedByDefault: false # Only expose containers that explicitly enable Traefik
+  file:
+    directory: "/etc/traefik/config"
+    watch: true
+
+# SSL certificate resolver
+certificatesResolvers:
+  letsencrypt:
+    acme:
+      email: elomar.sami@gmail.com # Replace with your email
+      storage: /letsencrypt/acme.json
+      httpChallenge:
+        entryPoint: web
+
+# Enable access logs
+accessLog: {}
+
+# Log level
+log:
+  level: INFO  # DEBUG, INFO, WARN, ERROR
