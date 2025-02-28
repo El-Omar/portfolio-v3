@@ -135,7 +135,7 @@ ENV NODE_ENV production
 EXPOSE 5000
 
 # Start the server
-CMD ["node", "backend/dist/index.js"]
+CMD ["node", "backend/dist/server.js"]
 EOL
 fi
 

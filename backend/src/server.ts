@@ -33,6 +33,11 @@ app.use(requestLogger);
 // Security: rate limiter
 app.use(apiLimiter);
 
+// Health check endpoint
+app.get(`${env.API_PREFIX}/health`, (req, res) => {
+  res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
 // Routes definitions
 app.use(
   `${env.API_PREFIX}/${env.CMS_ADMIN_PATH}${API_ROUTES.AUTH.BASE}`,
