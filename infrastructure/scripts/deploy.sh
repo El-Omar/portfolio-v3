@@ -197,18 +197,18 @@ fi
 
 # Start services in the correct order
 echo -e "${YELLOW}Starting Traefik...${NC}"
-docker-compose -f $DOCKER_COMPOSE_FILE up -d traefik
+docker compose -f $DOCKER_COMPOSE_FILE up -d traefik
 echo -e "${GREEN}Traefik started.${NC}"
 
 echo -e "${YELLOW}Starting MongoDB...${NC}"
-docker-compose -f $DOCKER_COMPOSE_FILE up -d mongodb
+docker compose -f $DOCKER_COMPOSE_FILE up -d mongodb
 echo -e "${GREEN}MongoDB started.${NC}"
 
 # Wait for MongoDB to be healthy
 echo -e "${YELLOW}Waiting for MongoDB to be healthy...${NC}"
 ATTEMPTS=0
 MAX_ATTEMPTS=30
-until docker-compose -f $DOCKER_COMPOSE_FILE exec -T mongodb mongosh --quiet --eval "db.adminCommand('ping')" || [ $ATTEMPTS -eq $MAX_ATTEMPTS ]; do
+until docker compose -f $DOCKER_COMPOSE_FILE exec -T mongodb mongosh --quiet --eval "db.adminCommand('ping')" || [ $ATTEMPTS -eq $MAX_ATTEMPTS ]; do
   echo -e "${YELLOW}Waiting for MongoDB to be ready... ($ATTEMPTS/$MAX_ATTEMPTS)${NC}"
   ATTEMPTS=$((ATTEMPTS+1))
   sleep 2
@@ -222,7 +222,7 @@ echo -e "${GREEN}MongoDB is healthy.${NC}"
 
 # Start backend
 echo -e "${YELLOW}Building and starting backend...${NC}"
-docker-compose -f $DOCKER_COMPOSE_FILE up -d --build backend
+docker compose -f $DOCKER_COMPOSE_FILE up -d --build backend
 echo -e "${GREEN}Backend started.${NC}"
 
 # Wait for backend to be ready (assuming health endpoint at /api/v1/health)
@@ -238,14 +238,14 @@ done
 
 if [ $ATTEMPTS -eq $MAX_ATTEMPTS ]; then
   echo -e "${RED}Backend did not become ready in time. Deployment failed.${NC}"
-  docker-compose -f $DOCKER_COMPOSE_FILE logs backend
+  docker compose -f $DOCKER_COMPOSE_FILE logs backend
   exit 1
 fi
 echo -e "${GREEN}Backend is ready.${NC}"
 
 # Now build and start frontend
 echo -e "${YELLOW}Building and starting frontend...${NC}"
-docker-compose -f $DOCKER_COMPOSE_FILE up -d --build frontend
+docker compose -f $DOCKER_COMPOSE_FILE up -d --build frontend
 echo -e "${GREEN}Frontend started.${NC}"
 
 echo -e "${GREEN}Deployment completed successfully!${NC}"
@@ -255,4 +255,4 @@ echo -e "${YELLOW}Traefik is automatically managing SSL certificates via Let's E
 
 # Output service status
 echo -e "${YELLOW}Service status:${NC}"
-docker-compose -f $DOCKER_COMPOSE_FILE ps
+docker compose -f $DOCKER_COMPOSE_FILE ps
