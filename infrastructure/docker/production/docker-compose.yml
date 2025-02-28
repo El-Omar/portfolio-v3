@@ -43,7 +43,6 @@ services:
     build: 
       context: ../../..
       dockerfile: ./infrastructure/docker/production/backend.Dockerfile
-    volumes:
     env_file:
       - ../../../backend/.env.production
     depends_on:
