@@ -19,10 +19,8 @@ services:
     container_name: portfolio-v3-mongo-prod
     build:
       context: ../../..
-      dockerfile: ./infrastructure/docker/development/mongodb.Dockerfile
+      dockerfile: ./infrastructure/docker/production/mongodb.Dockerfile
     command: mongod --bind_ip_all
-    ports:
-      - "27017:27017"
     volumes:
       - mongodb_data:/data/db
       - ../mongodb/init.js:/docker-entrypoint-initdb.d/init.sh:ro
@@ -48,8 +46,6 @@ services:
     depends_on:
       mongodb:
         condition: service_healthy
-    ports:
-      - "5000:5000"
     networks:
       - app-network
     restart: always

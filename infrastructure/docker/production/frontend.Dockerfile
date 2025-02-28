@@ -19,20 +19,11 @@ COPY frontend ./frontend
 RUN yarn workspace @portfolio-v3/shared build
 
 # Build frontend
-WORKDIR /usr/src/app/frontend
+# WORKDIR /usr/src/app/frontend
 RUN yarn workspace frontend build
 
-# Production stage - using a smaller image for serving Next.js
-FROM node:22-alpine
-
-WORKDIR /usr/src/app
-
-# Copy package files for production
-COPY package.json yarn.lock ./
-COPY frontend/package.json ./frontend/
-
-# Install production dependencies only
-RUN yarn install
+# # Copy shared package build from builder stage
+# COPY --from=builder /usr/src/app/shared/dist ./shared/dist
 
 # Copy built files from builder stage
 COPY --from=builder /usr/src/app/frontend/.next ./frontend/.next
@@ -47,6 +38,4 @@ EXPOSE 3000
 
 # Start the server
 WORKDIR /usr/src/app/frontend
-
-# Start the Next.js server
 CMD ["yarn", "start"]
