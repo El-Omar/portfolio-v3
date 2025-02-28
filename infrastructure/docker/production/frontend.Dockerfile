@@ -9,7 +9,7 @@ COPY shared/package.json ./shared/
 COPY frontend/package.json ./frontend/
 
 # Install dependencies
-RUN yarn install --frozen-lockfile
+RUN yarn install
 
 # Copy source code
 COPY shared ./shared
@@ -32,7 +32,7 @@ COPY package.json yarn.lock ./
 COPY frontend/package.json ./frontend/
 
 # Install production dependencies only
-RUN yarn install --frozen-lockfile --production
+RUN yarn install
 
 # Copy built files from builder stage
 COPY --from=builder /usr/src/app/frontend/.next ./frontend/.next

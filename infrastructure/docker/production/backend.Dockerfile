@@ -9,7 +9,7 @@ COPY shared/package.json ./shared/
 COPY backend/package.json ./backend/
 
 # Install dependencies
-RUN yarn install --frozen-lockfile
+RUN yarn install
 
 # Copy source code
 COPY shared ./shared
@@ -32,7 +32,7 @@ COPY shared/package.json ./shared/
 COPY backend/package.json ./backend/
 
 # Install production dependencies only
-RUN yarn install --frozen-lockfile --production
+RUN yarn install
 
 # Copy built files from builder stage
 COPY --from=builder /usr/src/app/shared/dist ./shared/dist
