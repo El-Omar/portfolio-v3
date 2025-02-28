@@ -1,0 +1,81 @@
+version: '3.8'
+services:
+  traefik:
+    container_name: portfolio-v3-traefik
+    image: traefik:v2.10
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ../../infrastructure/traefik/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ../../infrastructure/traefik/config:/etc/traefik/config:ro
+      - traefik-certificates:/letsencrypt
+    networks:
+      - app-network
+    restart: always
+
+  mongodb:
+    container_name: portfolio-v3-mongo-prod
+    image: mongo:latest
+    volumes:
+      - mongodb_data:/data/db
+    env_file:
+      - ../../../backend/.env.production
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test -u ${MONGODB_USERNAME} -p ${MONGODB_PASSWORD} --quiet
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: always
+    networks:
+      - app-network
+
+  backend:
+    container_name: portfolio-v3-backend-prod
+    build: 
+      context: ../../..
+      dockerfile: ./infrastructure/docker/production/backend.Dockerfile
+    env_file:
+      - ../../../backend/.env.production
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    networks:
+      - app-network
+    restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.backend.rule=Host(`elomar.be`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.backend.entrypoints=websecure"
+      - "traefik.http.routers.backend.tls.certresolver=letsencrypt"
+      - "traefik.http.services.backend.loadbalancer.server.port=5000"
+  
+  frontend:
+    container_name: portfolio-v3-frontend-prod
+    build:
+      context: ../../..
+      dockerfile: ./infrastructure/docker/production/frontend.Dockerfile
+    env_file:
+      - ../../../frontend/.env.production
+    depends_on:
+      - backend
+    restart: always
+    networks:
+      - app-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontend.rule=Host(`elomar.be`)"
+      - "traefik.http.routers.frontend.entrypoints=websecure"
+      - "traefik.http.routers.frontend.tls.certresolver=letsencrypt"
+      - "traefik.http.services.frontend.loadbalancer.server.port=3000"
+      - "traefik.http.routers.frontend.priority=1"
+
+volumes:
+  mongodb_data:
+  traefik-certificates:
+
+networks:
+  app-network:
+    driver: bridge 
