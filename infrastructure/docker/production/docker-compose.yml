@@ -18,12 +18,17 @@ services:
   mongodb:
     container_name: portfolio-v3-mongo-prod
     image: mongo:latest
+    command: mongod --auth --bind_ip_all
     volumes:
       - mongodb_data:/data/db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGODB_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_PASSWORD}
+      - MONGO_INITDB_DATABASE=${MONGODB_DATABASE}
     env_file:
       - ../../../backend/.env.production
     healthcheck:
-      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test -u ${MONGODB_USERNAME} -p ${MONGODB_PASSWORD} --quiet
+      test: echo 'db.runCommand("ping").ok' | mongosh mongodb://localhost:27017/admin -u ${MONGODB_USERNAME} -p ${MONGODB_PASSWORD} --quiet
       interval: 30s
       timeout: 10s
       retries: 3
