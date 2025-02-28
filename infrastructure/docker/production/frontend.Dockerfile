@@ -29,7 +29,11 @@ WORKDIR /usr/src/app
 
 # Copy package files for production
 COPY package.json yarn.lock ./
+COPY shared/package.json ./shared/
 COPY frontend/package.json ./frontend/
+
+# Copy shared package build from builder stage
+COPY --from=builder /usr/src/app/shared/dist ./shared/dist
 
 # Install production dependencies only
 RUN yarn install
