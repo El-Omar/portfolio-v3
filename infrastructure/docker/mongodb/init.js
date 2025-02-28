@@ -2,20 +2,12 @@ print("MongoDB initialization starting...");
 
 db = db.getSiblingDB("admin");
 
-db.createUser({
-  user: process.env.MONGO_INITDB_ROOT_USERNAME,
-  pwd: process.env.MONGO_INITDB_ROOT_PASSWORD,
-  roles: [{ role: "root", db: "admin" }],
-});
-
-print("Admin user created successfully");
-
 db.auth(
   process.env.MONGO_INITDB_ROOT_USERNAME,
   process.env.MONGO_INITDB_ROOT_PASSWORD
 );
 
-db = db.getSiblingDB(process.env.MONGODB_DATABASE || "portfolio");
+db = db.getSiblingDB(process.env.MONGODB_DATABASE);
 
 print("Creating collections...");
 db.createCollection("projects");

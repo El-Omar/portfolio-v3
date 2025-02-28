@@ -17,22 +17,22 @@ services:
 
   mongodb:
     container_name: portfolio-v3-mongo-prod
-    image: mongo:latest
-    command: mongod --auth --bind_ip_all
+    build:
+      context: ../../..
+      dockerfile: ./infrastructure/docker/development/mongodb.Dockerfile
+    command: mongod --bind_ip_all
+    ports:
+      - "27017:27017"
     volumes:
       - mongodb_data:/data/db
       - ../mongodb/init.js:/docker-entrypoint-initdb.d/init.sh:ro
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=${MONGODB_USERNAME}
-      - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_PASSWORD}
-      - MONGO_INITDB_DATABASE=${MONGODB_DATABASE}
     env_file:
       - ../../../backend/.env.production
     healthcheck:
-      test: echo 'db.runCommand("ping").ok' | mongosh mongodb://localhost:27017/admin -u ${MONGODB_USERNAME} -p ${MONGODB_PASSWORD} --quiet
-      interval: 30s
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 10s
       timeout: 10s
-      retries: 3
+      retries: 5
       start_period: 40s
     restart: always
     networks:
@@ -43,11 +43,16 @@ services:
     build: 
       context: ../../..
       dockerfile: ./infrastructure/docker/production/backend.Dockerfile
+    volumes:
+      - ../../../backend:/usr/src/app/backend
+      - ../../../shared:/usr/src/app/shared
     env_file:
       - ../../../backend/.env.production
     depends_on:
       mongodb:
         condition: service_healthy
+    ports:
+      - "5000:5000"
     networks:
       - app-network
     restart: always
