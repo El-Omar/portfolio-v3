@@ -1,13 +1,15 @@
 print("MongoDB initialization starting...");
 
+// Create admin user if it doesn't exist
 db = db.getSiblingDB("admin");
+db.createUser({
+  user: process.env.MONGO_INITDB_ROOT_USERNAME || "root",
+  pwd: process.env.MONGO_INITDB_ROOT_PASSWORD || "example",
+  roles: [{ role: "root", db: "admin" }]
+});
 
-db.auth(
-  process.env.MONGO_INITDB_ROOT_USERNAME,
-  process.env.MONGO_INITDB_ROOT_PASSWORD
-);
-
-db = db.getSiblingDB(process.env.MONGODB_DATABASE);
+// Switch to the application database
+db = db.getSiblingDB(process.env.MONGO_INITDB_DATABASE || "portfolio");
 
 print("Creating collections...");
 db.createCollection("projects");

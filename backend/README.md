@@ -196,7 +196,7 @@ CMS_ADMIN_PATH=admin
 
 # MongoDB
 MONGODB_URI=mongodb://localhost:27017/portfolio
-MONGODB_DATABASE=portfolio
+MONGO_INITDB_DATABASE=portfolio
 
 # Authentication
 JWT_SECRET=your-secret-key

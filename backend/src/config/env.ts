@@ -20,10 +20,10 @@ const envSchema = z.object({
   MONGODB_URI: z.string().url(),
   MONGODB_HOST: z.string(),
   MONGODB_PORT: z.string().transform(Number),
-  MONGODB_DATABASE: z.string(),
-  MONGODB_USERNAME: z.string(),
-  MONGODB_PASSWORD: z.string(),
-  MONGODB_AUTH_SOURCE: z.string().default("admin"),
+  MONGO_INITDB_DATABASE: z.string(),
+  MONGO_INITDB_ROOT_USERNAME: z.string(),
+  MONGO_INITDB_ROOT_PASSWORD: z.string(),
+  MONGO_INITDB_AUTH_SOURCE: z.string().default("admin"),
 
   // Cloud Storage
   AWS_ACCESS_KEY_ID: z.string(),

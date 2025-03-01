@@ -8,8 +8,8 @@ services:
       - "443:443"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ../../infrastructure/traefik/traefik.yml:/etc/traefik/traefik.yml:ro
-      - ../../infrastructure/traefik/config:/etc/traefik/config:ro
+      - ../../../infrastructure/traefik/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ../../../infrastructure/traefik/config:/etc/traefik/config:ro
       - traefik-certificates:/letsencrypt
     networks:
       - app-network
@@ -20,10 +20,9 @@ services:
     build:
       context: ../../..
       dockerfile: ./infrastructure/docker/production/mongodb.Dockerfile
-    command: mongod --bind_ip_all
     volumes:
       - mongodb_data:/data/db
-      - ../mongodb/init.js:/docker-entrypoint-initdb.d/init.sh:ro
+      - ../mongodb/init.js:/docker-entrypoint-initdb.d/init.js:ro
     env_file:
       - ../../../backend/.env.production
     healthcheck:
