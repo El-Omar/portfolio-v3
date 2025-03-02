@@ -1,0 +1,11 @@
+http:
+  routers:
+    www-redirect:
+      rule: "HostRegexp(`www.{domain:[a-zA-Z0-9-]+\\.[a-zA-Z0-9]+}`)"
+      entryPoints:
+        - websecure
+      middlewares:
+        - www-to-non-www
+      tls:
+        certResolver: letsencrypt
+      service: noop@internal 
