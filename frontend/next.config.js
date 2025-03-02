@@ -1,10 +1,11 @@
-import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
 import { env } from "@/config/env";
 
 const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
-const nextConfig: NextConfig = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  output: "standalone",
   webpack: (config) => {
     config.module.rules.push({
       test: /\.svg$/,
@@ -13,7 +14,6 @@ const nextConfig: NextConfig = {
     return config;
   },
   images: {
-    domains: ["elomar-portfolio-v3-media.s3.eu-central-1.amazonaws.com"],
     remotePatterns: [
       {
         hostname: `${env.AWS_S3_BUCKET}.s3.${env.AWS_REGION}.amazonaws.com`,

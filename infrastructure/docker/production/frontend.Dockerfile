@@ -41,6 +41,7 @@ RUN yarn install
 # Copy built files from builder stage
 COPY --from=builder /usr/src/app/frontend/.next ./frontend/.next
 COPY --from=builder /usr/src/app/frontend/public ./frontend/public
+COPY --from=builder /usr/src/app/frontend/next.config.js ./frontend/next.config.js
 
 # Set environment to production
 ENV NODE_ENV production
