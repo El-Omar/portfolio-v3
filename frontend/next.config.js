@@ -1,5 +1,4 @@
 import createNextIntlPlugin from "next-intl/plugin";
-import { env } from "./src/config/env";
 
 const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
@@ -16,7 +15,7 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        hostname: `${env.AWS_S3_BUCKET}.s3.${env.AWS_REGION}.amazonaws.com`,
+        hostname: "elomar-portfolio-v3-media.s3.eu-central-1.amazonaws.com",
         protocol: "https",
       },
     ],
