@@ -22,7 +22,7 @@ services:
       dockerfile: ./infrastructure/docker/production/mongodb.Dockerfile
     volumes:
       - mongodb_data:/data/db
-      - ../mongodb/init.js:/docker-entrypoint-initdb.d/init.js:ro
+      - ../../../infrastructure/docker/mongodb/init.js:/docker-entrypoint-initdb.d/init.js:ro
     env_file:
       - ../../../backend/.env.production
     healthcheck:
