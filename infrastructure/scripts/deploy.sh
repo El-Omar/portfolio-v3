@@ -229,7 +229,7 @@ echo -e "${GREEN}Backend started.${NC}"
 echo -e "${YELLOW}Waiting for backend to be ready...${NC}"
 ATTEMPTS=0
 MAX_ATTEMPTS=30
-BACKEND_URL="http://localhost:5000${API_PREFIX}/health"
+BACKEND_URL="https://elomar.be${API_PREFIX}/health"
 until curl -s $BACKEND_URL > /dev/null || [ $ATTEMPTS -eq $MAX_ATTEMPTS ]; do
   echo -e "${YELLOW}Waiting for backend to be ready... ($ATTEMPTS/$MAX_ATTEMPTS)${NC}"
   ATTEMPTS=$((ATTEMPTS+1))
