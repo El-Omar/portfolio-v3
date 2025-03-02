@@ -1,5 +1,5 @@
 import createNextIntlPlugin from "next-intl/plugin";
-import { env } from "@/config/env";
+import { env } from "./src/config/env";
 
 const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
