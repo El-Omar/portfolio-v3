@@ -6,6 +6,7 @@ GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 RED='\033[0;31m'
 NC='\033[0m' # No Color
+FRONTEND_URL="https://elomar.be"
 
 echo -e "${YELLOW}Starting deployment process...${NC}"
 
