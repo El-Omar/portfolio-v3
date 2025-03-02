@@ -13,13 +13,10 @@ const nextConfig: NextConfig = {
     return config;
   },
   images: {
+    domains: ["elomar-portfolio-v3-media.s3.eu-central-1.amazonaws.com"],
     remotePatterns: [
       {
         hostname: `${env.AWS_S3_BUCKET}.s3.${env.AWS_REGION}.amazonaws.com`,
-        protocol: "https",
-      },
-      {
-        hostname: "elomar-portfolio-v3-media.s3.eu-central-1.amazonaws.com",
         protocol: "https",
       },
     ],

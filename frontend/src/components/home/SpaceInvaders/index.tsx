@@ -24,7 +24,7 @@ const SpaceInvaders = (): ReactElement | null => {
   }
 
   return (
-    <>
+    <div className="bg-neutral-100 dark:bg-neutral-800 p-6 rounded-sm">
       <SpaceInvadersStyles />
       <div className="spaceinvaders" ref={spaceInvadersRef}>
         <div className="game bg-neutral-200 border-[1px]">
@@ -48,7 +48,7 @@ const SpaceInvaders = (): ReactElement | null => {
           {t("instructions")}
         </p>
       </div>
-    </>
+    </div>
   );
 };
 

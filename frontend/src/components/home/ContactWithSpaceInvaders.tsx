@@ -9,10 +9,12 @@ import { Button } from "../ui/Button";
 import Paragraph from "../ui/Paragraph";
 import Title from "../ui/Title";
 import TitleAccent from "../ui/TitleAccent";
+import { useIsMobile } from "@/lib/hooks/useIsMobile";
 
 const ContactWithSpaceInvaders = (): ReactElement => {
   const t = useTranslations("home.contact");
   const containerRef = useRef<HTMLDivElement>(null);
+  const isMobile = useIsMobile();
 
   const animations = useMemo(() => {
     const easing = [0.22, 1, 0.36, 1];
@@ -98,7 +100,7 @@ const ContactWithSpaceInvaders = (): ReactElement => {
 
           <motion.div variants={animations.textVariants}>
             <Paragraph className="text-neutral-600 dark:text-neutral-400 max-w-xl">
-              {t("description")}
+              {isMobile ? t("description_mobile") : t("description")}
             </Paragraph>
           </motion.div>
 
@@ -118,9 +120,7 @@ const ContactWithSpaceInvaders = (): ReactElement => {
           variants={animations.gameContainerVariants}
           className="flex-1 flex justify-center"
         >
-          <div className="bg-neutral-100 dark:bg-neutral-800 p-6 rounded-sm">
-            <SpaceInvaders />
-          </div>
+          <SpaceInvaders />
         </motion.div>
       </div>
     </motion.article>

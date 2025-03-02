@@ -152,7 +152,7 @@ const Stats = () => {
                     {/* Header */}
                     <div className="relative z-20">
                       <h3
-                        className="text-sm md:text-xs uppercase tracking-wider text-neutral-500 flex
+                        className="text-sm md:text-xs uppercase tracking-wider text-neutral-700 flex
                         justify-between items-center
                         dark:text-neutral-200 group-hover:text-cool-red transition-all duration-300"
                       >

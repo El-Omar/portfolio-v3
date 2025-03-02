@@ -25,7 +25,7 @@ const buttonVariants = cva(
           text-neutral-900 dark:text-neutral-100
           uppercase tracking-wider text-sm
           transition-all duration-300 
-          border-b-2 border-neutral-200 dark:border-neutral-800
+          border-b-2 border-neutral-200 dark:border-neutral-400
           overflow-hidden
           hover:bg-gold hover:!text-neutral-900
         `,

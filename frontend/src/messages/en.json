@@ -45,6 +45,7 @@
     "contact": {
       "title": "Let's create <br></br><accent>something together</accent>",
       "description": "Have a project in mind or just want to chat? I'm always open to new ideas and collaborations. Or you can try beating my Space Invaders high score.",
+      "description_mobile": "Have a project in mind or just want to chat? I'm always open to new ideas and collaborations.",
       "getInTouch": "Get in touch"
     },
     "spaceInvaders": {
