@@ -20,6 +20,7 @@ const nextConfig = {
       },
     ],
   },
+  transpilePackages: ["@portfolio-v3/shared"],
   experimental: {
     serverActions: {
       bodySizeLimit: "10mb",

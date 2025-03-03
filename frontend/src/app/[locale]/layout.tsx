@@ -14,13 +14,13 @@ export function generateStaticParams() {
 
 export const metadata: Metadata = getMetadata();
 
-export default async function LocaleLayout({
+const LocaleLayout = async ({
   children,
   params,
 }: {
   children: React.ReactNode;
   params: Promise<{ locale: Locale }>;
-}) {
+}) => {
   const res = await params;
   const locale = res.locale;
 
@@ -44,4 +44,6 @@ export default async function LocaleLayout({
       </div>
     </NextIntlClientProvider>
   );
-}
+};
+
+export default LocaleLayout;

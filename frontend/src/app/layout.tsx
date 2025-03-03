@@ -4,7 +4,6 @@ import "./globals.css";
 import { Toaster } from "sonner";
 import ThemeProvider from "@/components/providers/ThemeProvider";
 import { getMetadata } from "@/config/metadata";
-
 import {
   fontAmiri,
   fontDM_Sans,
@@ -13,16 +12,16 @@ import {
   fontPacifico,
   fontRakkas,
 } from "@/lib/utils/fonts";
+import ThemeScript from "@/stores/ThemeScript";
 
 export const metadata: Metadata = getMetadata();
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <html lang="en" className="overflow-x-clip">
+    <html lang="en" className="overflow-x-clip" suppressHydrationWarning>
+      <head>
+        <ThemeScript />
+      </head>
       <body
         className={`${fontDM_Sans.variable} ${fontLibre_BaskervilleItalic.variable}
         ${fontInter.variable} ${fontRakkas.variable} ${fontPacifico.variable} 
@@ -38,4 +37,6 @@ export default function RootLayout({
       </body>
     </html>
   );
-}
+};
+
+export default RootLayout;
