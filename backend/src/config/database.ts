@@ -8,7 +8,6 @@ export const connectDatabase = async (retryCount = 0): Promise<void> => {
   try {
     // Use the full URI if provided, otherwise construct from components
     const uri =
-      env.MONGODB_URI ||
       `mongodb://${env.MONGO_INITDB_ROOT_USERNAME}:${env.MONGO_INITDB_ROOT_PASSWORD}@${env.MONGODB_HOST}:${env.MONGODB_PORT}/${env.MONGO_INITDB_DATABASE}?authSource=${env.MONGO_INITDB_AUTH_SOURCE}`;
 
     console.log(

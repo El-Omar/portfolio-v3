@@ -17,7 +17,6 @@ const envSchema = z.object({
   API_PREFIX: z.string().default("/api/v1"),
 
   // Database
-  MONGODB_URI: z.string().url(),
   MONGODB_HOST: z.string(),
   MONGODB_PORT: z.string().transform(Number),
   MONGO_INITDB_DATABASE: z.string(),
