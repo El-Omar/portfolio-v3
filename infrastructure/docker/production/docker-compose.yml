@@ -2,7 +2,7 @@ version: '3.8'
 services:
   traefik:
     container_name: portfolio-v3-traefik
-    image: traefik:v2.10
+    image: traefik:v3.3
     ports:
       - "80:80"
       - "443:443"

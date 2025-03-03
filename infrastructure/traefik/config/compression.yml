@@ -2,8 +2,10 @@ http:
   middlewares:
     compress:
       compress:
-        # Enable both gzip and brotli compression
-        brotli: true
+        encodings:
+          - "zstd"
+          - "br"
+          - "gzip"
         contentTypes:
           - text/html
           - text/plain
@@ -19,5 +21,4 @@ http:
           - font/woff
           - font/woff2
           - image/svg+xml
-        # Minimum size to trigger compression
-        minResponseBodyBytes: 1024 
+        minResponseBodyBytes: 1024
