@@ -5,6 +5,8 @@ const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: "standalone",
+  // To allow compression via Traefik
+  compress: false,
   webpack: (config) => {
     config.module.rules.push({
       test: /\.svg$/,
