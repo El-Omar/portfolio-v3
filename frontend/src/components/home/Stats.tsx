@@ -191,7 +191,7 @@ const Stats = () => {
 
                       {/* Tags Section */}
                       <div className="space-y-2">
-                        <span className="text-[11px] font-medium uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+                        <span className="text-[11px] font-medium uppercase tracking-wider text-neutral-600 dark:text-neutral-400">
                           {t(card.infoKeys.secondary.labelKey)}
                         </span>
                         <div className="flex flex-wrap gap-1.5">
