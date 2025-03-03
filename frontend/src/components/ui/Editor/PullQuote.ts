@@ -50,8 +50,6 @@ export const PullQuote = Node.create({
           const { selection } = state;
           const isActive = selection.$from.node().type.name === "pullquote";
 
-          console.log(isActive, this.name, state);
-
           if (isActive) {
             return commands.lift();
           } else {
