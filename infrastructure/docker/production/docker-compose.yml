@@ -54,7 +54,7 @@ services:
       - "traefik.http.routers.backend.entrypoints=websecure"
       - "traefik.http.routers.backend.tls.certresolver=letsencrypt"
       - "traefik.http.services.backend.loadbalancer.server.port=5000"
-      - "traefik.http.middlewares.compress.compress=compress@file"
+      - "traefik.http.routers.backend.middlewares=compress@file"
   
   frontend:
     container_name: portfolio-v3-frontend-prod
