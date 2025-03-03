@@ -2,11 +2,12 @@ http:
   middlewares:
     compress:
       compress:
+        minResponseBodyBytes: 1024
         encodings:
-          - "zstd"
-          - "br"
-          - "gzip"
-        contentTypes:
+          - zstd
+          - br
+          - gzip
+        includedContentTypes:
           - text/html
           - text/plain
           - text/css
@@ -21,4 +22,4 @@ http:
           - font/woff
           - font/woff2
           - image/svg+xml
-        minResponseBodyBytes: 1024
+        defaultEncoding: br
