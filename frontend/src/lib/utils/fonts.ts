@@ -12,13 +12,17 @@ export const fontDM_Sans = DM_Sans({
   subsets: ["latin"],
   variable: "--font-dm-sans",
   weight: "1000",
+  preload: true,
 });
 
 export const fontLibre_BaskervilleItalic = Libre_Baskerville({
   subsets: ["latin"],
-  weight: "400",
-  style: "italic",
+  weight: ["400"],
+  style: ["italic"],
   variable: "--font-baskerville",
+  preload: true,
+  display: "swap",
+  fallback: ["Georgia", "serif"],
 });
 
 export const fontInter = Inter({
