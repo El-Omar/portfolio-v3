@@ -144,12 +144,14 @@ portfolio-v3/
    yarn dev:backend
    ```
 
-## 🎯 Future Improvements
+## 🎯 Future Improvements And Todos
 
+- [x] Add SEO optimization
+- [ ] UI fixes:
+  - [ ] Safari Mobile UI fixes
+  - [ ] Firefox footer fix
 - [ ] Add end-to-end testing
 - [ ] Implement CI/CD pipeline
-- [ ] Add performance monitoring
-- [ ] Add SEO optimization
 
 ## 📄 License
 
