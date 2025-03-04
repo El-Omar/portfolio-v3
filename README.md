@@ -147,9 +147,10 @@ portfolio-v3/
 ## 🎯 Future Improvements And Todos
 
 - [x] Add SEO optimization
-- [ ] UI fixes:
-  - [ ] Safari Mobile UI fixes
-  - [ ] Firefox footer fix
+- [ ] UI fixes
+  - [ ] Safari Mobile reveal on scroll
+  - [ ] Safari Mobile Libre Baskerville font
+  - [ ] Firefox footer transition
 - [ ] Add end-to-end testing
 - [ ] Implement CI/CD pipeline
 
