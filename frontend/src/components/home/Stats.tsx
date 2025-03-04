@@ -1,15 +1,16 @@
 "use client";
 
 import {
-  ArrowDownRight,
   CalendarFold,
   Code2,
   IdCard,
   Minus,
   PencilRuler,
+  Plus,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
+import { useIsMobile } from "@/lib/hooks/useIsMobile";
 
 const yearsOfExperience = Math.floor(
   (new Date().getTime() - new Date("2018-06-01").getTime()) /
@@ -83,6 +84,7 @@ const cards = [
 const Stats = () => {
   const t = useTranslations("stats");
   const [expandedCard, setExpandedCard] = useState<number | null>(null);
+  const isMobile = useIsMobile();
 
   return (
     <div className="w-full">
@@ -112,11 +114,10 @@ const Stats = () => {
                   transition-all duration-200 ease-in-out
                 `}
               >
-                <ArrowDownRight
+                <Plus
                   className={`
-                    absolute top-1 left-1 text-neutral-100
+                    absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-neutral-100
                     md:opacity-0 opacity-100 group-hover:opacity-100 transition-all duration-300
-                    motion-translate-x-loop-[15%] motion-translate-y-loop-[15%]
                     ${expandedCard === index ? "translate-x-4 translate-y-4 opacity-100" : ""}
                   `}
                   size={16}
@@ -220,7 +221,7 @@ const Stats = () => {
                     <div
                       className={`
                         relative z-20 overflow-hidden transition-[height] duration-300
-                        ${expandedCard !== null ? "h-32" : "h-0"}
+                        ${(!isMobile && expandedCard !== null) || (isMobile && expandedCard === index) ? "h-32" : "h-0"}
                       `}
                     >
                       {/* Description Content with Fade/Slide Animation */}
