@@ -144,12 +144,15 @@ portfolio-v3/
    yarn dev:backend
    ```
 
-## 🎯 Future Improvements
+## 🎯 Future Improvements And Todos
 
+- [x] Add SEO optimization
+- [ ] UI fixes
+  - [ ] Safari Mobile reveal on scroll
+  - [ ] Safari Mobile Libre Baskerville font
+  - [ ] Firefox footer transition
 - [ ] Add end-to-end testing
 - [ ] Implement CI/CD pipeline
-- [ ] Add performance monitoring
-- [ ] Add SEO optimization
 
 ## 📄 License
 
