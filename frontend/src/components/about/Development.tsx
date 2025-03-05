@@ -65,7 +65,7 @@ const Development = (): ReactElement => {
       variants={animations.containerVariants}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: "-200px" }}
+      viewport={{ once: true, margin: "0px 0px -100px 0px", amount: 0.1 }}
       className="relative w-full py-10 lg:py-20"
     >
       {/* Background section */}

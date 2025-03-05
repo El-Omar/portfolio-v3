@@ -9,18 +9,11 @@ import { PAGES, usePagesWithAccent } from "@/lib/hooks/usePages";
 const Footer = (): ReactElement => {
   return (
     <footer
-      className="w-full relative h-[100vh] lg:h-[600px]"
-      style={{ clipPath: "polygon(0% 0, 100% 0%, 100% 100%, 0 100%)" }}
+      className="h-[650px] w-full fixed bottom-0 flex items-center justify-center
+        bg-gradient-to-b lg:bg-gradient-to-l z-[2]
+      from-neutral-100 to-cool-red/5 dark:from-neutral-800 dark:to-neutral-950"
     >
-      <div className="relative h-[calc(100vh+100vh)] lg:h-[calc(100vh+600px)] -top-[100vh]">
-        <div
-          className="h-[100vh] lg:h-[600px] sticky top-[calc(100vh-100vh)] lg:top-[calc(100vh-600px)]
-            bg-gradient-to-b lg:bg-gradient-to-l
-          from-neutral-100 to-cool-red/5 dark:from-neutral-800 dark:to-neutral-950"
-        >
-          <Content />
-        </div>
-      </div>
+      <Content />
     </footer>
   );
 };

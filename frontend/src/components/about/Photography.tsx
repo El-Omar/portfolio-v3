@@ -65,7 +65,7 @@ const Photography = (): ReactElement => {
       variants={animations.containerVariants}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: "-200px" }}
+      viewport={{ once: true, margin: "0px 0px -100px 0px", amount: 0.1 }}
       className="relative w-full flex flex-col lg:flex-row justify-between items-start lg:items-center lg:gap-20 gap-10"
     >
       {/* Background dot */}

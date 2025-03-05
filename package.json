@@ -13,9 +13,9 @@
     "docker:rebuild": "docker-compose -f infrastructure/docker/development/docker-compose.yml up -d --build",
 
     "build:shared": "yarn workspace @portfolio-v3/shared build",
-    "dev:shared": "yarn workspace @portfolio-v3/shared watch",
-    "dev:frontend": "yarn workspace frontend dev",
-    "dev:backend": "yarn workspace backend dev"
+    "logs:shared": "docker logs -f portfolio-v3-shared",
+    "logs:frontend": "docker logs -f portfolio-v3-frontend",
+    "logs:backend": "docker logs -f portfolio-v3-backend"
   },
   "workspaces": [
     "frontend",

@@ -202,13 +202,13 @@ const Stats = () => {
                               <span
                                 key={i}
                                 className="
-                                px-2 py-0.5 rounded-sm text-sm 
-                                bg-neutral-100 dark:bg-neutral-800 
-                                text-neutral-600 dark:text-neutral-400
-                                border border-neutral-200 dark:border-neutral-700
-                                transition-colors duration-200
-                                hover:border-neutral-300 dark:hover:border-neutral-600
-                              "
+                                  px-2 py-0.5 rounded-sm text-sm 
+                                  bg-neutral-100 dark:bg-neutral-800 
+                                  text-neutral-600 dark:text-neutral-400
+                                  border border-neutral-200 dark:border-neutral-700
+                                  transition-colors duration-200
+                                  hover:border-neutral-300 dark:hover:border-neutral-600
+                                "
                               >
                                 {item}
                               </span>
@@ -228,11 +228,7 @@ const Stats = () => {
                       <div
                         className={`
                           pt-4 mt-2 border-t border-neutral-400 dark:border-neutral-500
-                          ${
-                            expandedCard === index
-                              ? "motion-fade-in motion-translate-y-in-25 motion-duration-500 motion-ease-spring-smooth"
-                              : "opacity-0 motion-translate-y-out-25 motion-duration-300"
-                          }
+                          ${expandedCard === index ? "" : "opacity-0 "}
                         `}
                       >
                         <p className="text-neutral-600 dark:text-neutral-400 text-sm leading-relaxed">

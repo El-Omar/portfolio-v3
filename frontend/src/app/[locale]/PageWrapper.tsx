@@ -33,10 +33,10 @@ const PageWrapper = ({ children }: Props): ReactElement => {
 
   return (
     <ReactLenis root options={{ autoRaf: false }} ref={lenisRef}>
-      <div className="relative w-full flex flex-col justify-between min-h-screen items-center">
+      <div className="relative w-full flex flex-col justify-between min-h-screen items-center pb-[650px]">
         <InteractiveCursor />
         <Navigation />
-        <div className="z-10 relative pt-12 w-full flex flex-col items-center shadow-md rounded-b-2xl dark:shadow-neutral-900">
+        <div className="z-10 relative pt-12 w-full flex flex-col items-center shadow-md rounded-b-2xl dark:shadow-neutral-900 bg-white dark:bg-neutral-800">
           {children}
         </div>
         <Footer />
