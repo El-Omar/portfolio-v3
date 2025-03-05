@@ -130,18 +130,21 @@ portfolio-v3/
 
    # Start the development environment
    yarn docker:up
+
+   # Stop the development environment
+   yarn docker:down
    ```
 
 4. **Development**
    ```bash
-   # Watch shared package changes
-   yarn dev:shared
+   # Watch the logs of the database
+   yarn logs:mongo
 
-   # Start frontend development
-   yarn dev:frontend
+   # Watch the logs of frontend
+   yarn logs:frontend
 
-   # Start backend development
-   yarn dev:backend
+   # Watch the logs of backend
+   yarn logs:backend
    ```
 
 ## 🎯 Future Improvements And Todos
