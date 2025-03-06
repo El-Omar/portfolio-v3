@@ -86,7 +86,7 @@ const DownloadResume = (): ReactElement => {
 
         <motion.div variants={animations.buttonVariants}>
           <a
-            href="/Web_Resume-Elomar_Sami-Dec_2024.pdf"
+            href="/Web_Resume-Elomar_Sami-March_2025.pdf"
             className="group px-8 py-4 bg-primary text-white dark:text-neutral-800 rounded-xl hover:bg-cool-red/90 dark:hover:text-white transition-colors flex items-center gap-2 text-sm"
             download
           >
