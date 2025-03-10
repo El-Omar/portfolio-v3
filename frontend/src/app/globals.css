@@ -54,3 +54,7 @@
     @apply antialiased bg-background text-foreground;
   }
 }
+
+.font-baskerville {
+  font-style: italic;
+}

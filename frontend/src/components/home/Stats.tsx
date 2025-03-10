@@ -13,7 +13,7 @@ import { useState } from "react";
 import { useIsMobile } from "@/lib/hooks/useIsMobile";
 
 const yearsOfExperience = Math.floor(
-  (new Date().getTime() - new Date("2018-06-01").getTime()) /
+  (new Date().getTime() - new Date("2018-02-01").getTime()) /
     (1000 * 60 * 60 * 24 * 365.25),
 );
 

@@ -18,7 +18,7 @@ export const fontDM_Sans = DM_Sans({
 export const fontLibre_BaskervilleItalic = Libre_Baskerville({
   subsets: ["latin"],
   weight: ["400"],
-  style: ["italic"],
+  style: ["normal", "italic"],
   variable: "--font-baskerville",
   preload: true,
   display: "swap",
