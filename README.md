@@ -101,8 +101,8 @@ portfolio-v3/
 - **Frontend**: Next.js, TailwindCSS, TypeScript
 - **Backend**: Express.js, MongoDB, TypeScript
 - **Infrastructure**: Docker, AWS S3
-- **Testing**: [Your testing framework]
-- **CI/CD**: [Your CI/CD setup]
+- **Testing**: Not yet
+- **CI/CD**: Not yet, but using Traefik on a VPS atm
 
 ## 🚦 Getting Started
 
@@ -133,6 +133,9 @@ portfolio-v3/
 
    # Stop the development environment
    yarn docker:down
+
+   # Rebuild the development environment
+   yarn docker:rebuild
    ```
 
 4. **Development**
@@ -150,10 +153,10 @@ portfolio-v3/
 ## 🎯 Future Improvements And Todos
 
 - [x] Add SEO optimization
-- [ ] UI fixes
-  - [ ] Safari Mobile reveal on scroll
-  - [ ] Safari Mobile Libre Baskerville font
-  - [ ] Firefox footer transition
+- [x] UI fixes
+  - [x] Safari Mobile reveal on scroll
+  - [x] Safari Mobile Libre Baskerville font
+  - [x] Firefox footer transition
 - [ ] Add end-to-end testing
 - [ ] Implement CI/CD pipeline
 
