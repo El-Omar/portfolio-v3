@@ -173,7 +173,7 @@ export const updateBlog = async (
       return response;
     }
 
-    revalidateTag("blogs");
+    revalidateTag("blogs", "max");
     revalidatePath("/admin/dashboard/blogs");
     revalidatePath("/blog");
     return response;
@@ -201,7 +201,7 @@ export const deleteBlog = async (
   try {
     const response = await blogsClient.delete(slug, etag);
 
-    revalidateTag("blogs");
+    revalidateTag("blogs", "max");
     revalidatePath("/admin/dashboard/blogs");
     revalidatePath("/blog");
 

@@ -1,11 +1,11 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { NextIntlClientProvider } from "next-intl";
+import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 
 import PageWrapper from "./PageWrapper";
 import { getMetadata } from "@/config/metadata";
-import { Locale, routing } from "@/i18n/routing";
+import { routing } from "@/i18n/routing";
 
 // Generate static params for all supported locales
 export function generateStaticParams() {
@@ -19,22 +19,19 @@ const LocaleLayout = async ({
   params,
 }: {
   children: React.ReactNode;
-  params: Promise<{ locale: Locale }>;
+  params: Promise<{ locale: string }>;
 }) => {
-  const res = await params;
-  const locale = res.locale;
+  const { locale } = await params;
+
+  // Validate the locale
+  if (!hasLocale(routing.locales, locale)) {
+    notFound();
+  }
 
   // Set the locale for the request
   setRequestLocale(locale);
 
-  let messages;
-  try {
-    messages = (await import(`@/messages/${locale}.json`)).default;
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  } catch (err) {
-    notFound();
-  }
-
+  const messages = (await import(`@/messages/${locale}.json`)).default;
   const isRTL = locale === "ar";
 
   return (

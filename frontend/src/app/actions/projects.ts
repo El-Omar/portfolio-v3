@@ -300,7 +300,7 @@ export const updateProject = async (
       return response;
     }
 
-    revalidateTag("projects");
+    revalidateTag("projects", "max");
     revalidatePath("/admin/dashboard/projects");
     revalidatePath("/");
     return response;
@@ -344,7 +344,7 @@ export const deleteProject = async (
   try {
     const response = await projectsClient.delete(slug, etag);
 
-    revalidateTag("projects");
+    revalidateTag("projects", "max");
     revalidatePath("/admin/dashboard/projects");
     revalidatePath("/");
 
