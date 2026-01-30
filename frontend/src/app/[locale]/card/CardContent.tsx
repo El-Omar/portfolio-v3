@@ -29,7 +29,7 @@ const LINKS = [
   },
   {
     id: "resume",
-    href: "/Web_Resume-Elomar_Sami-March_2025.pdf",
+    href: "/Resume-Elomar_Sami-Jan_2026.pdf",
     icon: Download,
     external: true,
     download: true,
