@@ -37,7 +37,7 @@ services:
       context: ../../..
       dockerfile: ./infrastructure/docker/development/backend.Dockerfile
     ports:
-      - "5000:5000"
+      - "5001:5001"
     volumes:
       - ../../../backend:/usr/src/app/backend
       - ../../../shared:/usr/src/app/shared

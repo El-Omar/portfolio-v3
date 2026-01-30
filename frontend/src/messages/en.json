@@ -56,7 +56,7 @@
     "sections": {
       "expertise": {
         "title": "Creating an <accent>impact</accent>",
-        "subtitle": "requires you <accent>some</accent>"
+        "subtitle": "requires <accent>some</accent>"
       },
       "projects": {
         "title": "Showcasing <accent>projects</accent>",
@@ -115,6 +115,16 @@
     "viewAll": "View all posts",
     "filter": {
       "title": "Categories"
+    }
+  },
+  "card": {
+    "title": "Connect with me",
+    "description": "Choose how you'd like to get in touch",
+    "links": {
+      "linkedin": "LinkedIn",
+      "agency": "Lomy Studio",
+      "portfolio": "Portfolio",
+      "resume": "Download CV"
     }
   },
   "stats": {
