@@ -42,6 +42,9 @@ RUN yarn install
 COPY --from=builder /usr/src/app/frontend/.next ./frontend/.next
 COPY --from=builder /usr/src/app/frontend/public ./frontend/public
 COPY --from=builder /usr/src/app/frontend/next.config.js ./frontend/next.config.js
+# Copy i18n config required by next-intl at runtime
+COPY --from=builder /usr/src/app/frontend/src/i18n ./frontend/src/i18n
+COPY --from=builder /usr/src/app/frontend/src/messages ./frontend/src/messages
 
 # Set environment to production
 ENV NODE_ENV production
